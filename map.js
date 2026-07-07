@@ -41,36 +41,31 @@ export const MapSystem = {
           <ellipse cx="22" cy="51" rx="10" ry="3" fill="${shadowColor}"/>
 
           <!-- Cistern / tank -->
-          <rect x="9" y="2" width="26" height="14" rx="5" fill="${bodyColor}" stroke="${strokeColor}" stroke-width="1.5"/>
+          <rect x="9" y="2" width="26" height="13" rx="5" fill="${bodyColor}" stroke="${strokeColor}" stroke-width="1.5"/>
           <!-- Flush button on tank -->
-          <ellipse cx="22" cy="9" rx="4" ry="2.5" fill="${seatColor}" opacity="0.6"/>
+          <ellipse cx="22" cy="8.5" rx="4" ry="2.5" fill="${seatColor}" opacity="0.6"/>
 
-          <!-- Bowl outer body -->
-          <path d="M9,15 L9,36 Q9,50 22,50 Q35,50 35,36 L35,15 Z"
-                fill="${bodyColor}" stroke="${strokeColor}" stroke-width="1.5"/>
+          <!-- Bowl outer body (round) -->
+          <ellipse cx="22" cy="36" rx="14" ry="13" fill="${bodyColor}" stroke="${strokeColor}" stroke-width="1.5"/>
 
-          <!-- Seat ring -->
-          <path d="M11,17 L11,35 Q11,46 22,46 Q33,46 33,35 L33,17 Z"
-                fill="none" stroke="${seatColor}" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Seat ring (round) -->
+          <ellipse cx="22" cy="36" rx="11" ry="10" fill="none" stroke="${seatColor}" stroke-width="3"/>
 
           <!-- Water in bowl -->
-          <ellipse cx="22" cy="37" rx="8" ry="6" fill="${waterColor}" opacity="0.9"/>
+          <ellipse cx="22" cy="37" rx="7" ry="6.5" fill="${waterColor}" opacity="0.9"/>
 
           <!-- LID GROUP — rotates open on hover via CSS -->
           <g class="toilet-lid-group">
-            <!-- Lid body (mirrors bowl) -->
-            <path d="M9,15 L9,36 Q9,50 22,50 Q35,50 35,36 L35,15 Z"
-                  fill="${lidColor}" stroke="${strokeColor}" stroke-width="1.5"/>
+            <!-- Lid body (round, same as bowl) -->
+            <ellipse cx="22" cy="36" rx="14" ry="13" fill="${lidColor}" stroke="${strokeColor}" stroke-width="1.5"/>
             <!-- Lid top hinge bar -->
-            <rect x="9" y="12" width="26" height="6" rx="3"
-                  fill="${lidColor}" stroke="${strokeColor}" stroke-width="1.5"/>
-            <!-- Lid center detail line -->
-            <line x1="22" y1="20" x2="22" y2="44" stroke="${strokeColor}" stroke-width="0.8" opacity="0.4"/>
+            <rect x="9" y="11" width="26" height="6" rx="3" fill="${lidColor}" stroke="${strokeColor}" stroke-width="1.5"/>
           </g>
 
         </svg>
       </div>
     `;
+
 
     return L.divIcon({
       html: svgHTML,
