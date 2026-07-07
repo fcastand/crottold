@@ -42,38 +42,12 @@ export const MapSystem = {
           AppState.map.removeLayer(AppState.userMarker);
         }
 
-        // Create a cute Bobby-style poop "you are here" marker
+        // Bobby poop emoji "you are here" marker
         const userIcon = L.divIcon({
           html: `
             <div class="user-bobby-marker">
               <div class="user-bobby-pulse"></div>
-              <svg class="user-bobby-svg" width="36" height="40" viewBox="0 0 36 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Shadow -->
-                <ellipse cx="18" cy="38" rx="9" ry="2.5" fill="rgba(0,0,0,0.15)"/>
-                <!-- Swirl top -->
-                <ellipse cx="18" cy="8" rx="5" ry="5.5" fill="#6B3F1E"/>
-                <ellipse cx="20" cy="5" rx="3.5" ry="4" fill="#7D4E24"/>
-                <ellipse cx="22" cy="3" rx="2.5" ry="3" fill="#8B5E3C"/>
-                <ellipse cx="23" cy="1.5" rx="1.5" ry="2" fill="#A0714F"/>
-                <!-- Body main -->
-                <ellipse cx="18" cy="22" rx="13" ry="12" fill="#7D4E24"/>
-                <!-- Body highlight -->
-                <ellipse cx="14" cy="17" rx="4" ry="3" fill="#9B6438" opacity="0.5"/>
-                <!-- Left eye -->
-                <circle cx="13" cy="20" r="3" fill="white"/>
-                <circle cx="13.8" cy="20.5" r="1.5" fill="#1A202C"/>
-                <circle cx="14.3" cy="19.8" r="0.5" fill="white"/>
-                <!-- Right eye -->
-                <circle cx="23" cy="20" r="3" fill="white"/>
-                <circle cx="23.8" cy="20.5" r="1.5" fill="#1A202C"/>
-                <circle cx="24.3" cy="19.8" r="0.5" fill="white"/>
-                <!-- Smile -->
-                <path d="M13.5 25.5 Q18 29.5 22.5 25.5" stroke="#3D2000" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-                <!-- Cheek blush left -->
-                <ellipse cx="10.5" cy="23.5" rx="2" ry="1.2" fill="#E87070" opacity="0.4"/>
-                <!-- Cheek blush right -->
-                <ellipse cx="25.5" cy="23.5" rx="2" ry="1.2" fill="#E87070" opacity="0.4"/>
-              </svg>
+              <span class="user-bobby-emoji">💩</span>
             </div>
           `,
           className: '',

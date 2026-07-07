@@ -2452,3 +2452,13 @@ body {
   0%   { transform: translateX(-50%) scale(0.6); opacity: 0.8; }
   100% { transform: translateX(-50%) scale(2);   opacity: 0;   }
 }
+
+/* Bobby emoji override */
+.user-bobby-emoji {
+  font-size: 28px;
+  position: relative;
+  z-index: 2;
+  display: block;
+  animation: bobbyBob 2.5s ease-in-out infinite;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.3));
+}
