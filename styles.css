@@ -2409,3 +2409,46 @@ body {
   0%   { transform: scale(0.5); opacity: 1; }
   100% { transform: scale(1.8); opacity: 0; }
 }
+
+/* ============================================================
+   USER BOBBY MARKER -- Cute poop character "you are here"
+   ============================================================ */
+
+.user-bobby-marker {
+  position: relative;
+  width: 36px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-bobby-svg {
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 3px 6px rgba(100, 50, 0, 0.35));
+  animation: bobbyBob 2.5s ease-in-out infinite;
+}
+
+.user-bobby-pulse {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 36px;
+  background: rgba(125, 78, 36, 0.2);
+  border-radius: 50%;
+  animation: bobbyPulse 2s ease-out infinite;
+  z-index: 1;
+}
+
+@keyframes bobbyBob {
+  0%, 100% { transform: translateY(0);    }
+  50%       { transform: translateY(-4px); }
+}
+
+@keyframes bobbyPulse {
+  0%   { transform: translateX(-50%) scale(0.6); opacity: 0.8; }
+  100% { transform: translateX(-50%) scale(2);   opacity: 0;   }
+}
