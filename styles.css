@@ -2233,3 +2233,298 @@ body {
   background-color: var(--primary-dark);
 }
 
+
+/* ============================================================
+   SUCCESS ANIMATION OVERLAY -- Toilet Added Celebration
+   ============================================================ */
+
+.toilet-success-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30, 30, 40, 0.82);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  border-radius: inherit;
+}
+
+.toilet-success-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.success-anim-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.success-brush-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.success-brush-emoji {
+  font-size: 5rem;
+  display: block;
+  transform: translateY(-120px) rotate(-30deg);
+  opacity: 0;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.4));
+}
+
+.toilet-success-overlay.active .success-brush-emoji {
+  animation: brushDrop 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.05s forwards,
+             brushVictory 0.7s ease-in-out 0.65s forwards;
+}
+
+@keyframes brushDrop {
+  0%   { transform: translateY(-120px) rotate(-30deg); opacity: 0; }
+  60%  { transform: translateY(10px) rotate(8deg);     opacity: 1; }
+  80%  { transform: translateY(-8px) rotate(-4deg);    opacity: 1; }
+  100% { transform: translateY(0px) rotate(0deg);      opacity: 1; }
+}
+
+@keyframes brushVictory {
+  0%   { transform: translateY(0)     rotate(0deg)   scale(1);    }
+  25%  { transform: translateY(-12px) rotate(-20deg) scale(1.15); }
+  50%  { transform: translateY(-18px) rotate(15deg)  scale(1.2);  }
+  75%  { transform: translateY(-10px) rotate(-10deg) scale(1.1);  }
+  100% { transform: translateY(0)     rotate(0deg)   scale(1);    }
+}
+
+.success-checkmark-svg {
+  width: 110px;
+  height: 82px;
+  overflow: visible;
+}
+
+.success-checkmark-path {
+  stroke-dasharray: 180;
+  stroke-dashoffset: 180;
+}
+
+.toilet-success-overlay.active .success-checkmark-path {
+  animation: drawCheck 0.55s cubic-bezier(0.65, 0, 0.35, 1) 0.9s forwards;
+}
+
+@keyframes drawCheck {
+  0%   { stroke-dashoffset: 180; }
+  100% { stroke-dashoffset: 0;   }
+}
+
+.success-label {
+  color: white;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.01em;
+  opacity: 0;
+  transform: translateY(10px);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.toilet-success-overlay.active .success-label {
+  animation: labelFadeIn 0.4s ease 1.35s forwards;
+}
+
+@keyframes labelFadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.toilet-success-overlay.hiding {
+  animation: overlayFadeOut 0.4s ease forwards;
+}
+
+@keyframes overlayFadeOut {
+  to { opacity: 0; }
+}
+
+/* ============================================================
+   TOILET BOWL MAP MARKER — Custom SVG with animated lid
+   ============================================================ */
+
+.toilet-bowl-marker {
+  cursor: pointer;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.2));
+  transition: filter 0.2s ease;
+}
+
+.crottoq-custom-marker:hover .toilet-bowl-marker {
+  filter: drop-shadow(0 6px 10px rgba(13, 205, 192, 0.4));
+}
+
+/* Lid animation — rotates open around the top hinge on hover */
+.toilet-lid-group {
+  transform-box: fill-box;
+  transform-origin: center top;
+  transition: transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.crottoq-custom-marker:hover .toilet-lid-group {
+  transform: perspective(180px) rotateX(-145deg);
+}
+
+/* ============================================================
+   USER GEOLOCATION MARKER -- Pulsing "You are here" dot
+   ============================================================ */
+
+.user-location-marker {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-location-dot {
+  width: 14px;
+  height: 14px;
+  background: #4299E1;
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(66, 153, 225, 0.6);
+  position: relative;
+  z-index: 2;
+}
+
+.user-location-pulse {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background: rgba(66, 153, 225, 0.25);
+  border-radius: 50%;
+  animation: locationPulse 2s ease-out infinite;
+  z-index: 1;
+}
+
+@keyframes locationPulse {
+  0%   { transform: scale(0.5); opacity: 1; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* ============================================================
+   USER BOBBY MARKER -- Cute poop character "you are here"
+   ============================================================ */
+
+.user-bobby-marker {
+  position: relative;
+  width: 36px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-bobby-svg {
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 3px 6px rgba(100, 50, 0, 0.35));
+  animation: bobbyBob 2.5s ease-in-out infinite;
+}
+
+.user-bobby-pulse {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 36px;
+  background: rgba(125, 78, 36, 0.2);
+  border-radius: 50%;
+  animation: bobbyPulse 2s ease-out infinite;
+  z-index: 1;
+}
+
+@keyframes bobbyBob {
+  0%, 100% { transform: translateY(0);    }
+  50%       { transform: translateY(-4px); }
+}
+
+@keyframes bobbyPulse {
+  0%   { transform: translateX(-50%) scale(0.6); opacity: 0.8; }
+  100% { transform: translateX(-50%) scale(2);   opacity: 0;   }
+}
+
+/* Bobby emoji override */
+.user-bobby-emoji {
+  font-size: 28px;
+  position: relative;
+  z-index: 2;
+  display: block;
+  animation: bobbyBob 2.5s ease-in-out infinite;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.3));
+}
+
+/* ============================================================
+   MAP TAP HINT + TEMP TOILET MARKER
+   ============================================================ */
+
+.map-tap-hint {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(13, 205, 192, 0.92);
+  color: white;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow: 0 2px 10px rgba(13, 205, 192, 0.35);
+  animation: hintFadeInOut 4s ease forwards;
+  z-index: 500;
+}
+
+@keyframes hintFadeInOut {
+  0%   { opacity: 0; transform: translateX(-50%) translateY(6px); }
+  15%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+  75%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Temporary marker while form is open */
+.temp-toilet-marker {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+}
+
+.temp-toilet-marker span {
+  font-size: 26px;
+  animation: tempBounce 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.3));
+}
+
+.temp-marker-pulse {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--primary-color);
+  border-radius: 50%;
+  animation: tempPulse 1.2s ease-out infinite;
+}
+
+@keyframes tempBounce {
+  0%   { transform: scale(0) translateY(-20px); opacity: 0; }
+  70%  { transform: scale(1.2) translateY(4px);  opacity: 1; }
+  100% { transform: scale(1) translateY(0);       opacity: 1; }
+}
+
+@keyframes tempPulse {
+  0%   { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(1.8); opacity: 0;   }
+}

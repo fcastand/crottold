@@ -20,6 +20,12 @@ export const FlowHandlers = {
       this.startExploring();
     });
 
+    // Listen for map click → add toilet at clicked position
+    document.addEventListener('map:addToilet', (e) => {
+      const { lat, lng } = e.detail;
+      this.openAddToiletFlow(lat, lng);
+    });
+
     // A0. LOGIN & LOGOUT HANDLERS
     document.getElementById('form-login').addEventListener('submit', (e) => {
       e.preventDefault();
@@ -106,11 +112,13 @@ export const FlowHandlers = {
     document.getElementById('btn-close-add-drawer').addEventListener('click', () => {
       AudioSystem.play('click');
       DrawerSystem.close('drawer-add-toilet');
+      MapSystem.removeTempMarker();
     });
 
     document.getElementById('btn-cancel-add').addEventListener('click', () => {
       AudioSystem.play('click');
       DrawerSystem.close('drawer-add-toilet');
+      MapSystem.removeTempMarker();
     });
 
     document.getElementById('btn-close-review-drawer').addEventListener('click', () => {
@@ -123,11 +131,7 @@ export const FlowHandlers = {
       DrawerSystem.close('drawer-add-review');
     });
 
-    // E. TRIGGER FORMS
-    document.getElementById('btn-add-toilet-trigger').addEventListener('click', () => {
-      AudioSystem.play('click');
-      this.openAddToiletFlow();
-    });
+    // E. TRIGGER FORMS — btn-add-toilet-trigger removed (map click replaces it)
 
     document.getElementById('btn-add-review-trigger').addEventListener('click', () => {
       AudioSystem.play('click');
@@ -313,19 +317,13 @@ export const FlowHandlers = {
     MapSystem.renderMarkers();
   },
 
-  openAddToiletFlow() {
+  openAddToiletFlow(lat, lng) {
     DrawerSystem.closeAll();
-    
-    // Simulate automatic GPS coordinates finding in Paris map center
-    const center = AppState.map.getCenter();
-    // Offset slightly for demo mark visualization
-    const mockLat = center.lat + (Math.random() - 0.5) * 0.002;
-    const mockLng = center.lng + (Math.random() - 0.5) * 0.002;
-    
-    // Save these temp coordinates on the form element dataset
+
+    // Use provided coordinates (from map click) directly
     const form = document.getElementById('form-add-toilet');
-    form.dataset.tempLat = mockLat;
-    form.dataset.tempLng = mockLng;
+    form.dataset.tempLat = lat;
+    form.dataset.tempLng = lng;
 
     // Reset inputs
     form.reset();
@@ -386,14 +384,39 @@ export const FlowHandlers = {
     AppState.addToilet(newToilet);
     MapSystem.renderMarkers();
 
-    // Close form drawer
+    // Close form drawer & remove temp marker
     DrawerSystem.close('drawer-add-toilet');
+    MapSystem.removeTempMarker();
 
     // Pan map to new toilet
     AppState.map.panTo([lat, lng]);
 
     // Play toilet flush sound effect
     AudioSystem.play('flush');
+
+    // 🎉 Show victory animation
+    this.showToiletSuccessAnimation();
+  },
+
+  showToiletSuccessAnimation() {
+    const overlay = document.getElementById('toilet-success-overlay');
+    if (!overlay) return;
+
+    // Reset state before re-triggering
+    overlay.classList.remove('active', 'hiding');
+    // Force reflow so animations restart cleanly
+    void overlay.offsetWidth;
+
+    // Show overlay
+    overlay.classList.add('active');
+
+    // Auto-dismiss after 2.2s
+    setTimeout(() => {
+      overlay.classList.add('hiding');
+      overlay.addEventListener('animationend', () => {
+        overlay.classList.remove('active', 'hiding');
+      }, { once: true });
+    }, 2200);
   },
 
   submitReview() {
@@ -476,19 +499,16 @@ export const FlowHandlers = {
   triggerEmergencySOS() {
     AudioSystem.play('fart');
 
-    // Find closest toilet to map center
-    const center = AppState.map.getCenter();
+    // Use real GPS position if available, else fall back to map center
+    const ref = AppState.userPosition || AppState.map.getCenter();
+
     let closest = null;
     let minDistance = Infinity;
 
     AppState.toilets.forEach(toilet => {
-      // Exclude heavily reported ones
-      if (toilet.reports >= 3) return;
+      if (toilet.reports >= 3) return; // Skip heavily reported ones
 
-      const dx = toilet.lat - center.lat;
-      const dy = toilet.lng - center.lng;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-
+      const dist = MapSystem.haversineDistance(ref.lat, ref.lng, toilet.lat, toilet.lng);
       if (dist < minDistance) {
         minDistance = dist;
         closest = toilet;
@@ -496,16 +516,23 @@ export const FlowHandlers = {
     });
 
     if (closest) {
-      // Zoom and center map to coordinates
       AppState.map.setView([closest.lat, closest.lng], 17);
-      
-      // Highlight toilet marker and open details sheet
+
+      const distanceLabel = AppState.userPosition
+        ? (minDistance < 1
+            ? `à ${Math.round(minDistance * 1000)}m de vous`
+            : `à ${minDistance.toFixed(1)}km de vous`)
+        : 'le plus proche sur la carte';
+
       setTimeout(() => {
         DrawerSystem.openToiletDetails(closest);
-        AppState.showToast("🏃💨", "Bobby a localisé le trône le plus proche ! Filez !");
+        AppState.showToast("🏃💨", `Bobby a trouvé \"${closest.name}\" — ${distanceLabel} !`);
       }, 500);
+    } else {
+      AppState.showToast("😰", "Aucune toilette disponible à proximité !");
     }
   },
+
 
   // MODERATION ACTIONS
   renderModerationPanel() {

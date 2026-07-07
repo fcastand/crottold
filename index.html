@@ -94,6 +94,20 @@
         </div>
         
         <div class="screen-content">
+
+          <!-- SUCCESS ANIMATION OVERLAY (contained in app screen) -->
+          <div id="toilet-success-overlay" class="toilet-success-overlay" aria-hidden="true">
+            <div class="success-anim-container">
+              <div class="success-brush-wrapper">
+                <span class="success-brush-emoji">🪠</span>
+              </div>
+              <svg class="success-checkmark-svg" viewBox="0 0 100 75" xmlns="http://www.w3.org/2000/svg" fill="none">
+                <polyline class="success-checkmark-path" points="8,38 38,68 92,8" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <p class="success-label">Nouveau trône enregistré ! 🧻</p>
+            </div>
+          </div>
+
           
           <!-- SOUND SYSTEM TOGGLE & MODERATION BAR -->
           <div class="top-nav-bar">
@@ -208,10 +222,10 @@
                 <i class="fa-solid fa-triangle-exclamation"></i> SOS COIN !
               </button>
               
-              <!-- Floating Add Button -->
-              <button id="btn-add-toilet-trigger" class="btn-add-floating" title="Ajouter des toilettes">
-                <i class="fa-solid fa-plus"></i>
-              </button>
+              <!-- Map tap hint -->
+              <div class="map-tap-hint" id="map-tap-hint">
+                <i class="fa-solid fa-hand-pointer"></i> Appuyez sur la carte pour ajouter
+              </div>
             </div>
 
             <!-- 3. PROFILE VIEW -->
