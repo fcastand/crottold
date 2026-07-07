@@ -20,6 +20,39 @@ export const MapSystem = {
 
     this.renderMarkers();
     this.initGeolocation();
+
+    // Click on map to add a new toilet at that location
+    AppState.map.on('click', (e) => {
+      // Don't trigger if a drawer is already open
+      const anyOpen = document.querySelector('.app-drawer.active');
+      if (anyOpen) return;
+
+      const { lat, lng } = e.latlng;
+      this.placeTempMarker(lat, lng);
+
+      // Import FlowHandlers lazily via event to avoid circular deps
+      document.dispatchEvent(new CustomEvent('map:addToilet', { detail: { lat, lng } }));
+    });
+  },
+
+  // Places a temporary "new toilet" pin at clicked coordinates
+  placeTempMarker(lat, lng) {
+    this.removeTempMarker();
+    const tempIcon = L.divIcon({
+      html: `<div class="temp-toilet-marker"><span>🚽</span><div class="temp-marker-pulse"></div></div>`,
+      className: '',
+      iconSize: [36, 36],
+      iconAnchor: [18, 36]
+    });
+    AppState.tempMarker = L.marker([lat, lng], { icon: tempIcon, zIndexOffset: 500 })
+      .addTo(AppState.map);
+  },
+
+  removeTempMarker() {
+    if (AppState.tempMarker) {
+      AppState.map.removeLayer(AppState.tempMarker);
+      AppState.tempMarker = null;
+    }
   },
 
   // Real GPS geolocation — centers map and places a "you are here" marker

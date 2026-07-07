@@ -2462,3 +2462,69 @@ body {
   animation: bobbyBob 2.5s ease-in-out infinite;
   filter: drop-shadow(0 3px 5px rgba(0,0,0,0.3));
 }
+
+/* ============================================================
+   MAP TAP HINT + TEMP TOILET MARKER
+   ============================================================ */
+
+.map-tap-hint {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(13, 205, 192, 0.92);
+  color: white;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow: 0 2px 10px rgba(13, 205, 192, 0.35);
+  animation: hintFadeInOut 4s ease forwards;
+  z-index: 500;
+}
+
+@keyframes hintFadeInOut {
+  0%   { opacity: 0; transform: translateX(-50%) translateY(6px); }
+  15%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+  75%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Temporary marker while form is open */
+.temp-toilet-marker {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+}
+
+.temp-toilet-marker span {
+  font-size: 26px;
+  animation: tempBounce 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.3));
+}
+
+.temp-marker-pulse {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--primary-color);
+  border-radius: 50%;
+  animation: tempPulse 1.2s ease-out infinite;
+}
+
+@keyframes tempBounce {
+  0%   { transform: scale(0) translateY(-20px); opacity: 0; }
+  70%  { transform: scale(1.2) translateY(4px);  opacity: 1; }
+  100% { transform: scale(1) translateY(0);       opacity: 1; }
+}
+
+@keyframes tempPulse {
+  0%   { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(1.8); opacity: 0;   }
+}

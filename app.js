@@ -20,6 +20,12 @@ export const FlowHandlers = {
       this.startExploring();
     });
 
+    // Listen for map click → add toilet at clicked position
+    document.addEventListener('map:addToilet', (e) => {
+      const { lat, lng } = e.detail;
+      this.openAddToiletFlow(lat, lng);
+    });
+
     // A0. LOGIN & LOGOUT HANDLERS
     document.getElementById('form-login').addEventListener('submit', (e) => {
       e.preventDefault();
@@ -106,11 +112,13 @@ export const FlowHandlers = {
     document.getElementById('btn-close-add-drawer').addEventListener('click', () => {
       AudioSystem.play('click');
       DrawerSystem.close('drawer-add-toilet');
+      MapSystem.removeTempMarker();
     });
 
     document.getElementById('btn-cancel-add').addEventListener('click', () => {
       AudioSystem.play('click');
       DrawerSystem.close('drawer-add-toilet');
+      MapSystem.removeTempMarker();
     });
 
     document.getElementById('btn-close-review-drawer').addEventListener('click', () => {
@@ -123,11 +131,7 @@ export const FlowHandlers = {
       DrawerSystem.close('drawer-add-review');
     });
 
-    // E. TRIGGER FORMS
-    document.getElementById('btn-add-toilet-trigger').addEventListener('click', () => {
-      AudioSystem.play('click');
-      this.openAddToiletFlow();
-    });
+    // E. TRIGGER FORMS — btn-add-toilet-trigger removed (map click replaces it)
 
     document.getElementById('btn-add-review-trigger').addEventListener('click', () => {
       AudioSystem.play('click');
@@ -313,19 +317,13 @@ export const FlowHandlers = {
     MapSystem.renderMarkers();
   },
 
-  openAddToiletFlow() {
+  openAddToiletFlow(lat, lng) {
     DrawerSystem.closeAll();
-    
-    // Simulate automatic GPS coordinates finding in Paris map center
-    const center = AppState.map.getCenter();
-    // Offset slightly for demo mark visualization
-    const mockLat = center.lat + (Math.random() - 0.5) * 0.002;
-    const mockLng = center.lng + (Math.random() - 0.5) * 0.002;
-    
-    // Save these temp coordinates on the form element dataset
+
+    // Use provided coordinates (from map click) directly
     const form = document.getElementById('form-add-toilet');
-    form.dataset.tempLat = mockLat;
-    form.dataset.tempLng = mockLng;
+    form.dataset.tempLat = lat;
+    form.dataset.tempLng = lng;
 
     // Reset inputs
     form.reset();
@@ -386,8 +384,9 @@ export const FlowHandlers = {
     AppState.addToilet(newToilet);
     MapSystem.renderMarkers();
 
-    // Close form drawer
+    // Close form drawer & remove temp marker
     DrawerSystem.close('drawer-add-toilet');
+    MapSystem.removeTempMarker();
 
     // Pan map to new toilet
     AppState.map.panTo([lat, lng]);
