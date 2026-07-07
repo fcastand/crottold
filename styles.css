@@ -2345,3 +2345,28 @@ body {
 @keyframes overlayFadeOut {
   to { opacity: 0; }
 }
+
+/* ============================================================
+   TOILET BOWL MAP MARKER — Custom SVG with animated lid
+   ============================================================ */
+
+.toilet-bowl-marker {
+  cursor: pointer;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.2));
+  transition: filter 0.2s ease;
+}
+
+.crottoq-custom-marker:hover .toilet-bowl-marker {
+  filter: drop-shadow(0 6px 10px rgba(13, 205, 192, 0.4));
+}
+
+/* Lid animation — rotates open around the top hinge on hover */
+.toilet-lid-group {
+  transform-box: fill-box;
+  transform-origin: center top;
+  transition: transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.crottoq-custom-marker:hover .toilet-lid-group {
+  transform: perspective(180px) rotateX(-145deg);
+}
