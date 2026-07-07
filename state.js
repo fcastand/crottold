@@ -113,6 +113,8 @@ export const AppState = {
   selectedToilet: null,
   map: null,
   markersGroup: null,
+  userMarker: null,
+  userPosition: null,
   isModeratorMode: false,
   activeView: 'view-map',
 

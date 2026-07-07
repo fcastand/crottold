@@ -19,6 +19,64 @@ export const MapSystem = {
     AppState.markersGroup = L.layerGroup().addTo(AppState.map);
 
     this.renderMarkers();
+    this.initGeolocation();
+  },
+
+  // Real GPS geolocation — centers map and places a "you are here" marker
+  initGeolocation() {
+    if (!navigator.geolocation) {
+      AppState.showToast('📍', 'Géolocalisation non supportée par ce navigateur.');
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude, accuracy } = position.coords;
+        AppState.userPosition = { lat: latitude, lng: longitude };
+
+        // Center map on user
+        AppState.map.setView([latitude, longitude], 16);
+
+        // Remove old user marker if exists
+        if (AppState.userMarker) {
+          AppState.map.removeLayer(AppState.userMarker);
+        }
+
+        // Create a pulsing "you are here" marker
+        const userIcon = L.divIcon({
+          html: `<div class="user-location-marker"><div class="user-location-pulse"></div><div class="user-location-dot"></div></div>`,
+          className: '',
+          iconSize: [30, 30],
+          iconAnchor: [15, 15]
+        });
+
+        AppState.userMarker = L.marker([latitude, longitude], { icon: userIcon, zIndexOffset: 1000 })
+          .addTo(AppState.map);
+
+        AppState.showToast('📍', `Position trouvée ! (précision ~${Math.round(accuracy)}m)`);
+      },
+      (error) => {
+        // Fallback: keep Paris center, show gentle message
+        const messages = {
+          1: 'Accès à la position refusé. Carte centrée sur Paris.',
+          2: 'Position indisponible. Carte centrée sur Paris.',
+          3: 'Délai de géolocalisation dépassé. Carte centrée sur Paris.',
+        };
+        AppState.showToast('📍', messages[error.code] || 'Géolocalisation indisponible.');
+      },
+      { timeout: 8000, maximumAge: 60000, enableHighAccuracy: true }
+    );
+  },
+
+  // Haversine formula — real-world distance in km between two lat/lng points
+  haversineDistance(lat1, lng1, lat2, lng2) {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) ** 2
+      + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180)
+      * Math.sin(dLng / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   },
 
   // Generates a custom toilet bowl SVG marker with animated lid on hover

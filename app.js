@@ -500,19 +500,16 @@ export const FlowHandlers = {
   triggerEmergencySOS() {
     AudioSystem.play('fart');
 
-    // Find closest toilet to map center
-    const center = AppState.map.getCenter();
+    // Use real GPS position if available, else fall back to map center
+    const ref = AppState.userPosition || AppState.map.getCenter();
+
     let closest = null;
     let minDistance = Infinity;
 
     AppState.toilets.forEach(toilet => {
-      // Exclude heavily reported ones
-      if (toilet.reports >= 3) return;
+      if (toilet.reports >= 3) return; // Skip heavily reported ones
 
-      const dx = toilet.lat - center.lat;
-      const dy = toilet.lng - center.lng;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-
+      const dist = MapSystem.haversineDistance(ref.lat, ref.lng, toilet.lat, toilet.lng);
       if (dist < minDistance) {
         minDistance = dist;
         closest = toilet;
@@ -520,16 +517,23 @@ export const FlowHandlers = {
     });
 
     if (closest) {
-      // Zoom and center map to coordinates
       AppState.map.setView([closest.lat, closest.lng], 17);
-      
-      // Highlight toilet marker and open details sheet
+
+      const distanceLabel = AppState.userPosition
+        ? (minDistance < 1
+            ? `à ${Math.round(minDistance * 1000)}m de vous`
+            : `à ${minDistance.toFixed(1)}km de vous`)
+        : 'le plus proche sur la carte';
+
       setTimeout(() => {
         DrawerSystem.openToiletDetails(closest);
-        AppState.showToast("🏃💨", "Bobby a localisé le trône le plus proche ! Filez !");
+        AppState.showToast("🏃💨", `Bobby a trouvé \"${closest.name}\" — ${distanceLabel} !`);
       }, 500);
+    } else {
+      AppState.showToast("😰", "Aucune toilette disponible à proximité !");
     }
   },
+
 
   // MODERATION ACTIONS
   renderModerationPanel() {
