@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CROTTOQ — L'explorateur mondial des toilettes</title>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Découvrez CROTTOQ, la première carte mondiale et communautaire des toilettes publiques. Trouvez, notez et ajoutez des WC rapidement dans une ambiance cartoon et ludique.">
+  
+  <!-- FontAwesome & Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Landing Page Container (Desktop) -->
+  <div class="landing-container">
+    
+    <!-- Left Presentation Side -->
+    <div class="presentation-panel">
+      <div class="brand-header animate-pop">
+        <div class="brand-logo-wrapper">
+          <span class="brand-icon">🧻</span>
+          <h1 class="brand-title">CROTTOQ</h1>
+        </div>
+        <span class="badge-tagline">L'explorateur mondial des toilettes</span>
+      </div>
+
+      <div class="hero-content animate-slide-up">
+        <h2>Ne cherchez plus dans l'urgence.<br><span class="highlight-text">Explorez avec style.</span></h2>
+        <p>CROTTOQ est la première application communautaire mondiale qui cartographie les toilettes publiques et privées accessibles. Rejoignez une communauté mondiale de chasseurs de trônes !</p>
+      </div>
+
+      <!-- Mascot Showcase Card -->
+      <div class="mascot-card animate-slide-up">
+        <div class="mascot-img-container">
+          <img src="mascot_bobby.png" alt="Bobby la mascotte officielle CROTTOQ" class="mascot-img-fly">
+        </div>
+        <div class="mascot-info">
+          <h3>Faites coucou à Bobby ! 👋</h3>
+          <p>Voici Bobby, votre guide de voyage sanitaire. Explorateur chevronné, il vous accompagne dans vos aventures quotidiennes et célèbre chacun de vos nouveaux trônes découverts !</p>
+        </div>
+      </div>
+
+      <!-- Tech stack and features indicators -->
+      <div class="tech-indicators animate-slide-up">
+        <div class="indicator-item">
+          <i class="fa-solid fa-map-location-dot"></i>
+          <div>
+            <strong>100% Open-Source Map</strong>
+            <span>Propulsé par Leaflet et OpenStreetMap</span>
+          </div>
+        </div>
+        <div class="indicator-item">
+          <i class="fa-solid fa-database"></i>
+          <div>
+            <strong>Prêt pour MySQL</strong>
+            <span>Données optimisées pour requêtes spatiales</span>
+          </div>
+        </div>
+        <div class="indicator-item">
+          <i class="fa-solid fa-shield-halved"></i>
+          <div>
+            <strong>Modération Intégrée</strong>
+            <span>Signalez les fausses toilettes en 1 clic</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Call to Action for Demo -->
+      <div class="demo-instructions animate-slide-up">
+        <span class="arrow-pointing">👉</span>
+        <p>Utilisez le simulateur mobile sur la droite pour essayer l'application en conditions réelles !</p>
+      </div>
+
+      <div class="footer-credit">
+        <p>&copy; 2026 CROTTOQ. Fait avec passion par <strong>Bobby</strong> & l'équipe.</p>
+      </div>
+    </div>
+
+    <!-- Right Mobile Simulator Side -->
+    <div class="simulator-panel">
+      <!-- Device Mockup (iPhone 14 style) -->
+      <div class="smartphone-mockup animate-bounce-slow">
+        <div class="notch">
+          <div class="camera"></div>
+          <div class="speaker"></div>
+        </div>
+        
+        <div class="screen-content">
+          
+          <!-- SOUND SYSTEM TOGGLE & MODERATION BAR -->
+          <div class="top-nav-bar">
+            <div class="app-mini-logo">
+              <span class="mini-logo-emoji">🧻</span>
+              <span class="mini-logo-text">CROTTOQ</span>
+            </div>
+            <div class="top-bar-actions">
+              <button id="moderator-toggle-btn" class="moderator-badge-btn" title="Activer le mode modérateur">
+                <i class="fa-solid fa-user-shield"></i> <span id="mod-badge-text">Visiteur</span>
+              </button>
+              <button id="sound-toggle-btn" class="sound-btn" title="Activer/Désactiver le son">
+                <i class="fa-solid fa-volume-high"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- APP VIEW CONTAINER -->
+          <div class="app-views">
+            
+            <!-- 0. LOADING OVERLAY -->
+            <div id="app-loading-overlay" class="app-view">
+              <div class="loader-overlay-content">
+                <div class="unrolling-toilet-paper-container">
+                  <div class="sparkles-container">
+                    <span class="sparkle sp-1">✨</span>
+                    <span class="sparkle sp-2">⭐</span>
+                    <span class="sparkle sp-3">✨</span>
+                    <span class="sparkle sp-4">⭐</span>
+                    <span class="sparkle sp-5">✨</span>
+                  </div>
+                  <div class="toilet-paper-roll">
+                    <div class="roll-tube"></div>
+                    <div class="roll-paper-body"></div>
+                    <div class="roll-paper-unrolling"></div>
+                  </div>
+                </div>
+                <h3 id="loader-status-text">Bobby prépare votre trône...</h3>
+                <div class="loader-progress-bar">
+                  <div class="loader-progress-fill"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 1. LOGIN VIEW -->
+            <div id="view-login" class="app-view active">
+              <div class="login-content">
+                <div class="login-mascot-wrapper">
+                  <img src="mascot_bobby.png" alt="Bobby" class="login-mascot">
+                </div>
+                <h2 class="login-logo">🧻 CROTTOQ</h2>
+                <p class="login-tagline">Rejoignez la chasse aux meilleurs trônes ! 🚽</p>
+                
+                <form id="form-login" class="login-form">
+                  <div class="form-group-login">
+                    <label for="login-username">Pseudo d'explorateur</label>
+                    <div class="input-wrapper-login">
+                      <i class="fa-solid fa-user-ninja input-icon-login"></i>
+                      <input type="text" id="login-username" placeholder="Pseudo d'explorateur" required>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group-login">
+                    <label for="login-password">Mot de passe secret</label>
+                    <div class="input-wrapper-login">
+                      <i class="fa-solid fa-key input-icon-login"></i>
+                      <input type="password" id="login-password" placeholder="••••••••" required>
+                    </div>
+                  </div>
+
+                  <div class="form-group-login">
+                    <label for="login-role">Type de compte</label>
+                    <div class="input-wrapper-login select-arrow-wrapper">
+                      <i class="fa-solid fa-user-shield input-icon-login"></i>
+                      <select id="login-role" class="login-select" required>
+                        <option value="user">Utilisateur (Ajouter, Noter, Chercher)</option>
+                        <option value="moderator">Modérateur (Modérer, Gérer, Supprimer)</option>
+                      </select>
+                    </div>
+                  </div>
+                  <button type="submit" id="btn-login-submit" class="btn-primary-crottoq login-btn">
+                    Se connecter au trône 🔓
+                  </button>
+                </form>
+                
+                <p class="login-footer" onclick="alert('Inscription bientôt disponible ! En attendant, connectez-vous avec n\'importe quel identifiant.')">Pas encore de compte ? S'inscrire</p>
+              </div>
+            </div>
+
+            <!-- 1B. SPLASH SCREEN VIEW -->
+            <div id="view-splash" class="app-view">
+              <div class="splash-content">
+                <div class="splash-mascot-wrapper">
+                  <img src="mascot_bobby.png" alt="Bobby" class="splash-mascot">
+                </div>
+                <h2 class="splash-logo">CROTTOQ</h2>
+                <p class="splash-tagline">Trouvez le bon coin. Partout. Tout de suite.</p>
+                <div class="loading-container-app">
+                  <div class="loading-bar-fill"></div>
+                </div>
+                <button id="btn-splash-skip" class="btn-primary-crottoq">Démarrer l'exploration 🚀</button>
+              </div>
+            </div>
+
+            <!-- 2. MAP VIEW -->
+            <div id="view-map" class="app-view">
+              <!-- Leaflet Map Div -->
+              <div id="leaflet-map-container"></div>
+              
+              <!-- Floating SOS Button (Urgence) -->
+              <button id="btn-sos-emergency" class="btn-sos animate-pulse" title="Trouver les WC les plus proches en urgence !">
+                <i class="fa-solid fa-triangle-exclamation"></i> SOS COIN !
+              </button>
+              
+              <!-- Floating Add Button -->
+              <button id="btn-add-toilet-trigger" class="btn-add-floating" title="Ajouter des toilettes">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
+
+            <!-- 3. PROFILE VIEW -->
+            <div id="view-profile" class="app-view">
+              <div class="profile-scroll-content">
+                
+                <!-- Profile Header Card -->
+                <div class="profile-header-card">
+                  <div class="profile-avatar-wrapper">
+                    <img src="mascot_bobby.png" alt="Bobby" class="profile-avatar">
+                  </div>
+                  <div class="profile-user-info">
+                    <h3 id="profile-username">Grand Explorateur</h3>
+                    <span class="user-level-badge">Niveau <span id="profile-level">2</span></span>
+                  </div>
+                  
+                  <div class="xp-progress-section">
+                    <div class="xp-values">
+                      <span>XP : <strong id="profile-xp-current">350</strong> / 500</span>
+                      <span class="xp-next">Prochain niv. : +150 XP</span>
+                    </div>
+                    <div class="xp-bar-container">
+                      <div id="profile-xp-bar" class="xp-bar-fill" style="width: 70%"></div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Logout Button -->
+                <button id="btn-logout" class="btn-logout">
+                  <i class="fa-solid fa-right-from-bracket"></i> Déconnexion du trône
+                </button>
+                
+                <!-- Reset Data Button -->
+                <button id="btn-reset-data" class="btn-logout" style="margin-top: 0.5rem; background-color: var(--light-border); border-color: var(--light-border); color: var(--grey-text);">
+                  <i class="fa-solid fa-rotate-left"></i> Réinitialiser les données
+                </button>
+
+                <!-- Stats summary Grid -->
+                <div class="stats-grid">
+                  <div class="stat-card">
+                    <span class="stat-number" id="stat-added">1</span>
+                    <span class="stat-label">Ajoutés</span>
+                  </div>
+                  <div class="stat-card">
+                    <span class="stat-number" id="stat-rated">4</span>
+                    <span class="stat-label">Notés</span>
+                  </div>
+                  <div class="stat-card">
+                    <span class="stat-number" id="stat-rank">#4</span>
+                    <span class="stat-label">Rang</span>
+                  </div>
+                </div>
+
+                <!-- Achievements & Badges -->
+                <div class="section-title-wrapper">
+                  <h4>Mes Badges d'Exploration</h4>
+                </div>
+                
+                <div class="badges-list">
+                  <div class="badge-item unlocked" id="badge-first-add">
+                    <div class="badge-icon">🏆</div>
+                    <div class="badge-info">
+                      <h5>Premier Explorateur</h5>
+                      <p>Ajouter votre première toilette publique.</p>
+                    </div>
+                  </div>
+                  
+                  <div class="badge-item unlocked" id="badge-three-ratings">
+                    <div class="badge-icon">🧻</div>
+                    <div class="badge-info">
+                      <h5>Aventurier Sanitaire</h5>
+                      <p>Évaluer 3 toilettes de la communauté.</p>
+                    </div>
+                  </div>
+
+                  <div class="badge-item locked" id="badge-rare-toilet">
+                    <div class="badge-icon">🦄</div>
+                    <div class="badge-info">
+                      <h5>Chasseur de Trésors</h5>
+                      <p>Trouver et ajouter des toilettes gratuites dans une zone payante.</p>
+                    </div>
+                  </div>
+
+                  <div class="badge-item locked" id="badge-globe-trotter">
+                    <div class="badge-icon">🌍</div>
+                    <div class="badge-info">
+                      <h5>Globe-Trotteur</h5>
+                      <p>Ajouter ou évaluer des WC dans 3 villes différentes.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Leaderboard -->
+                <div class="section-title-wrapper">
+                  <h4>Classement Hebdomadaire</h4>
+                </div>
+
+                <div class="leaderboard-table">
+                  <div class="leaderboard-row gold">
+                    <span class="leaderboard-rank">🥇 1</span>
+                    <span class="leaderboard-name">ToiletKing_99</span>
+                    <span class="leaderboard-xp">4,820 XP</span>
+                  </div>
+                  <div class="leaderboard-row silver">
+                    <span class="leaderboard-rank">🥈 2</span>
+                    <span class="leaderboard-name">Dame_Pipi_Pro</span>
+                    <span class="leaderboard-xp">3,950 XP</span>
+                  </div>
+                  <div class="leaderboard-row bronze">
+                    <span class="leaderboard-rank">🥉 3</span>
+                    <span class="leaderboard-name">Bobby_Fan</span>
+                    <span class="leaderboard-xp">2,100 XP</span>
+                  </div>
+                  <div class="leaderboard-row active-user">
+                    <span class="leaderboard-rank">4</span>
+                    <span class="leaderboard-name">Vous (Explorateur)</span>
+                    <span class="leaderboard-xp"><span id="leaderboard-current-xp">350</span> XP</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- 4. MODERATION VIEW (ADMIN) -->
+            <div id="view-moderation" class="app-view">
+              <div class="moderation-scroll-content">
+                <div class="mod-header-card">
+                  <i class="fa-solid fa-shield-halved mod-shield-icon"></i>
+                  <h3>Console de Modération</h3>
+                  <p>Aidez la communauté à maintenir la carte propre et fiable en vérifiant les signalements.</p>
+                </div>
+
+                <div class="section-title-wrapper">
+                  <h4>Toilettes Signalées (<span id="mod-reported-count">1</span>)</h4>
+                </div>
+
+                <div id="moderation-reports-list" class="moderation-list">
+                  <!-- Dynamic moderation items go here -->
+                </div>
+
+                <div class="section-title-wrapper">
+                  <h4>Utilisateurs Suspects</h4>
+                </div>
+                
+                <div class="suspects-list">
+                  <div class="suspect-item">
+                    <div class="suspect-meta">
+                      <strong>Spammer_Du_Trône</strong>
+                      <span>2 signalements reçus</span>
+                    </div>
+                    <button class="btn-warn-user" onclick="alert('Avertissement envoyé à cet utilisateur !')">Avertir</button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div> <!-- END APP VIEW CONTAINER -->
+
+          <!-- 5. BOTTOM DRAWER / PANEL: TOILET DETAILS -->
+          <div id="drawer-toilet-details" class="app-drawer">
+            <div class="drawer-drag-indicator"></div>
+            <div class="drawer-header" style="align-items: center; gap: 0.5rem; padding-right: 2.5rem;">
+              <h3 id="detail-toilet-name" style="margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 65%;">Toilettes Publiques</h3>
+              <span id="detail-toilet-badge" class="rating-grade-badge" style="margin: 0; font-size: 0.7rem; font-weight: 800; white-space: nowrap;">Trône royal 👑</span>
+              <button id="btn-close-details" class="btn-close-drawer">&times;</button>
+            </div>
+            
+            <div class="drawer-body">
+
+              <div class="toilet-tags-row" id="detail-tags-container">
+                <!-- Tags added dynamically -->
+              </div>
+
+              <div class="toilet-stats-bars">
+                <div class="toilet-stat-bar-item">
+                  <span class="bar-label">Propreté</span>
+                  <div class="bar-track"><div id="bar-cleanliness" class="bar-fill-inner" style="width: 100%"></div></div>
+                </div>
+                <div class="toilet-stat-bar-item">
+                  <span class="bar-label">Confort</span>
+                  <div class="bar-track"><div id="bar-comfort" class="bar-fill-inner" style="width: 80%"></div></div>
+                </div>
+                <div class="toilet-stat-bar-item">
+                  <span class="bar-label">Accessibilité</span>
+                  <div class="bar-track"><div id="bar-access" class="bar-fill-inner" style="width: 90%"></div></div>
+                </div>
+              </div>
+
+              <!-- Reviews Section -->
+              <div class="reviews-section-drawer">
+                <h4>Avis communautaires</h4>
+                <div class="reviews-list-container" id="detail-reviews-list">
+                  <!-- Reviews populated dynamically -->
+                </div>
+              </div>
+
+              <!-- Action buttons inside details -->
+              <div class="drawer-actions-footer">
+                <button id="btn-report-toilet" class="btn-action-outline text-danger">
+                  <i class="fa-solid fa-triangle-exclamation"></i> Signaler cette toilette
+                </button>
+                <button id="btn-delete-toilet-direct" class="btn-action-outline text-danger" style="display: none;">
+                  <i class="fa-solid fa-trash-can"></i> Supprimer le WC
+                </button>
+                <button id="btn-add-review-trigger" class="btn-action-primary">
+                  <i class="fa-solid fa-pen-nib"></i> Noter ce coin
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. BOTTOM DRAWER / PANEL: ADD TOILET FORM -->
+          <div id="drawer-add-toilet" class="app-drawer">
+            <div class="drawer-drag-indicator"></div>
+            <div class="drawer-header">
+              <h3>Ajouter un nouveau coin</h3>
+              <button id="btn-close-add-drawer" class="btn-close-drawer">&times;</button>
+            </div>
+            
+            <form id="form-add-toilet" class="drawer-body">
+              <div class="gps-coordinates-badge">
+                <i class="fa-solid fa-location-crosshairs animate-pulse"></i>
+                <span>Coordonnées GPS capturées automatiquement</span>
+              </div>
+              
+              <div class="form-group">
+                <label for="input-toilet-name">Nom du lieu / Indication</label>
+                <input type="text" id="input-toilet-name" placeholder="Ex: WC Square Saint-Jacques" required>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group half-width">
+                  <label for="select-price">Tarif</label>
+                  <select id="select-price" required>
+                    <option value="gratuit">Gratuit</option>
+                    <option value="payant">Payant</option>
+                  </select>
+                </div>
+                <div class="form-group half-width">
+                  <label for="select-access">Accès</label>
+                  <select id="select-access" required>
+                    <option value="public">Ouvert au public</option>
+                    <option value="limite">Limité (ex: Code client)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Options disponibles</label>
+                <div class="checkbox-buttons-grid">
+                  <label class="check-btn-label">
+                    <input type="checkbox" id="check-pmr">
+                    <span>♿ Accès PMR</span>
+                  </label>
+                  <label class="check-btn-label">
+                    <input type="checkbox" id="check-mixed">
+                    <span>🚻 Mixte</span>
+                  </label>
+                  <label class="check-btn-label">
+                    <input type="checkbox" id="check-paper">
+                    <span>🧻 Papier fourni</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group range-slider-group">
+                <div class="range-slider-header">
+                  <label for="range-add-cleanliness">✨ Propreté</label>
+                  <span id="val-add-cleanliness" class="range-val-badge">50%</span>
+                </div>
+                <input type="range" id="range-add-cleanliness" class="crottoq-range-slider" min="0" max="100" value="50">
+              </div>
+
+              <div class="form-group range-slider-group">
+                <div class="range-slider-header">
+                  <label for="range-add-comfort">🛋️ Confort</label>
+                  <span id="val-add-comfort" class="range-val-badge">50%</span>
+                </div>
+                <input type="range" id="range-add-comfort" class="crottoq-range-slider" min="0" max="100" value="50">
+              </div>
+
+              <div class="form-group range-slider-group">
+                <div class="range-slider-header">
+                  <label for="range-add-access">♿ Accessibilité</label>
+                  <span id="val-add-access" class="range-val-badge">50%</span>
+                </div>
+                <input type="range" id="range-add-access" class="crottoq-range-slider" min="0" max="100" value="50">
+              </div>
+
+              <div class="form-group">
+                <label for="input-comment">Avis rapide (humour bienvenu !)</label>
+                <input type="text" id="input-comment" placeholder="Ex: Papier triple épaisseur, une merveille." maxlength="100">
+              </div>
+
+              <div class="form-actions-footer">
+                <button type="button" id="btn-cancel-add" class="btn-action-outline">Annuler</button>
+                <button type="submit" class="btn-action-primary">Enregistrer le trône 🚀</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- 7. ADD REVIEW DIALOG (POPUP DRAWER OVERLAY) -->
+          <div id="drawer-add-review" class="app-drawer secondary-drawer">
+            <div class="drawer-header">
+              <h3>Laisser une évaluation</h3>
+              <button id="btn-close-review-drawer" class="btn-close-drawer">&times;</button>
+            </div>
+            <form id="form-add-review" class="drawer-body">
+              <div class="form-group range-slider-group">
+                <div class="range-slider-header">
+                  <label for="range-rev-cleanliness">✨ Propreté</label>
+                  <span id="val-rev-cleanliness" class="range-val-badge">50%</span>
+                </div>
+                <input type="range" id="range-rev-cleanliness" class="crottoq-range-slider" min="0" max="100" value="50">
+              </div>
+
+              <div class="form-group range-slider-group">
+                <div class="range-slider-header">
+                  <label for="range-rev-comfort">🛋️ Confort</label>
+                  <span id="val-rev-comfort" class="range-val-badge">50%</span>
+                </div>
+                <input type="range" id="range-rev-comfort" class="crottoq-range-slider" min="0" max="100" value="50">
+              </div>
+
+              <div class="form-group range-slider-group">
+                <div class="range-slider-header">
+                  <label for="range-rev-access">♿ Accessibilité</label>
+                  <span id="val-rev-access" class="range-val-badge">50%</span>
+                </div>
+                <input type="range" id="range-rev-access" class="crottoq-range-slider" min="0" max="100" value="50">
+              </div>
+
+              <div class="form-group">
+                <label for="input-review-comment">Votre commentaire</label>
+                <input type="text" id="input-review-comment" placeholder="Donnez votre avis sincère ou humoristique..." required>
+              </div>
+
+              <div class="form-actions-footer">
+                <button type="button" id="btn-cancel-review" class="btn-action-outline">Annuler</button>
+                <button type="submit" class="btn-action-primary">Publier l'avis 📝</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- TOAST CONTAINER FOR NOTIFICATIONS / CONFETTI EFFECT -->
+          <div id="app-toast" class="app-toast-message">
+            <span class="toast-icon">🏆</span>
+            <span class="toast-text">Badge Débloqué !</span>
+          </div>
+
+          <!-- BOTTOM TAB NAVIGATION BAR -->
+          <div class="bottom-nav-bar">
+            <button id="nav-btn-map" class="nav-item active" data-target="view-map">
+              <i class="fa-solid fa-map-marked-alt"></i>
+              <span>Carte</span>
+            </button>
+            <button id="nav-btn-profile" class="nav-item" data-target="view-profile">
+              <i class="fa-solid fa-user-ninja"></i>
+              <span>Profil</span>
+            </button>
+            <button id="nav-btn-moderation" class="nav-item hide-nav" data-target="view-moderation">
+              <i class="fa-solid fa-user-shield"></i>
+              <span>Modération</span>
+            </button>
+          </div>
+
+        </div> <!-- END SCREEN CONTENT -->
+      </div> <!-- END SMARTPHONE MOCKUP -->
+    </div> <!-- END SIMULATOR PANEL -->
+
+  </div> <!-- END LANDING CONTAINER -->
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <!-- Custom JS -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
