@@ -394,6 +394,30 @@ export const FlowHandlers = {
 
     // Play toilet flush sound effect
     AudioSystem.play('flush');
+
+    // 🎉 Show victory animation
+    this.showToiletSuccessAnimation();
+  },
+
+  showToiletSuccessAnimation() {
+    const overlay = document.getElementById('toilet-success-overlay');
+    if (!overlay) return;
+
+    // Reset state before re-triggering
+    overlay.classList.remove('active', 'hiding');
+    // Force reflow so animations restart cleanly
+    void overlay.offsetWidth;
+
+    // Show overlay
+    overlay.classList.add('active');
+
+    // Auto-dismiss after 2.2s
+    setTimeout(() => {
+      overlay.classList.add('hiding');
+      overlay.addEventListener('animationend', () => {
+        overlay.classList.remove('active', 'hiding');
+      }, { once: true });
+    }, 2200);
   },
 
   submitReview() {

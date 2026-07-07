@@ -2233,3 +2233,114 @@ body {
   background-color: var(--primary-dark);
 }
 
+
+/* ============================================================
+   SUCCESS ANIMATION OVERLAY -- Toilet Added Celebration
+   ============================================================ */
+
+.toilet-success-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30, 30, 40, 0.82);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.toilet-success-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.success-anim-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.success-brush-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.success-brush-emoji {
+  font-size: 5rem;
+  display: block;
+  transform: translateY(-120px) rotate(-30deg);
+  opacity: 0;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.4));
+}
+
+.toilet-success-overlay.active .success-brush-emoji {
+  animation: brushDrop 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.05s forwards,
+             brushVictory 0.7s ease-in-out 0.65s forwards;
+}
+
+@keyframes brushDrop {
+  0%   { transform: translateY(-120px) rotate(-30deg); opacity: 0; }
+  60%  { transform: translateY(10px) rotate(8deg);     opacity: 1; }
+  80%  { transform: translateY(-8px) rotate(-4deg);    opacity: 1; }
+  100% { transform: translateY(0px) rotate(0deg);      opacity: 1; }
+}
+
+@keyframes brushVictory {
+  0%   { transform: translateY(0)     rotate(0deg)   scale(1);    }
+  25%  { transform: translateY(-12px) rotate(-20deg) scale(1.15); }
+  50%  { transform: translateY(-18px) rotate(15deg)  scale(1.2);  }
+  75%  { transform: translateY(-10px) rotate(-10deg) scale(1.1);  }
+  100% { transform: translateY(0)     rotate(0deg)   scale(1);    }
+}
+
+.success-checkmark-svg {
+  width: 110px;
+  height: 82px;
+  overflow: visible;
+}
+
+.success-checkmark-path {
+  stroke-dasharray: 180;
+  stroke-dashoffset: 180;
+}
+
+.toilet-success-overlay.active .success-checkmark-path {
+  animation: drawCheck 0.55s cubic-bezier(0.65, 0, 0.35, 1) 0.9s forwards;
+}
+
+@keyframes drawCheck {
+  0%   { stroke-dashoffset: 180; }
+  100% { stroke-dashoffset: 0;   }
+}
+
+.success-label {
+  color: white;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.01em;
+  opacity: 0;
+  transform: translateY(10px);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.toilet-success-overlay.active .success-label {
+  animation: labelFadeIn 0.4s ease 1.35s forwards;
+}
+
+@keyframes labelFadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.toilet-success-overlay.hiding {
+  animation: overlayFadeOut 0.4s ease forwards;
+}
+
+@keyframes overlayFadeOut {
+  to { opacity: 0; }
+}
