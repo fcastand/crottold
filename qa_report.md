@@ -32,7 +32,10 @@ J'ai effectué une passe complète sur l'application (en tant que sous-agent nav
 ### 2. Bouton "Paramètres" (Roue crantée Profil)
 - L'icône de paramètres dans la vue Profil n'a pas encore été codée dans le HTML. On ne peut donc rien configurer.
 
-### 2. Partage de Toilette (Share)
+### 3. Encart "Classement Hebdo" (Profil)
+- Dans la vue Profil, la section "Classement Hebdo" affiche des données statiques codées en dur dans le HTML (ex: "Top 5% de votre ville"). Cet encart n'est lié à aucune logique JavaScript et ne sert à rien à date.
+
+### 4. Partage de Toilette (Share)
 - Si tu avais prévu un bouton pour "Partager cette toilette à un ami" dans la fiche détails, il n'existe pas encore.
 
 ---
