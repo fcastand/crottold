@@ -1,5 +1,7 @@
 # 🧻 CROTTOQ — L'explorateur mondial des toilettes
 
+[![Live Demo](https://img.shields.io/badge/🚽%20Live%20Demo-GitHub%20Pages-0DCDC0?style=for-the-badge)](https://fcastand.github.io/crottoq/)
+
 > La première application communautaire qui cartographie les toilettes publiques et privées accessibles. Trouvez, notez et ajoutez des WC rapidement dans une ambiance cartoon et ludique !
 
 ![CROTTOQ App](mascot_bobby.png)
