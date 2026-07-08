@@ -18,7 +18,18 @@ export const RouteSystem = {
       AppState.activeView = viewId;
     }
 
-    // Update bottom nav state
+    // Show/hide bottom nav — only visible when logged in
+    const bottomNav = document.getElementById('bottom-nav-bar');
+    const loggedInViews = ['view-map', 'view-profile', 'view-moderation'];
+    if (bottomNav) {
+      if (loggedInViews.includes(viewId)) {
+        bottomNav.classList.remove('hidden');
+      } else {
+        bottomNav.classList.add('hidden');
+      }
+    }
+
+    // Update bottom nav active state
     document.querySelectorAll('.bottom-nav-bar .nav-item').forEach(btn => {
       btn.classList.remove('active');
     });

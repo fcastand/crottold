@@ -2529,3 +2529,35 @@ body {
   100% { transform: scale(1.8); opacity: 0;   }
 }
 
+
+/* ============================================================
+   TOAST CLOSE BUTTON + NAV HIDDEN STATE
+   ============================================================ */
+
+.hidden {
+  display: none !important;
+}
+
+.toast-close-btn {
+  position: absolute;
+  top: 6px;
+  left: 10px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.75;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: opacity 0.15s ease;
+}
+
+.toast-close-btn:hover {
+  opacity: 1;
+}
+
+.app-toast-message {
+  padding-left: 2rem;
+}

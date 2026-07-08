@@ -186,10 +186,13 @@ export const AppState = {
     toast.querySelector('.toast-icon').textContent = icon;
     toast.querySelector('.toast-text').textContent = text;
     toast.classList.add('active');
-    
-    setTimeout(() => {
+
+    // Clear any existing timer
+    if (this._toastTimer) clearTimeout(this._toastTimer);
+
+    this._toastTimer = setTimeout(() => {
       toast.classList.remove('active');
-    }, 4000);
+    }, 5000);
   },
 
   updateProfileUI() {

@@ -573,12 +573,13 @@
 
           <!-- TOAST CONTAINER FOR NOTIFICATIONS / CONFETTI EFFECT -->
           <div id="app-toast" class="app-toast-message">
+            <button id="btn-close-toast" class="toast-close-btn" aria-label="Fermer">&times;</button>
             <span class="toast-icon">🏆</span>
             <span class="toast-text">Badge Débloqué !</span>
           </div>
 
           <!-- BOTTOM TAB NAVIGATION BAR -->
-          <div class="bottom-nav-bar">
+          <div class="bottom-nav-bar hidden" id="bottom-nav-bar">
             <button id="nav-btn-map" class="nav-item active" data-target="view-map">
               <i class="fa-solid fa-map-marked-alt"></i>
               <span>Carte</span>
