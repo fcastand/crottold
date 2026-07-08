@@ -24,6 +24,12 @@ Ce document trace la vision technique et les prochaines étapes de développemen
 - **Auth** : Pour la création de compte et la connexion.
 - **Base de données** : Pour centraliser les toilettes, les avis et les utilisateurs.
 
+**⚠️ Règle d'Environnement :**
+Quel que soit le BaaS choisi (Firebase ou Supabase), nous mettrons en place **deux projets/bases de données strictement séparés** :
+1. **Environnement DEV** : Utilisé sur la branche `develop` et en local pour nos tests.
+2. **Environnement PROD** : Utilisé sur la branche `master` et le site live (GitHub Pages), avec les vraies données des utilisateurs.
+Le basculement se fera automatiquement dans le code selon l'URL (localhost vs github.io).
+
 ### 3. Stratégie Mobile (Déploiement)
 - **Phase 1 : PWA (Progressive Web App)** : Le site sera rendu totalement responsif. Sur un vrai smartphone, la coque du simulateur disparaîtra pour laisser place à l'application en plein écran. L'utilisateur pourra "Ajouter à l'écran d'accueil".
 - **Phase 2 : App Stores (Optionnel)** : Utilisation de **Capacitor** pour wrapper notre code HTML/CSS/JS dans une application native (iOS & Android) sans avoir à réécrire l'application.
