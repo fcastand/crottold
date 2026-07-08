@@ -19,6 +19,9 @@ J'ai effectué une passe complète sur l'application (en tant que sous-agent nav
 ### 4. Ajout de Toilette sans Nom
 - **Problème** : Lors d'un clic sur la carte, on peut ouvrir le tiroir d'ajout et cliquer sur "Enregistrer le trône" sans même remplir le nom. Le formulaire l'accepte et crée un marqueur vide sur la carte. (Il manque un attribut `required` sur l'input).
 
+### 5. Badges du Profil non liés
+- **Problème** : Dans la vue Profil, quatre badges sont affichés. Les deux premiers ("Premier Explorateur" et "Aventurier Sanitaire") se basent sur des compteurs locaux, mais le badge "Chasseur de Trésors" cherche une variable `toilets` dans l'utilisateur qui n'existe pas dans le code, et le badge "Globe-Trotteur" n'a aucune logique qui lui est rattachée. Ils sont donc soit inatteignables, soit ignorés, et cliquer dessus ne fait rien.
+
 ---
 
 ## 🚫 Boutons "Morts" ou Inactifs
