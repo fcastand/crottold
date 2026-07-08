@@ -10,12 +10,19 @@ Ce document trace la vision technique et les prochaines étapes de développemen
 - **Design** : Approche "Mobile First" encapsulée dans un simulateur web pour le développement.
 
 ### 2. Stratégie Backend (À venir)
-Nous utiliserons **Firebase** en tant que BaaS (Backend as a Service).
-- **Pourquoi ?** Évite de coder un serveur Node.js de zéro. Parfait pour une PWA.
-- **Coût** : Plan "Spark" (100% gratuit).
-- **Fonctionnalités ciblées** :
-  - **Firebase Auth** : Pour la création de compte et la connexion.
-  - **Firestore (NoSQL)** : Pour centraliser la base de données des toilettes, des avis et des utilisateurs.
+*Décision en attente : Choix entre deux solutions BaaS (Backend as a Service).*
+
+| Critère | 🔥 Firebase (Google) | ⚡ Supabase (Open Source) |
+|---------|---------------------|--------------------------|
+| **Base de données** | Firestore (**NoSQL**) | PostgreSQL (**SQL**) |
+| **Statistiques / Analytics** | 🔴 Difficile. Les agrégations (COUNT, SUM, GROUP BY, JOIN) nécessitent des compteurs manuels ou des Cloud Functions. | 🟢 Excellent. SQL natif permettant des requêtes analytiques complexes et des vues directes. |
+| **Facilité d'intégration** | 🟢 Très simple, écosystème mature. | 🟢 Très simple, SDK similaire à Firebase. |
+| **Modèle de données** | Souple (documents sans schéma strict). | Structuré (tables relationnelles). |
+| **Tarification** | Plan Spark gratuit (très généreux pour les petits projets). | Plan gratuit généreux (Auth + DB incluses). |
+
+**Fonctionnalités ciblées quel que soit le choix :**
+- **Auth** : Pour la création de compte et la connexion.
+- **Base de données** : Pour centraliser les toilettes, les avis et les utilisateurs.
 
 ### 3. Stratégie Mobile (Déploiement)
 - **Phase 1 : PWA (Progressive Web App)** : Le site sera rendu totalement responsif. Sur un vrai smartphone, la coque du simulateur disparaîtra pour laisser place à l'application en plein écran. L'utilisateur pourra "Ajouter à l'écran d'accueil".
@@ -28,11 +35,11 @@ Nous utiliserons **Firebase** en tant que BaaS (Backend as a Service).
 - [ ] **Rendre l'application responsive (PWA)**
   - Cacher la coque iPhone sur les petits écrans (CSS Media Queries).
   - Ajouter un `manifest.json` pour permettre l'installation PWA.
-- [ ] **Intégration Firebase : Base de données**
-  - Remplacer le `localStorage` actuel par des appels à Firestore.
+- [ ] **Intégration BaaS : Base de données (Firebase ou Supabase)**
+  - Remplacer le `localStorage` actuel par des appels à la BDD.
   - Migrer les "Toilettes par défaut" vers la base de données distante.
-- [ ] **Intégration Firebase : Authentification**
-  - Connecter le formulaire de Login / Création de compte à Firebase Auth.
+- [ ] **Intégration BaaS : Authentification**
+  - Connecter le formulaire de Login / Création de compte à l'Auth du BaaS.
   - Gérer l'état de session global de l'utilisateur (AppState).
 - [ ] **Profil Utilisateur Avancé**
   - Sauvegarder l'XP et les badges dans Firestore.
