@@ -2042,6 +2042,7 @@ body {
 
 .app-toast-message.active {
   transform: translate(-50%, 0);
+  pointer-events: auto;
 }
 
 .toast-icon {
@@ -2561,3 +2562,4 @@ body {
 .app-toast-message {
   padding-left: 2rem;
 }
+

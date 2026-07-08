@@ -26,13 +26,6 @@ export const FlowHandlers = {
       this.openAddToiletFlow(lat, lng);
     });
 
-    // Close toast on × button click
-    document.getElementById('btn-close-toast').addEventListener('click', () => {
-      const toast = document.getElementById('app-toast');
-      toast.classList.remove('active');
-      if (AppState._toastTimer) clearTimeout(AppState._toastTimer);
-    });
-
     // A0. LOGIN & LOGOUT HANDLERS
     document.getElementById('form-login').addEventListener('submit', (e) => {
       e.preventDefault();

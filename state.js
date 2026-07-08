@@ -1,5 +1,8 @@
 import { AudioSystem } from './audio.js';
 
+// Module-level timer so it's never lost regardless of `this` context
+let _toastTimer = null;
+
 export const DEFAULT_TOILETS = [
   {
     id: "toilet_1",
@@ -183,16 +186,32 @@ export const AppState = {
 
   showToast(icon, text) {
     const toast = document.getElementById('app-toast');
+    if (!toast) return;
+
     toast.querySelector('.toast-icon').textContent = icon;
     toast.querySelector('.toast-text').textContent = text;
     toast.classList.add('active');
 
-    // Clear any existing timer
-    if (this._toastTimer) clearTimeout(this._toastTimer);
+    // Cancel any previous auto-dismiss
+    if (_toastTimer) clearTimeout(_toastTimer);
 
-    this._toastTimer = setTimeout(() => {
+    // Auto-dismiss after 5s
+    _toastTimer = setTimeout(() => {
       toast.classList.remove('active');
+      _toastTimer = null;
     }, 5000);
+
+    // Wire the close button (× ) every time the toast shows
+    const closeBtn = document.getElementById('btn-close-toast');
+    if (closeBtn) {
+      // Replace to avoid stacking duplicate listeners
+      const newCloseBtn = closeBtn.cloneNode(true);
+      closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
+      newCloseBtn.addEventListener('click', () => {
+        toast.classList.remove('active');
+        if (_toastTimer) { clearTimeout(_toastTimer); _toastTimer = null; }
+      });
+    }
   },
 
   updateProfileUI() {
