@@ -21,9 +21,12 @@ J'ai effectué une passe complète sur l'application (en tant que sous-agent nav
 
 ---
 
-## 🚫 Boutons "Morts" ou Inexistants
+## 🚫 Boutons "Morts" ou Inactifs
 
-### 1. Bouton "Paramètres" (Roue crantée Profil)
+### 1. Bouton "S'inscrire" (Création de compte)
+- **Oubli de ma part !** Sur la page de connexion, le lien "Pas encore de compte ? S'inscrire" affiche simplement une alerte navigateur `Inscription bientôt disponible !`. Il n'y a pas encore de vue ou de formulaire dédié pour créer un compte.
+
+### 2. Bouton "Paramètres" (Roue crantée Profil)
 - L'icône de paramètres dans la vue Profil n'a pas encore été codée dans le HTML. On ne peut donc rien configurer.
 
 ### 2. Partage de Toilette (Share)
