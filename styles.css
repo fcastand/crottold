@@ -1,5 +1,5 @@
-/* ==========================================================================
-   CROTTOQ Stylesheet — Modern Cartoon Premium Design System
+﻿/* ==========================================================================
+   CROTTOQ Stylesheet â€” Modern Cartoon Premium Design System
    ========================================================================== */
 
 :root {
@@ -831,7 +831,7 @@ body {
 }
 
 .select-arrow-wrapper::after {
-  content: '▼';
+  content: 'â–¼';
   font-size: 0.7rem;
   color: var(--grey-text);
   right: 14px;
@@ -2021,7 +2021,7 @@ body {
    ========================================================================== */
 .app-toast-message {
   position: absolute;
-  top: 70px;
+  top: 130px;
   left: 50%;
   transform: translate(-50%, -150%);
   background-color: var(--dark-charcoal);
@@ -2347,7 +2347,7 @@ body {
 }
 
 /* ============================================================
-   TOILET BOWL MAP MARKER � Custom SVG with animated lid
+   TOILET BOWL MAP MARKER — Custom SVG with animated lid
    ============================================================ */
 
 .toilet-bowl-marker {
@@ -2360,7 +2360,7 @@ body {
   filter: drop-shadow(0 6px 10px rgba(13, 205, 192, 0.4));
 }
 
-/* Lid animation � rotates open around the top hinge on hover */
+/* Lid animation — rotates open around the top hinge on hover */
 .toilet-lid-group {
   transform-box: fill-box;
   transform-origin: center top;
@@ -2528,3 +2528,4 @@ body {
   0%   { transform: scale(0.8); opacity: 0.8; }
   100% { transform: scale(1.8); opacity: 0;   }
 }
+
