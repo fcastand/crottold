@@ -1145,9 +1145,16 @@ body {
   height: 100%;
   overflow-y: auto;
   padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
+  display: block;
+  box-sizing: border-box;
+}
+
+.profile-scroll-content > * {
+  margin-bottom: 1.25rem;
+}
+
+.profile-scroll-content > *:last-child {
+  margin-bottom: 0;
 }
 
 .profile-header-card {
