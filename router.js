@@ -51,5 +51,13 @@ export const RouteSystem = {
         AppState.map.invalidateSize();
       }, 200);
     }
+
+    // Reset scroll position for scrollable views
+    if (target) {
+      const scrollContainer = target.querySelector('.profile-scroll-content, .moderation-scroll-content, [data-scroll]');
+      if (scrollContainer) {
+        scrollContainer.scrollTop = 0;
+      }
+    }
   }
 };
