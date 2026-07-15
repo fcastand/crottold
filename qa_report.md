@@ -7,19 +7,17 @@ J'ai effectué une passe complète sur l'application (en tant que sous-agent nav
 
 ## 🐛 Bugs et Comportements Étranges
 
-### 1. Bouton "Réinitialiser les données" (Profil)
-- **Problème** : Quand on clique dessus, le code supprime bien le cache (`localStorage.clear()`) et recharge la page. Sauf que le rechargement de la page *recrée immédiatement* les toilettes par défaut (le Louvre, etc.). L'utilisateur a donc l'impression que le bouton "ne marche pas" car les points restent sur la carte. Par contre, son niveau et son XP retombent bien à zéro.
 
-### 2. Formulaire de Login (Fausse sécurité)
+### 1. Formulaire de Login (Fausse sécurité)
 - **Problème** : Le formulaire ne vérifie aucun mot de passe. Taper "test" en identifiant et n'importe quel mot de passe permet de se connecter. *(Normal pour l'instant vu qu'on n'a pas Firebase).*
 
-### 3. Bouton "Signaler un Problème" (Modération)
+### 2. Bouton "Signaler un Problème" (Modération)
 - **Problème partiel** : Quand on signale une toilette 3 fois, un message indique qu'elle est "masquée". Cependant, elle n'est masquée que *visuellement* dans l'instant T. Au prochain rafraîchissement, elle réapparaît.
 
-### 4. Ajout de Toilette sans Nom
+### 3. Ajout de Toilette sans Nom
 - **Problème** : Lors d'un clic sur la carte, on peut ouvrir le tiroir d'ajout et cliquer sur "Enregistrer le trône" sans même remplir le nom. Le formulaire l'accepte et crée un marqueur vide sur la carte. (Il manque un attribut `required` sur l'input).
 
-### 5. Badges du Profil non liés
+### 4. Badges du Profil non liés
 - **Problème** : Dans la vue Profil, quatre badges sont affichés. Les deux premiers ("Premier Explorateur" et "Aventurier Sanitaire") se basent sur des compteurs locaux, mais le badge "Chasseur de Trésors" cherche une variable `toilets` dans l'utilisateur qui n'existe pas dans le code, et le badge "Globe-Trotteur" n'a aucune logique qui lui est rattachée. Ils sont donc soit inatteignables, soit ignorés, et cliquer dessus ne fait rien.
 
 ---
