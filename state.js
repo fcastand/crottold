@@ -225,6 +225,10 @@ export const AppState = {
   },
 
   updateProfileUI() {
+    // Always scroll profile to top when UI is refreshed
+    const scrollEl = document.querySelector('.profile-scroll-content');
+    if (scrollEl) scrollEl.scrollTop = 0;
+
     const username = this.user.username || 'Explorateur Anonyme';
     const usernameEl = document.getElementById('profile-username');
     if (usernameEl) usernameEl.textContent = username;
