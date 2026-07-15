@@ -57,12 +57,6 @@ export const FlowHandlers = {
       AppState.showToast("🔒", "Vous vous êtes déconnecté.");
     });
 
-    document.getElementById('btn-reset-data').addEventListener('click', () => {
-      if (confirm("Voulez-vous vraiment réinitialiser toutes les toilettes et les données de l'application ?")) {
-        localStorage.clear();
-        location.reload();
-      }
-    });
 
     // A1. MODERATOR DIRECT DELETE HANDLER
     const deleteDirectBtn = document.getElementById('btn-delete-toilet-direct');

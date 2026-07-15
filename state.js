@@ -214,7 +214,24 @@ export const AppState = {
     }
   },
 
+  getGradeLabel(level) {
+    if (level >= 20) return 'Légende des Trônes';
+    if (level >= 15) return 'Maître des W.C.';
+    if (level >= 10) return 'Grand Explorateur';
+    if (level >= 7)  return 'Aventurier Sanitaire';
+    if (level >= 5)  return 'Chasseur de Trônes';
+    if (level >= 3)  return 'Apprenti Explorateur';
+    return 'Novice';
+  },
+
   updateProfileUI() {
+    const username = this.user.username || 'Explorateur Anonyme';
+    const usernameEl = document.getElementById('profile-username');
+    if (usernameEl) usernameEl.textContent = username;
+
+    const gradeEl = document.getElementById('profile-grade');
+    if (gradeEl) gradeEl.textContent = this.getGradeLabel(this.user.level);
+
     document.getElementById('profile-level').textContent = this.user.level;
     document.getElementById('profile-xp-current').textContent = this.user.xp;
     

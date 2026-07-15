@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    CROTTOQ Stylesheet â€” Modern Cartoon Premium Design System
    ========================================================================== */
 
@@ -1151,83 +1151,103 @@ body {
 }
 
 .profile-header-card {
-  background-color: var(--white);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
   border-radius: var(--radius-md);
-  padding: 1.25rem;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--light-border);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  border: none;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  align-items: stretch;
+  text-align: left;
   position: relative;
   overflow: hidden;
+  color: #fff;
+}
+
+.profile-welcome-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .profile-avatar-wrapper {
-  width: 80px;
-  height: 80px;
-  background-color: var(--primary-light);
+  width: 72px;
+  height: 72px;
+  min-width: 72px;
+  background-color: rgba(255,255,255,0.2);
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 0.75rem;
-  border: 3px solid var(--primary-color);
+  border: 3px solid rgba(255,255,255,0.5);
+  overflow: visible;
 }
 
 .profile-avatar {
-  width: 70px;
-  height: 70px;
+  width: 68px;
+  height: 68px;
   object-fit: contain;
-  margin-top: -8px;
+  margin-top: -6px;
+}
+
+.profile-welcome-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 0.1rem;
 }
 
 .profile-user-info h3 {
   font-size: 1.15rem;
   font-weight: 800;
-  color: var(--dark-charcoal);
+  color: #fff;
+  margin: 0;
 }
 
 .user-level-badge {
   display: inline-block;
-  background-color: var(--accent-light);
-  color: var(--accent-color);
-  font-size: 0.75rem;
-  font-weight: 800;
-  padding: 0.15rem 0.5rem;
+  background-color: rgba(255,255,255,0.2);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15rem 0.55rem;
   border-radius: 10px;
-  margin-top: 0.25rem;
+  margin-top: 0.3rem;
+  border: 1px solid rgba(255,255,255,0.35);
 }
 
 .xp-progress-section {
   width: 100%;
-  margin-top: 1rem;
+  margin-top: 0;
 }
 
 .xp-values {
   display: flex;
   justify-content: space-between;
   font-size: 0.75rem;
-  color: var(--grey-text);
+  color: rgba(255,255,255,0.8);
   margin-bottom: 0.25rem;
 }
 
 .xp-values strong {
-  color: var(--primary-dark);
+  color: #fff;
 }
 
 .xp-bar-container {
   width: 100%;
   height: 8px;
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 4px;
   overflow: hidden;
 }
 
 .xp-bar-fill {
   height: 100%;
-  background-color: var(--primary-color);
+  background-color: #fff;
   border-radius: 4px;
   transition: width 0.5s ease-out;
 }
