@@ -7,95 +7,85 @@ import { RouteSystem } from './router.js';
 // 7. IN-APP INTERACTIONS & FLOW HANDLERS
 export const FlowHandlers = {
   init() {
-    // A. SPLASH SCREEN AUTO LOADING SIMULATION
+    this._initSplash();
+    this._initAuthHandlers();
+    this._initNavHandlers();
+    this._initTopBarHandlers();
+    this._initDrawerHandlers();
+    this._initFormHandlers();
+    this._initRangeHandlers();
+  },
+
+  // -----------------------------------------------------------------------
+  // INIT — Sous-méthodes privées
+  // -----------------------------------------------------------------------
+  _initSplash() {
     setTimeout(() => {
-      // Auto trigger skip after 2.8s if user hasn't clicked
       const splash = document.getElementById('view-splash');
-      if (splash.classList.contains('active')) {
-        this.startExploring();
-      }
+      if (splash.classList.contains('active')) this.startExploring();
     }, 2800);
-
-    document.getElementById('btn-splash-skip').addEventListener('click', () => {
-      this.startExploring();
-    });
-
-    // Listen for map click → add toilet at clicked position
+    document.getElementById('btn-splash-skip').addEventListener('click', () => this.startExploring());
     document.addEventListener('map:addToilet', (e) => {
       const { lat, lng } = e.detail;
       this.openAddToiletFlow(lat, lng);
     });
+  },
 
-    // A0. LOGIN & LOGOUT HANDLERS
+  _initAuthHandlers() {
+    // Login hybride
     document.getElementById('form-login').addEventListener('submit', (e) => {
       e.preventDefault();
       const usernameInput = document.getElementById('login-username').value.trim();
       const passwordInput = document.getElementById('login-password').value;
-      const roleInput = document.getElementById('login-role').value;
-
+      const roleInput     = document.getElementById('login-role').value;
       if (!usernameInput) return;
-
-      // Login hybride : compte connu → vérifie MDP ; inconnu → mode démo libre
       const account = AppState.findAccount(usernameInput);
       if (account) {
-        // Vérification du mot de passe (btoa)
         if (btoa(passwordInput) !== account.password) {
-          const errEl = document.getElementById('login-password');
-          errEl.parentElement.parentElement.classList.add('input-error');
+          document.getElementById('login-password').parentElement.parentElement.classList.add('input-error');
           AppState.showToast('🔒', 'Mot de passe incorrect.');
           return;
         }
-        // Connexion avec le rôle du compte
         this.performLoadingSequence(account.username, false, account.role);
       } else {
-        // Mode démo libre — comportement actuel
         this.performLoadingSequence(usernameInput, false, roleInput);
       }
     });
-
-    // A0b. NAVIGATION REGISTER / LOGIN
-    document.getElementById('btn-go-register').addEventListener('click', () => {
-      RouteSystem.switchView('view-register');
-    });
-
-    document.getElementById('btn-go-login').addEventListener('click', () => {
-      RouteSystem.switchView('view-login');
-    });
-
-    // A0c. BARRE DE ROBUSTESSE MDP (temps réel)
-    document.getElementById('input-reg-password').addEventListener('input', () => {
-      this.updatePasswordStrength();
-    });
-
-    // A0d. SUBMIT REGISTER FORM
-    document.getElementById('form-register').addEventListener('submit', (e) => {
-      e.preventDefault();
-      this.submitRegister();
-    });
-
+    // Navigation register ↔ login
+    document.getElementById('btn-go-register').addEventListener('click', () => RouteSystem.switchView('view-register'));
+    document.getElementById('btn-go-login').addEventListener('click', () => RouteSystem.switchView('view-login'));
+    // Inscription
+    document.getElementById('input-reg-password').addEventListener('input', () => this.updatePasswordStrength());
+    document.getElementById('form-register').addEventListener('submit', (e) => { e.preventDefault(); this.submitRegister(); });
+    // Déconnexion
     document.getElementById('btn-logout').addEventListener('click', () => {
-      // Reset username, role and show login screen
-      AppState.user.username = "Explorateur Anonyme";
-      AppState.user.role = "user";
+      AppState.user.username = 'Explorateur Anonyme';
+      AppState.user.role = 'user';
       AppState.saveUser();
       AppState.updateProfileUI();
-      
-      // Apply default role state to hide mod panels
-      this.applyUserRole("user");
-      
-      // Reset inputs
+      this.applyUserRole('user');
       const usernameEl = document.getElementById('login-username');
-      if (usernameEl) usernameEl.value = "";
+      if (usernameEl) usernameEl.value = '';
       const roleEl = document.getElementById('login-role');
-      if (roleEl) roleEl.value = "user";
-      
+      if (roleEl) roleEl.value = 'user';
       AudioSystem.play('warning');
       RouteSystem.switchView('view-login');
-      AppState.showToast("🔒", "Vous vous êtes déconnecté.");
+      AppState.showToast('🔒', 'Vous vous êtes déconnecté.');
     });
+  },
 
-
-    // A1. MODERATOR DIRECT DELETE HANDLER
+  _initNavHandlers() {
+    document.getElementById('nav-btn-map').addEventListener('click', (e) => {
+      RouteSystem.switchView('view-map', e.currentTarget); DrawerSystem.closeAll();
+    });
+    document.getElementById('nav-btn-profile').addEventListener('click', (e) => {
+      RouteSystem.switchView('view-profile', e.currentTarget); DrawerSystem.closeAll();
+    });
+    document.getElementById('nav-btn-moderation').addEventListener('click', (e) => {
+      RouteSystem.switchView('view-moderation', e.currentTarget);
+      DrawerSystem.closeAll();
+      this.renderModerationPanel();
+    });
     const deleteDirectBtn = document.getElementById('btn-delete-toilet-direct');
     if (deleteDirectBtn) {
       deleteDirectBtn.addEventListener('click', () => {
@@ -107,107 +97,44 @@ export const FlowHandlers = {
         }
       });
     }
+  },
 
-    // B. NAVIGATION EVENTS
-    document.getElementById('nav-btn-map').addEventListener('click', (e) => {
-      RouteSystem.switchView('view-map', e.currentTarget);
-      DrawerSystem.closeAll();
-    });
+  _initTopBarHandlers() {
+    document.getElementById('sound-toggle-btn').addEventListener('click', (e) => AudioSystem.toggle(e.currentTarget));
+    document.getElementById('moderator-toggle-btn').addEventListener('click', () => this.toggleModeratorMode());
+  },
 
-    document.getElementById('nav-btn-profile').addEventListener('click', (e) => {
-      RouteSystem.switchView('view-profile', e.currentTarget);
-      DrawerSystem.closeAll();
-    });
+  _initDrawerHandlers() {
+    document.getElementById('btn-close-details').addEventListener('click', () => { AudioSystem.play('click'); DrawerSystem.close('drawer-toilet-details'); });
+    document.getElementById('btn-close-add-drawer').addEventListener('click', () => { AudioSystem.play('click'); DrawerSystem.close('drawer-add-toilet'); MapSystem.removeTempMarker(); });
+    document.getElementById('btn-cancel-add').addEventListener('click', () => { AudioSystem.play('click'); DrawerSystem.close('drawer-add-toilet'); MapSystem.removeTempMarker(); });
+    document.getElementById('btn-close-review-drawer').addEventListener('click', () => { AudioSystem.play('click'); DrawerSystem.close('drawer-add-review'); });
+    document.getElementById('btn-cancel-review').addEventListener('click', () => { AudioSystem.play('click'); DrawerSystem.close('drawer-add-review'); });
+    document.getElementById('btn-add-review-trigger').addEventListener('click', () => { AudioSystem.play('click'); DrawerSystem.open('drawer-add-review'); });
+  },
 
-    document.getElementById('nav-btn-moderation').addEventListener('click', (e) => {
-      RouteSystem.switchView('view-moderation', e.currentTarget);
-      DrawerSystem.closeAll();
-      this.renderModerationPanel();
-    });
+  _initFormHandlers() {
+    document.getElementById('form-add-review').addEventListener('submit', (e) => { e.preventDefault(); this.submitReview(); });
+    document.getElementById('form-add-toilet').addEventListener('submit', (e) => { e.preventDefault(); this.submitNewToilet(); });
+    document.getElementById('btn-report-toilet').addEventListener('click', () => this.reportSelectedToilet());
+    document.getElementById('btn-sos-emergency').addEventListener('click', () => this.triggerEmergencySOS());
+  },
 
-    // C. TOP BAR BUTTONS
-    document.getElementById('sound-toggle-btn').addEventListener('click', (e) => {
-      AudioSystem.toggle(e.currentTarget);
-    });
-
-    document.getElementById('moderator-toggle-btn').addEventListener('click', (e) => {
-      this.toggleModeratorMode(e.currentTarget);
-    });
-
-    // D. DRAWER ACTIONS
-    document.getElementById('btn-close-details').addEventListener('click', () => {
-      AudioSystem.play('click');
-      DrawerSystem.close('drawer-toilet-details');
-    });
-
-    document.getElementById('btn-close-add-drawer').addEventListener('click', () => {
-      AudioSystem.play('click');
-      DrawerSystem.close('drawer-add-toilet');
-      MapSystem.removeTempMarker();
-    });
-
-    document.getElementById('btn-cancel-add').addEventListener('click', () => {
-      AudioSystem.play('click');
-      DrawerSystem.close('drawer-add-toilet');
-      MapSystem.removeTempMarker();
-    });
-
-    document.getElementById('btn-close-review-drawer').addEventListener('click', () => {
-      AudioSystem.play('click');
-      DrawerSystem.close('drawer-add-review');
-    });
-
-    document.getElementById('btn-cancel-review').addEventListener('click', () => {
-      AudioSystem.play('click');
-      DrawerSystem.close('drawer-add-review');
-    });
-
-    // E. TRIGGER FORMS — btn-add-toilet-trigger removed (map click replaces it)
-
-    document.getElementById('btn-add-review-trigger').addEventListener('click', () => {
-      AudioSystem.play('click');
-      DrawerSystem.open('drawer-add-review');
-    });
-
-    // F. SUBMIT REVIEW FORM
-    document.getElementById('form-add-review').addEventListener('submit', (e) => {
-      e.preventDefault();
-      this.submitReview();
-    });
-
-    // G. SUBMIT ADD TOILET FORM
-    document.getElementById('form-add-toilet').addEventListener('submit', (e) => {
-      e.preventDefault();
-      this.submitNewToilet();
-    });
-
-    // H. REPORT ACTION
-    document.getElementById('btn-report-toilet').addEventListener('click', () => {
-      this.reportSelectedToilet();
-    });
-
-    // I. SOS EMERGENCY BUTTON
-    document.getElementById('btn-sos-emergency').addEventListener('click', () => {
-      this.triggerEmergencySOS();
-    });
-
-    // J. RANGE SLIDERS REAL-TIME UPDATES
-    const bindRangeValue = (sliderId, badgeId) => {
+  _initRangeHandlers() {
+    const bind = (sliderId, badgeId) => {
       const slider = document.getElementById(sliderId);
-      const badge = document.getElementById(badgeId);
+      const badge  = document.getElementById(badgeId);
       if (slider && badge) {
         badge.textContent = `${slider.value}%`;
-        slider.addEventListener('input', (e) => {
-          badge.textContent = `${e.target.value}%`;
-        });
+        slider.addEventListener('input', (e) => { badge.textContent = `${e.target.value}%`; });
       }
     };
-    bindRangeValue('range-add-cleanliness', 'val-add-cleanliness');
-    bindRangeValue('range-add-comfort', 'val-add-comfort');
-    bindRangeValue('range-add-access', 'val-add-access');
-    bindRangeValue('range-rev-cleanliness', 'val-rev-cleanliness');
-    bindRangeValue('range-rev-comfort', 'val-rev-comfort');
-    bindRangeValue('range-rev-access', 'val-rev-access');
+    bind('range-add-cleanliness', 'val-add-cleanliness');
+    bind('range-add-comfort',     'val-add-comfort');
+    bind('range-add-access',      'val-add-access');
+    bind('range-rev-cleanliness', 'val-rev-cleanliness');
+    bind('range-rev-comfort',     'val-rev-comfort');
+    bind('range-rev-access',      'val-rev-access');
   },
 
   startExploring() {
@@ -393,71 +320,40 @@ export const FlowHandlers = {
     }, 96); // 25 steps * 96ms = 2400ms
   },
 
-  applyUserRole(role) {
-    const modBadgeBtn = document.getElementById('moderator-toggle-btn');
-    const modNavBtn = document.getElementById('nav-btn-moderation');
+  // Méthode partagée — applique l'UI modérateur sans duplication
+  _setModeratorUI(active) {
+    const modBadgeBtn  = document.getElementById('moderator-toggle-btn');
+    const modNavBtn    = document.getElementById('nav-btn-moderation');
     const modBadgeText = document.getElementById('mod-badge-text');
-
-    if (role === 'moderator') {
-      AppState.isModeratorMode = true;
-      if (modBadgeBtn) {
-        modBadgeBtn.style.display = 'flex';
-        modBadgeBtn.classList.add('active');
-      }
-      if (modBadgeText) modBadgeText.textContent = "Modérateur";
-      if (modNavBtn) {
-        modNavBtn.classList.add('show-moderator');
-      }
+    AppState.isModeratorMode = active;
+    if (active) {
+      if (modBadgeBtn)  { modBadgeBtn.style.display = 'flex'; modBadgeBtn.classList.add('active'); }
+      if (modBadgeText) modBadgeText.textContent = 'Modérateur';
+      if (modNavBtn)    modNavBtn.classList.add('show-moderator');
     } else {
-      AppState.isModeratorMode = false;
-      if (modBadgeBtn) {
-        modBadgeBtn.style.display = 'none';
-        modBadgeBtn.classList.remove('active');
-      }
-      if (modBadgeText) modBadgeText.textContent = "Visiteur";
-      if (modNavBtn) {
-        modNavBtn.classList.remove('show-moderator');
-      }
-      
-      // If we are currently on moderation view, route back to map
-      if (AppState.activeView === 'view-moderation') {
-        RouteSystem.switchView('view-map');
-      }
+      if (modBadgeBtn)  { modBadgeBtn.style.display = 'none'; modBadgeBtn.classList.remove('active'); }
+      if (modBadgeText) modBadgeText.textContent = 'Visiteur';
+      if (modNavBtn)    modNavBtn.classList.remove('show-moderator');
+      if (AppState.activeView === 'view-moderation') RouteSystem.switchView('view-map');
     }
-    
-    // Rerender markers to respect reported visibility filter
     MapSystem.renderMarkers();
   },
 
-  toggleModeratorMode(btnElement) {
-    AppState.isModeratorMode = !AppState.isModeratorMode;
-    const badgeText = document.getElementById('mod-badge-text');
-    const modNavBtn = document.getElementById('nav-btn-moderation');
+  applyUserRole(role) {
+    this._setModeratorUI(role === 'moderator');
+  },
 
-    if (AppState.isModeratorMode) {
+  toggleModeratorMode() {
+    const newActive = !AppState.isModeratorMode;
+    this._setModeratorUI(newActive);
+    if (newActive) {
       AudioSystem.play('chime');
-      btnElement.classList.add('active');
-      badgeText.textContent = "Modérateur";
-      modNavBtn.classList.add('show-moderator');
-      AppState.showToast("🛡️", "Console de modération activée ! Bienvenue au conseil des sages.");
-      
-      // Auto route to mod panel to show it off
+      AppState.showToast('🛡️', 'Console de modération activée ! Bienvenue au conseil des sages.');
       RouteSystem.switchView('view-moderation');
       this.renderModerationPanel();
     } else {
       AudioSystem.play('click');
-      btnElement.classList.remove('active');
-      badgeText.textContent = "Visiteur";
-      modNavBtn.classList.remove('show-moderator');
-      
-      // Route back to map if we were in mod view
-      if (AppState.activeView === 'view-moderation') {
-        RouteSystem.switchView('view-map');
-      }
     }
-    
-    // Re-render markers (to hide/show reported ones based on view permission)
-    MapSystem.renderMarkers();
   },
 
   openAddToiletFlow(lat, lng) {
@@ -565,10 +461,16 @@ export const FlowHandlers = {
   submitReview() {
     if (!AppState.selectedToilet) return;
 
-    const cleanliness = parseInt(document.getElementById('range-rev-cleanliness').value);
-    const comfort = parseInt(document.getElementById('range-rev-comfort').value);
+    const cleanliness   = parseInt(document.getElementById('range-rev-cleanliness').value);
+    const comfort       = parseInt(document.getElementById('range-rev-comfort').value);
     const accessibility = parseInt(document.getElementById('range-rev-access').value);
-    const comment = document.getElementById('input-review-comment').value;
+    const comment       = document.getElementById('input-review-comment').value.trim();
+
+    // Guard — commentaire vide refusé
+    if (!comment) {
+      AppState.showToast('\u26a0\ufe0f', 'Merci d\'ajouter un commentaire avant de publier.');
+      return;
+    }
 
     const avg = Math.round((cleanliness + comfort + accessibility) / 3);
     const grade = DrawerSystem.getHumorGrade(avg);
@@ -686,7 +588,7 @@ export const FlowHandlers = {
     document.getElementById('mod-reported-count').textContent = reportedToilets.length;
 
     if (reportedToilets.length === 0) {
-      list.innerHTML = '<div style="background:var(--white); border-radius:var(--radius-sm); border:1px solid var(--light-border); padding:2rem 1rem; text-align:center; color:var(--grey-text); font-size:0.8rem;"><i class="fa-regular fa-face-smile" style="font-size:2rem; display:block; margin-bottom:0.5rem; color:var(--primary-color);"></i>Tout est propre ! Aucun signalement actif.</div>';
+      list.innerHTML = '<div class="mod-empty-state"><i class="fa-regular fa-face-smile"></i>Tout est propre ! Aucun signalement actif.</div>';
       return;
     }
 

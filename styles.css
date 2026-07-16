@@ -2699,3 +2699,22 @@ body {
   opacity: 0;
 }
 
+/* ==========================================================================
+   MODERATION — État vide (aucun signalement)
+   ========================================================================== */
+.mod-empty-state {
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--light-border);
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--grey-text);
+  font-size: 0.8rem;
+}
+
+.mod-empty-state i {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+}

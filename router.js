@@ -37,10 +37,13 @@ export const RouteSystem = {
     if (triggerBtn) {
       triggerBtn.classList.add('active');
     } else {
-      // Find matching navigation button
-      let navBtnId = 'nav-btn-map';
-      if (viewId === 'view-profile') navBtnId = 'nav-btn-profile';
-      if (viewId === 'view-moderation') navBtnId = 'nav-btn-moderation';
+      // Mapping vue → bouton de navigation
+      const viewToNav = {
+        'view-map':        'nav-btn-map',
+        'view-profile':    'nav-btn-profile',
+        'view-moderation': 'nav-btn-moderation',
+      };
+      const navBtnId = viewToNav[viewId] || 'nav-btn-map';
       const navBtn = document.getElementById(navBtnId);
       if (navBtn) navBtn.classList.add('active');
     }
