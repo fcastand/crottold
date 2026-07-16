@@ -11,8 +11,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- Leaflet CSS -->
+  <!-- Leaflet CSS & MarkerCluster CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
   
   <!-- Custom CSS -->
   <link rel="stylesheet" href="styles.css">
@@ -308,7 +310,10 @@
                 <!-- Profile Header Card -->
                 <div class="profile-header-card">
                   <div class="profile-welcome-row">
-                    <div class="profile-avatar-wrapper">
+                    <div class="profile-header-actions">
+                      <button id="btn-profile-settings" class="btn-icon-circular"><i class="fa-solid fa-cog"></i></button>
+                    </div>
+                    <div class="profile-avatar animate-bounce-slow">
                       <img src="mascot_bobby.png" alt="Bobby" class="profile-avatar">
                     </div>
                     <div class="profile-user-info">
@@ -396,7 +401,7 @@
                   <h4>Classement Hebdomadaire</h4>
                 </div>
 
-                <div class="leaderboard-table">
+                <div class="leaderboard-table" id="leaderboard-section">
                   <div class="leaderboard-row gold">
                     <span class="leaderboard-rank">🥇 1</span>
                     <span class="leaderboard-name">ToiletKing_99</span>
@@ -449,7 +454,7 @@
                       <strong>Spammer_Du_Trône</strong>
                       <span>2 signalements reçus</span>
                     </div>
-                    <button class="btn-warn-user" onclick="alert('Avertissement envoyé à cet utilisateur !')">Avertir</button>
+                    <button class="btn-warn-user">Avertir</button>
                   </div>
                 </div>
 
@@ -504,8 +509,11 @@
                 <button id="btn-delete-toilet-direct" class="btn-action-outline text-danger" style="display: none;">
                   <i class="fa-solid fa-trash-can"></i> Supprimer le WC
                 </button>
-                <button id="btn-add-review-trigger" class="btn-action-primary">
-                  <i class="fa-solid fa-pen-nib"></i> Noter ce coin
+                <button id="btn-add-review-trigger" class="btn-review-outline">
+                  <i class="fa-solid fa-pen-to-square"></i> Noter ce trône
+                </button>
+                <button id="btn-share-toilet" class="btn-review-outline" style="margin-left: 0.5rem; width: auto; aspect-ratio: 1; padding: 0.8rem;">
+                  <i class="fa-solid fa-share-nodes"></i>
                 </button>
               </div>
             </div>
@@ -673,8 +681,9 @@
 
   </div> <!-- END LANDING CONTAINER -->
 
-  <!-- Leaflet JS -->
+  <!-- Leaflet JS & MarkerCluster JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
   <!-- Custom JS -->
   <script type="module" src="app.js"></script>
 </body>

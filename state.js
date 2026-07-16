@@ -345,6 +345,13 @@ export const AppState = {
     };
     setBadge(DOM.badgeFirstAdd,     this.profile.addedCount >= 1);
     setBadge(DOM.badgeThreeRatings, this.profile.ratedCount >= 3);
-    // badge-rare-toilet — logique à implémenter côté serveur (toilettes non rattachées au profil local)
+    
+    // Badge "Chasseur de Trésors" : l'utilisateur a créé une toilette gratuite et très propre (cleanliness >= 80%)
+    const hasRareToilet = this.toilets.some(t => 
+      t.author === username && 
+      t.price === 'gratuit' && 
+      t.cleanliness >= 80
+    );
+    setBadge(DOM.badgeRareToilet, hasRareToilet);
   }
 };

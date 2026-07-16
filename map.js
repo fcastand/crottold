@@ -16,7 +16,12 @@ export const MapSystem = {
       maxZoom: 19
     }).addTo(AppState.map);
 
-    AppState.markersGroup = L.layerGroup().addTo(AppState.map);
+    AppState.markersGroup = L.markerClusterGroup({
+      chunkedLoading: true,
+      maxClusterRadius: 50,
+      disableClusteringAtZoom: 18,
+      spiderfyOnMaxZoom: true
+    }).addTo(AppState.map);
 
     this.renderMarkers();
     this.initGeolocation();
@@ -175,9 +180,11 @@ export const MapSystem = {
   renderMarkers() {
     AppState.markersGroup.clearLayers();
     
-    // If toilet has 3 or more reports and we are NOT in mod mode, hide it
+    const markersToAdd = [];
+
+    // If toilet is hidden (reports >= 3) and we are NOT in mod mode, hide it
     AppState.toilets.forEach(toilet => {
-      if (toilet.reports >= 3 && !AppState.isModeratorMode) {
+      if (toilet.hidden && !AppState.isModeratorMode) {
         return; // Skip drawing reported toilet for visitors
       }
 
@@ -190,7 +197,9 @@ export const MapSystem = {
         DrawerSystem.openToiletDetails(toilet);
       });
 
-      AppState.markersGroup.addLayer(marker);
+      markersToAdd.push(marker);
     });
+
+    AppState.markersGroup.addLayers(markersToAdd);
   }
 };

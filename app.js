@@ -15,6 +15,7 @@ export const FlowHandlers = {
     this._initDrawerHandlers();
     this._initFormHandlers();
     this._initRangeHandlers();
+    this._initInactiveButtonsHandlers();
   },
 
   // -----------------------------------------------------------------------
@@ -136,6 +137,25 @@ export const FlowHandlers = {
     bind('range-rev-cleanliness', 'val-rev-cleanliness');
     bind('range-rev-comfort',     'val-rev-comfort');
     bind('range-rev-access',      'val-rev-access');
+  },
+
+  _initInactiveButtonsHandlers() {
+    const showComingSoonToast = () => {
+      AudioSystem.play('click');
+      AppState.showToast('🚧', 'Fonctionnalité en cours de développement !');
+    };
+
+    if (DOM.btnShareToilet) {
+      DOM.btnShareToilet.addEventListener('click', showComingSoonToast);
+    }
+    if (DOM.btnProfileSettings) {
+      DOM.btnProfileSettings.addEventListener('click', showComingSoonToast);
+    }
+    if (DOM.leaderboardSection) {
+      // Pour le leaderboard, on capte le clic sur la section entière
+      DOM.leaderboardSection.addEventListener('click', showComingSoonToast);
+      DOM.leaderboardSection.style.cursor = 'pointer';
+    }
   },
 
   startExploring() {
@@ -408,6 +428,7 @@ export const FlowHandlers = {
       comfort: comfort,
       accessibility: accessibility,
       comment: comment,
+      author: AppState.auth.username || "Vous (Explorateur)",
       reports: 0,
       reviews: [
         {
@@ -534,7 +555,9 @@ export const FlowHandlers = {
     AudioSystem.play('warning');
 
     if (AppState.selectedToilet.reports >= 3) {
-      AppState.showToast("⚠️", "Toilette masquée aux visiteurs en raison de signalements excessifs !");
+      AppState.selectedToilet.hidden = true; // Rendre le signalement persistant
+      AppState.saveToilets();
+      AppState.showToast("🛑", "Ce trône a reçu trop de signalements et a été masqué pour vérification.");
       DrawerSystem.close('drawer-toilet-details');
       MapSystem.renderMarkers();
     } else {

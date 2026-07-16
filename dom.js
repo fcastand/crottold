@@ -38,6 +38,7 @@ export const DOM = {
   get btnCancelReview()       { return document.getElementById('btn-cancel-review'); },
   get btnAddReviewTrigger()   { return document.getElementById('btn-add-review-trigger'); },
   get btnDeleteToiletDirect() { return document.getElementById('btn-delete-toilet-direct'); },
+  get btnShareToilet()        { return document.getElementById('btn-share-toilet'); },
 
   // ── Formulaires ────────────────────────────────────────────────────────────
   get formAddReview()  { return document.getElementById('form-add-review'); },
@@ -52,8 +53,10 @@ export const DOM = {
   get profileXpCurrent() { return document.getElementById('profile-xp-current'); },
   get profileXpBar()     { return document.getElementById('profile-xp-bar'); },
   get leaderboardXp()    { return document.getElementById('leaderboard-current-xp'); },
+  get leaderboardSection(){ return document.getElementById('leaderboard-section'); },
   get statAdded()        { return document.getElementById('stat-added'); },
   get statRated()        { return document.getElementById('stat-rated'); },
+  get btnProfileSettings() { return document.getElementById('btn-profile-settings'); },
 
   // ── Badges ─────────────────────────────────────────────────────────────────
   get badgeFirstAdd()     { return document.getElementById('badge-first-add'); },
