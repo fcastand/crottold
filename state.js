@@ -118,9 +118,11 @@ export function escapeHTML(str) {
 export const AppState = {
   toilets: [],
   accounts: [],
-  user: {
+  auth: {
     username: "Explorateur Anonyme",
-    role: "user",
+    role: "user"
+  },
+  profile: {
     level: 2,
     xp: 350,
     addedCount: 1,
@@ -152,9 +154,26 @@ export const AppState = {
       this.saveToilets();
     }
 
-    const savedUser = localStorage.getItem('crottoq_user');
-    if (savedUser) {
-      this.user = JSON.parse(savedUser);
+    // Migration from old 'crottoq_user' to separated 'crottoq_auth' and 'crottoq_profile'
+    const savedLegacyUser = localStorage.getItem('crottoq_user');
+    if (savedLegacyUser) {
+      const parsedLegacy = JSON.parse(savedLegacyUser);
+      this.auth = { username: parsedLegacy.username || "Explorateur Anonyme", role: parsedLegacy.role || "user" };
+      this.profile = { 
+        level: parsedLegacy.level || 2, 
+        xp: parsedLegacy.xp || 350, 
+        addedCount: parsedLegacy.addedCount || 0, 
+        ratedCount: parsedLegacy.ratedCount || 0 
+      };
+      this.saveAuth();
+      this.saveProfile();
+      localStorage.removeItem('crottoq_user');
+    } else {
+      const savedAuth = localStorage.getItem('crottoq_auth');
+      if (savedAuth) this.auth = JSON.parse(savedAuth);
+      
+      const savedProfile = localStorage.getItem('crottoq_profile');
+      if (savedProfile) this.profile = JSON.parse(savedProfile);
     }
 
     this.loadAccounts();
@@ -217,36 +236,40 @@ export const AppState = {
     localStorage.setItem('crottoq_toilets', JSON.stringify(this.toilets));
   },
 
-  saveUser() {
-    localStorage.setItem('crottoq_user', JSON.stringify(this.user));
+  saveAuth() {
+    localStorage.setItem('crottoq_auth', JSON.stringify(this.auth));
+  },
+
+  saveProfile() {
+    localStorage.setItem('crottoq_profile', JSON.stringify(this.profile));
     this.updateProfileUI();
   },
 
   addToilet(toilet) {
     this.toilets.push(toilet);
     this.saveToilets();
-    this.user.addedCount++;
+    this.profile.addedCount++;
     this.addXP(50, "Nouveau trône enregistré ! 🧻");
-    this.saveUser();
+    this.saveProfile();
   },
 
   addXP(amount, reason) {
-    this.user.xp += amount;
+    this.profile.xp += amount;
     let leveledUp = false;
     
     // Simple level calculation (e.g. 500 XP per level)
-    const newLevel = Math.floor(this.user.xp / 500) + 1;
-    if (newLevel > this.user.level) {
-      this.user.level = newLevel;
+    const newLevel = Math.floor(this.profile.xp / 500) + 1;
+    if (newLevel > this.profile.level) {
+      this.profile.level = newLevel;
       leveledUp = true;
     }
 
-    this.saveUser();
+    this.saveProfile();
     
     if (leveledUp) {
       setTimeout(() => {
         AudioSystem.play('chime');
-        this.showToast("👑", `NIVEAU SUPÉRIEUR ! Vous êtes Niveau ${this.user.level} ! Bobby s'incline devant votre expertise.`);
+        this.showToast("👑", `NIVEAU SUPÉRIEUR ! Vous êtes Niveau ${this.profile.level} ! Bobby s'incline devant votre expertise.`);
       }, 1000);
     } else {
       this.showToast("✨", `+${amount} XP: ${reason}`);
@@ -298,21 +321,21 @@ export const AppState = {
     const scrollEl = document.querySelector('.profile-scroll-content');
     if (scrollEl) scrollEl.scrollTop = 0;
 
-    const username = this.user.username || 'Explorateur Anonyme';
+    const username = this.auth.username || 'Explorateur Anonyme';
     if (DOM.profileUsername) DOM.profileUsername.textContent = username;
-    if (DOM.profileGrade)    DOM.profileGrade.textContent    = this.getGradeLabel(this.user.level);
+    if (DOM.profileGrade)    DOM.profileGrade.textContent    = this.getGradeLabel(this.profile.level);
 
-    if (DOM.profileLevel)    DOM.profileLevel.textContent    = this.user.level;
-    if (DOM.profileXpCurrent)DOM.profileXpCurrent.textContent = this.user.xp;
+    if (DOM.profileLevel)    DOM.profileLevel.textContent    = this.profile.level;
+    if (DOM.profileXpCurrent)DOM.profileXpCurrent.textContent = this.profile.xp;
 
     // Barre de progression XP
-    const xpInCurrentLevel = this.user.xp % 500;
+    const xpInCurrentLevel = this.profile.xp % 500;
     const progressPercent  = (xpInCurrentLevel / 500) * 100;
     if (DOM.profileXpBar)  DOM.profileXpBar.style.width     = `${progressPercent}%`;
-    if (DOM.leaderboardXp) DOM.leaderboardXp.textContent    = this.user.xp.toLocaleString();
+    if (DOM.leaderboardXp) DOM.leaderboardXp.textContent    = this.profile.xp.toLocaleString();
 
-    if (DOM.statAdded) DOM.statAdded.textContent = this.user.addedCount;
-    if (DOM.statRated) DOM.statRated.textContent = this.user.ratedCount;
+    if (DOM.statAdded) DOM.statAdded.textContent = this.profile.addedCount;
+    if (DOM.statRated) DOM.statRated.textContent = this.profile.ratedCount;
 
     // Badges
     const setBadge = (el, active) => {
@@ -320,8 +343,8 @@ export const AppState = {
       el.classList.toggle('unlocked', active);
       el.classList.toggle('locked',   !active);
     };
-    setBadge(DOM.badgeFirstAdd,     this.user.addedCount >= 1);
-    setBadge(DOM.badgeThreeRatings, this.user.ratedCount >= 3);
+    setBadge(DOM.badgeFirstAdd,     this.profile.addedCount >= 1);
+    setBadge(DOM.badgeThreeRatings, this.profile.ratedCount >= 3);
     // badge-rare-toilet — logique à implémenter côté serveur (toilettes non rattachées au profil local)
   }
 };

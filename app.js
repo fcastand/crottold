@@ -60,9 +60,9 @@ export const FlowHandlers = {
     document.getElementById('form-register').addEventListener('submit', (e) => { e.preventDefault(); this.submitRegister(); });
     // Déconnexion
     document.getElementById('btn-logout').addEventListener('click', () => {
-      AppState.user.username = 'Explorateur Anonyme';
-      AppState.user.role = 'user';
-      AppState.saveUser();
+      AppState.auth.username = 'Explorateur Anonyme';
+      AppState.auth.role = 'user';
+      AppState.saveAuth();
       AppState.updateProfileUI();
       this.applyUserRole('user');
       const usernameEl = document.getElementById('login-username');
@@ -296,9 +296,9 @@ export const FlowHandlers = {
         clearInterval(msgInterval);
 
         // Finalize login user details
-        AppState.user.username = username;
-        AppState.user.role = role;
-        AppState.saveUser();
+        AppState.auth.username = username;
+        AppState.auth.role = role;
+        AppState.saveAuth();
         AppState.updateProfileUI();
 
         // Apply visual elements of role
@@ -411,7 +411,7 @@ export const FlowHandlers = {
       reports: 0,
       reviews: [
         {
-          author: AppState.user.username || "Vous (Explorateur)",
+          author: AppState.auth.username || "Vous (Explorateur)",
           grade: grade,
           cleanliness: cleanliness,
           comfort: comfort,
@@ -477,7 +477,7 @@ export const FlowHandlers = {
     const grade = DrawerSystem.getHumorGrade(avg);
 
     const newReview = {
-      author: AppState.user.username || "Vous (Explorateur)",
+      author: AppState.auth.username || "Vous (Explorateur)",
       grade: grade,
       cleanliness: cleanliness,
       comfort: comfort,
@@ -518,8 +518,9 @@ export const FlowHandlers = {
     DrawerSystem.openToiletDetails(AppState.selectedToilet);
 
     // Add XP
-    AppState.user.ratedCount++;
-    AppState.addXP(25, "Avis enregistré ! Bobby adore vos retours.");
+    AppState.profile.ratedCount++;
+    AppState.addXP(20, "Avis utile ! 🌟");
+    AppState.saveProfile();
     
     // Play flush or success sound
     AudioSystem.play('click');
@@ -658,18 +659,16 @@ document.addEventListener('DOMContentLoaded', () => {
   AppState.updateProfileUI();
 
   // Apply saved role or default role on startup
-  const initialRole = AppState.user && AppState.user.role ? AppState.user.role : "user";
+  const loginUserEl = DOM.loginUsername;
+  const loginRoleEl = DOM.loginRole;
+  const initialRole = AppState.auth && AppState.auth.role ? AppState.auth.role : "user";
   FlowHandlers.applyUserRole(initialRole);
 
-  // Pre-fill username and role if exists
-  if (AppState.user && AppState.user.username && AppState.user.username !== "Explorateur Anonyme" && AppState.user.username !== "Grand Explorateur") {
-    const loginUserEl = document.getElementById('login-username');
-    if (loginUserEl) {
-      loginUserEl.value = AppState.user.username;
-    }
-    const loginRoleEl = document.getElementById('login-role');
-    if (loginRoleEl && AppState.user.role) {
-      loginRoleEl.value = AppState.user.role;
-    }
+  if (loginUserEl && AppState.auth && AppState.auth.username && AppState.auth.username !== "Explorateur Anonyme" && AppState.auth.username !== "Grand Explorateur") {
+    loginUserEl.value = AppState.auth.username;
   }
+  if (loginRoleEl && AppState.auth && AppState.auth.role) {
+    loginRoleEl.value = AppState.auth.role;
+  }
+
 });

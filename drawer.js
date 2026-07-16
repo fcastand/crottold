@@ -111,7 +111,7 @@ export const DrawerSystem = {
     // Direct delete button for moderators
     const deleteDirectBtn = document.getElementById('btn-delete-toilet-direct');
     if (deleteDirectBtn) {
-      if (AppState.user && AppState.user.role === 'moderator') {
+      if (AppState.auth && AppState.auth.role === 'moderator') {
         deleteDirectBtn.style.display = 'inline-flex';
       } else {
         deleteDirectBtn.style.display = 'none';
