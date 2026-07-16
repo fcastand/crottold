@@ -1,5 +1,22 @@
 /* ==========================================================================
-   CROTTOQ Stylesheet â€” Modern Cartoon Premium Design System
+   CROTTOQ Stylesheet — Modern Cartoon Premium Design System
+   ==========================================================================
+
+   TABLE DES MATIÈRES
+   ──────────────────
+    1. Variables CSS (design tokens)          ~L5
+    2. Reset & Base                           ~L50
+    3. Landing Page (page statique)           ~L100
+    4. App Shell (layout principal)           ~L300
+    5. Vues d'authentification (login/register) ~L450
+    6. Splash Screen & Loading Overlay        ~L650
+    7. Carte Leaflet & Marqueurs              ~L750
+    8. Drawer / Bottom Sheets                 ~L900
+    9. Vue Profil (stats, badges, XP)         ~L1200
+   10. Vue Modération                         ~L1550
+   11. Composants globaux (toast, boutons, sliders) ~L1700
+   12. Animations & Keyframes                 ~L2100
+   13. Utilitaires & Corrections              ~L2600
    ========================================================================== */
 
 :root {

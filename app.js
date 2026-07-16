@@ -1,5 +1,6 @@
 import { AudioSystem } from './audio.js';
 import { AppState, escapeHTML } from './state.js';
+import { DOM } from './dom.js';
 import { MapSystem } from './map.js';
 import { DrawerSystem } from './drawer.js';
 import { RouteSystem } from './router.js';
@@ -259,8 +260,8 @@ export const FlowHandlers = {
     // Switch to loader view
     RouteSystem.switchView('app-loading-overlay');
 
-    const progressFill = document.querySelector('.loader-progress-fill');
-    const statusTextEl = document.getElementById('loader-status-text');
+    const progressFill  = DOM.loaderProgressFill;
+    const statusTextEl  = DOM.loaderStatusText;
     
     // Reset progress fill
     if (progressFill) progressFill.style.width = '0%';
@@ -322,9 +323,9 @@ export const FlowHandlers = {
 
   // Méthode partagée — applique l'UI modérateur sans duplication
   _setModeratorUI(active) {
-    const modBadgeBtn  = document.getElementById('moderator-toggle-btn');
-    const modNavBtn    = document.getElementById('nav-btn-moderation');
-    const modBadgeText = document.getElementById('mod-badge-text');
+    const modBadgeBtn  = DOM.moderatorToggleBtn;
+    const modNavBtn    = DOM.navBtnModeration;
+    const modBadgeText = DOM.modBadgeText;
     AppState.isModeratorMode = active;
     if (active) {
       if (modBadgeBtn)  { modBadgeBtn.style.display = 'flex'; modBadgeBtn.classList.add('active'); }

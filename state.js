@@ -1,4 +1,5 @@
 import { AudioSystem } from './audio.js';
+import { DOM } from './dom.js';
 
 // Module-level timer so it's never lost regardless of `this` context
 let _toastTimer = null;
@@ -253,7 +254,7 @@ export const AppState = {
   },
 
   showToast(icon, text) {
-    const toast = document.getElementById('app-toast');
+    const toast = DOM.appToast;
     if (!toast) return;
 
     toast.querySelector('.toast-icon').textContent = icon;
@@ -269,8 +270,8 @@ export const AppState = {
       _toastTimer = null;
     }, 5000);
 
-    // Wire the close button (× ) every time the toast shows
-    const closeBtn = document.getElementById('btn-close-toast');
+    // Wire the close button (×) every time the toast shows
+    const closeBtn = DOM.btnCloseToast;
     if (closeBtn) {
       // Replace to avoid stacking duplicate listeners
       const newCloseBtn = closeBtn.cloneNode(true);
@@ -298,36 +299,29 @@ export const AppState = {
     if (scrollEl) scrollEl.scrollTop = 0;
 
     const username = this.user.username || 'Explorateur Anonyme';
-    const usernameEl = document.getElementById('profile-username');
-    if (usernameEl) usernameEl.textContent = username;
+    if (DOM.profileUsername) DOM.profileUsername.textContent = username;
+    if (DOM.profileGrade)    DOM.profileGrade.textContent    = this.getGradeLabel(this.user.level);
 
-    const gradeEl = document.getElementById('profile-grade');
-    if (gradeEl) gradeEl.textContent = this.getGradeLabel(this.user.level);
+    if (DOM.profileLevel)    DOM.profileLevel.textContent    = this.user.level;
+    if (DOM.profileXpCurrent)DOM.profileXpCurrent.textContent = this.user.xp;
 
-    document.getElementById('profile-level').textContent = this.user.level;
-    document.getElementById('profile-xp-current').textContent = this.user.xp;
-    
-    // Progress bar calculation
+    // Barre de progression XP
     const xpInCurrentLevel = this.user.xp % 500;
-    const progressPercent = (xpInCurrentLevel / 500) * 100;
-    document.getElementById('profile-xp-bar').style.width = `${progressPercent}%`;
-    document.getElementById('leaderboard-current-xp').textContent = this.user.xp.toLocaleString();
-    
-    document.getElementById('stat-added').textContent = this.user.addedCount;
-    document.getElementById('stat-rated').textContent = this.user.ratedCount;
+    const progressPercent  = (xpInCurrentLevel / 500) * 100;
+    if (DOM.profileXpBar)  DOM.profileXpBar.style.width     = `${progressPercent}%`;
+    if (DOM.leaderboardXp) DOM.leaderboardXp.textContent    = this.user.xp.toLocaleString();
 
-    // Badges active state
-    if (this.user.addedCount >= 1) {
-      document.getElementById('badge-first-add').classList.add('unlocked');
-      document.getElementById('badge-first-add').classList.remove('locked');
-    }
-    if (this.user.ratedCount >= 3) {
-      document.getElementById('badge-three-ratings').classList.add('unlocked');
-      document.getElementById('badge-three-ratings').classList.remove('locked');
-    }
-    if (this.user.toilets && this.user.toilets.some(t => t.price === 'gratuit' && t.cleanliness >= 4)) {
-      document.getElementById('badge-rare-toilet').classList.add('unlocked');
-      document.getElementById('badge-rare-toilet').classList.remove('locked');
-    }
+    if (DOM.statAdded) DOM.statAdded.textContent = this.user.addedCount;
+    if (DOM.statRated) DOM.statRated.textContent = this.user.ratedCount;
+
+    // Badges
+    const setBadge = (el, active) => {
+      if (!el) return;
+      el.classList.toggle('unlocked', active);
+      el.classList.toggle('locked',   !active);
+    };
+    setBadge(DOM.badgeFirstAdd,     this.user.addedCount >= 1);
+    setBadge(DOM.badgeThreeRatings, this.user.ratedCount >= 3);
+    // badge-rare-toilet — logique à implémenter côté serveur (toilettes non rattachées au profil local)
   }
 };
