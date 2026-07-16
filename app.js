@@ -268,7 +268,6 @@ export const FlowHandlers = {
     const birthdate = document.getElementById('input-reg-birthdate').value;
     const password  = document.getElementById('input-reg-password').value;
     const confirm   = document.getElementById('input-reg-confirm').value;
-    const role      = document.getElementById('select-reg-role').value;
 
     // Helpers d'erreur
     const setError = (fieldId, errId, msg) => {
@@ -306,7 +305,7 @@ export const FlowHandlers = {
     if (!valid) return;
 
     // Appel à AppState (vérifie doublon + majorité)
-    const result = AppState.registerAccount({ username, birthdate, password, role });
+    const result = AppState.registerAccount({ username, birthdate, password, role: 'user' });
 
     if (!result.success) {
       if (result.error.includes('pseudo')) {

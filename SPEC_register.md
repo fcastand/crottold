@@ -1,4 +1,4 @@
-﻿# Spec : Création de compte simulée (sans BDD)
+# Spec : Création de compte simulée (sans BDD)
 
 > Rédigé le 2026-07-15 — à implémenter sur la branche `develop`
 
@@ -22,11 +22,10 @@ Nouvelle vue `#view-register` (app-view) avec :
   - **Date de naissance** `input-reg-birthdate` — obligatoire, vérification majorité (18 ans révolus)
   - **Mot de passe** `input-reg-password` — avec indicateur de robustesse en temps réel
   - **Confirmation mot de passe** `input-reg-confirm`
-  - **Rôle** `select-reg-role` — Utilisateur / Modérateur (sélectionnable à l'inscription)
 - Bouton submit "Créer mon compte 🎉"
 - Lien "Déjà un compte ? Se connecter" (`btn-go-login`)
 
-> **Important** : Le champ rôle est visible à l'inscription. Une fois le compte créé, un utilisateur simple **ne peut pas modifier son rôle**. Seul un **modérateur** pourra changer le rôle d'un autre utilisateur (fonctionnalité panel modération, à implémenter plus tard).
+> **Important** : Tout compte créé est un **Utilisateur** par défaut. Il n'y a pas de sélecteur de rôle à l'inscription. Seul un **modérateur** pourra promouvoir un utilisateur via le panel de modération (à implémenter plus tard).
 
 ---
 
