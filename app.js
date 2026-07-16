@@ -1,5 +1,5 @@
 import { AudioSystem } from './audio.js';
-import { AppState } from './state.js';
+import { AppState, escapeHTML } from './state.js';
 import { MapSystem } from './map.js';
 import { DrawerSystem } from './drawer.js';
 import { RouteSystem } from './router.js';
@@ -695,12 +695,13 @@ export const FlowHandlers = {
       card.className = 'mod-report-card';
       card.innerHTML = `
         <div class="mod-report-header">
-          <span class="mod-toilet-title">${toilet.name}</span>
+          <span class="mod-toilet-title">${escapeHTML(toilet.name)}</span>
           <span class="mod-report-count">${toilet.reports} signalements</span>
         </div>
-        <p class="mod-report-reason">Dernier avis : "${toilet.comment}"</p>
+        <p class="mod-report-reason">Dernier avis : "${escapeHTML(toilet.comment)}"</p>
         <div class="mod-actions-row">
           <button class="mod-btn-keep" data-id="${toilet.id}">Rejeter l'alerte</button>
+          <button class="btn-warn-user" onclick="alert('Avertissement envoyé à cet utilisateur !')">Avertir</button>
           <button class="mod-btn-delete" data-id="${toilet.id}">Supprimer le WC</button>
         </div>
       `;

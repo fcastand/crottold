@@ -1,4 +1,4 @@
-import { AppState } from './state.js';
+import { AppState, escapeHTML } from './state.js';
 
 // 5. DRAWER / SHEET PANELS SYSTEM
 export const DrawerSystem = {
@@ -87,10 +87,10 @@ export const DrawerSystem = {
         div.className = 'review-comment-card';
         div.innerHTML = `
           <div class="review-card-header">
-            <span class="review-card-author">@${review.author}</span>
-            <span class="review-card-grade">${review.grade}</span>
+            <span class="review-card-author">@${escapeHTML(review.author)}</span>
+            <span class="review-card-grade">${escapeHTML(review.grade)}</span>
           </div>
-          <p class="review-card-text">"${review.text}"</p>
+          <p class="review-card-text">"${escapeHTML(review.text)}"</p>
         `;
         reviewsContainer.appendChild(div);
       });

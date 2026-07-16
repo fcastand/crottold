@@ -102,6 +102,17 @@ export const DEFAULT_TOILETS = [
   }
 ];
 
+// Utilitaire XSS — échappe les caractères HTML dangereux avant insertion dans innerHTML
+export function escapeHTML(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 // 3. APPLICATION STATE
 export const AppState = {
   toilets: [],
@@ -115,6 +126,7 @@ export const AppState = {
     ratedCount: 1
   },
   selectedToilet: null,
+  tempMarker: null,
   map: null,
   markersGroup: null,
   userMarker: null,
