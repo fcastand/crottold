@@ -2589,4 +2589,113 @@ body {
 }
 
 
+/* ==========================================================================
+   REGISTER VIEW
+   ========================================================================== */
+
+/* Vue scrollable pour le formulaire d'inscription */
+.register-view {
+  overflow-y: auto;
+}
+
+.register-scroll-content {
+  padding: 1rem 1.25rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-height: 100%;
+}
+
+/* Bouton lien inline (pour "Pas encore de compte ?" et "Déjà un compte ?") */
+.btn-link-inline {
+  background: none;
+  border: none;
+  color: var(--primary-dark);
+  font-family: var(--font-family);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+.btn-link-inline:hover {
+  color: var(--primary-color);
+}
+
+/* Barre de robustesse du mot de passe */
+.password-strength-bar {
+  height: 5px;
+  background: var(--light-border);
+  border-radius: 10px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.password-strength-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 10px;
+  transition: width 0.35s ease, background-color 0.35s ease;
+  background-color: var(--danger);
+}
+
+.password-strength-fill.strength-1 { width: 25%; background-color: var(--danger); }
+.password-strength-fill.strength-2 { width: 50%; background-color: #E6913A; }
+.password-strength-fill.strength-3 { width: 75%; background-color: var(--warning); }
+.password-strength-fill.strength-4 { width: 100%; background-color: var(--success); }
+
+/* Checklist des règles MDP */
+.password-rules-list {
+  list-style: none;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.password-rules-list li {
+  font-size: 0.72rem;
+  color: var(--grey-text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s ease;
+}
+
+.password-rules-list li i {
+  font-size: 0.75rem;
+  color: var(--danger);
+  transition: color 0.2s ease;
+}
+
+.password-rules-list li.rule-ok {
+  color: var(--success);
+}
+
+.password-rules-list li.rule-ok i {
+  color: var(--success);
+}
+
+/* États d'erreur sur les inputs */
+.input-error input,
+.input-error select {
+  border-color: var(--danger) !important;
+  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.12);
+}
+
+/* Message d'erreur inline */
+.form-error-msg {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--danger);
+  font-weight: 600;
+  margin-top: 4px;
+  min-height: 1em;
+  transition: opacity 0.2s ease;
+}
+
+.form-error-msg:empty {
+  opacity: 0;
+}
 

@@ -193,7 +193,92 @@
                   </button>
                 </form>
                 
-                <p class="login-footer" onclick="alert('Inscription bientôt disponible ! En attendant, connectez-vous avec n\'importe quel identifiant.')">Pas encore de compte ? S'inscrire</p>
+                <p class="login-footer"><button id="btn-go-register" class="btn-link-inline">Pas encore de compte ? S'inscrire</button></p>
+              </div>
+            </div>
+
+            <!-- 1C. REGISTER VIEW -->
+            <div id="view-register" class="app-view register-view">
+              <div class="register-scroll-content">
+
+                <div class="login-mascot-wrapper">
+                  <img src="mascot_bobby.png" alt="Bobby" class="login-mascot">
+                </div>
+                <h2 class="login-logo">🧻 CROTTOQ</h2>
+                <p class="login-tagline">Crée ton compte d'explorateur ! 🚽</p>
+
+                <form id="form-register" class="login-form" novalidate>
+
+                  <!-- Pseudo -->
+                  <div class="form-group-login">
+                    <label for="input-reg-username">Pseudo d'explorateur</label>
+                    <div class="input-wrapper-login">
+                      <i class="fa-solid fa-user-ninja input-icon-login"></i>
+                      <input type="text" id="input-reg-username" placeholder="Choisis un pseudo unique" required autocomplete="off">
+                    </div>
+                    <span class="form-error-msg" id="error-reg-username"></span>
+                  </div>
+
+                  <!-- Date de naissance -->
+                  <div class="form-group-login">
+                    <label for="input-reg-birthdate">Date de naissance</label>
+                    <div class="input-wrapper-login">
+                      <i class="fa-solid fa-cake-candles input-icon-login"></i>
+                      <input type="date" id="input-reg-birthdate" required>
+                    </div>
+                    <span class="form-error-msg" id="error-reg-birthdate"></span>
+                  </div>
+
+                  <!-- Mot de passe -->
+                  <div class="form-group-login">
+                    <label for="input-reg-password">Mot de passe</label>
+                    <div class="input-wrapper-login">
+                      <i class="fa-solid fa-lock input-icon-login"></i>
+                      <input type="password" id="input-reg-password" placeholder="••••••••" required autocomplete="new-password">
+                    </div>
+                    <!-- Barre de robustesse -->
+                    <div class="password-strength-bar">
+                      <div class="password-strength-fill" id="reg-strength-fill"></div>
+                    </div>
+                    <!-- Checklist des règles -->
+                    <ul class="password-rules-list">
+                      <li id="rule-length"><i class="fa-solid fa-circle-xmark"></i> 8 caractères minimum</li>
+                      <li id="rule-upper"><i class="fa-solid fa-circle-xmark"></i> 1 lettre majuscule</li>
+                      <li id="rule-number"><i class="fa-solid fa-circle-xmark"></i> 1 chiffre</li>
+                      <li id="rule-special"><i class="fa-solid fa-circle-xmark"></i> 1 caractère spécial (!@#$%^&*_-)</li>
+                    </ul>
+                    <span class="form-error-msg" id="error-reg-password"></span>
+                  </div>
+
+                  <!-- Confirmation mot de passe -->
+                  <div class="form-group-login">
+                    <label for="input-reg-confirm">Confirmer le mot de passe</label>
+                    <div class="input-wrapper-login">
+                      <i class="fa-solid fa-lock input-icon-login"></i>
+                      <input type="password" id="input-reg-confirm" placeholder="••••••••" required autocomplete="new-password">
+                    </div>
+                    <span class="form-error-msg" id="error-reg-confirm"></span>
+                  </div>
+
+                  <!-- Rôle -->
+                  <div class="form-group-login">
+                    <label for="select-reg-role">Type de compte</label>
+                    <div class="input-wrapper-login select-arrow-wrapper">
+                      <i class="fa-solid fa-user-shield input-icon-login"></i>
+                      <select id="select-reg-role" class="login-select">
+                        <option value="user">Utilisateur (Ajouter, Noter, Chercher)</option>
+                        <option value="moderator">Modérateur (Modérer, Gérer, Supprimer)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <button type="submit" id="btn-register-submit" class="btn-primary-crottoq login-btn" disabled>
+                    Créer mon compte 🎉
+                  </button>
+                </form>
+
+                <p class="login-footer"><button id="btn-go-login" class="btn-link-inline">Déjà un compte ? Se connecter</button></p>
+
               </div>
             </div>
 

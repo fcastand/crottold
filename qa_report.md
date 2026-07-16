@@ -14,8 +14,9 @@ J'ai effectué une passe complète sur l'application (en tant que sous-agent nav
 ### 2. Bouton "Signaler un Problème" (Modération)
 - **Problème partiel** : Quand on signale une toilette 3 fois, un message indique qu'elle est "masquée". Cependant, elle n'est masquée que *visuellement* dans l'instant T. Au prochain rafraîchissement, elle réapparaît.
 
-### 3. Ajout de Toilette sans Nom
-- **Problème** : Lors d'un clic sur la carte, on peut ouvrir le tiroir d'ajout et cliquer sur "Enregistrer le trône" sans même remplir le nom. Le formulaire l'accepte et crée un marqueur vide sur la carte. (Il manque un attribut `required` sur l'input).
+### ~~3. Ajout de Toilette sans Nom~~ ✅ RÉSOLU
+- ~~**Problème** : Lors d'un clic sur la carte, on peut ouvrir le tiroir d'ajout et cliquer sur "Enregistrer le trône" sans même remplir le nom. Le formulaire l'accepte et crée un marqueur vide sur la carte.~~
+- **Fix confirmé** : L'attribut `required` est bien présent sur `#input-toilet-name` dans `index.html`. La soumission du formulaire sans nom est bloquée nativement par le navigateur.
 
 ### 4. Badges du Profil non liés
 - **Problème** : Dans la vue Profil, quatre badges sont affichés. Les deux premiers ("Premier Explorateur" et "Aventurier Sanitaire") se basent sur des compteurs locaux, mais le badge "Chasseur de Trésors" cherche une variable `toilets` dans l'utilisateur qui n'existe pas dans le code, et le badge "Globe-Trotteur" n'a aucune logique qui lui est rattachée. Ils sont donc soit inatteignables, soit ignorés, et cliquer dessus ne fait rien.
@@ -24,8 +25,9 @@ J'ai effectué une passe complète sur l'application (en tant que sous-agent nav
 
 ## 🚫 Boutons "Morts" ou Inactifs
 
-### 1. Bouton "S'inscrire" (Création de compte)
-- **Oubli de ma part !** Sur la page de connexion, le lien "Pas encore de compte ? S'inscrire" affiche simplement une alerte navigateur `Inscription bientôt disponible !`. Il n'y a pas encore de vue ou de formulaire dédié pour créer un compte.
+### ~~1. Bouton "S'inscrire" (Création de compte)~~ ✅ RÉSOLU
+- ~~Le lien "Pas encore de compte ? S'inscrire" affichait simplement une `alert()`.~~
+- **Fix** : Vue `#view-register` implémentée avec formulaire complet (pseudo, date de naissance, mot de passe avec barre de robustesse, confirmation, rôle). Login hybride : compte connu → vérification MDP + rôle ; inconnu → mode démo libre conservé.
 
 ### 2. Bouton "Paramètres" (Roue crantée Profil)
 - L'icône de paramètres dans la vue Profil n'a pas encore été codée dans le HTML. On ne peut donc rien configurer.
@@ -50,4 +52,4 @@ J'ai effectué une passe complète sur l'application (en tant que sous-agent nav
 ---
 
 > [!IMPORTANT]
-> Conclusion : Les seuls "vrais" bugs à corriger rapidement avant l'intégration de la vraie base de données sont la validation du formulaire (empêcher l'ajout sans nom) et potentiellement revoir la logique du bouton "Réinitialiser" pour qu'il soit moins confus.
+> Conclusion : Le bug de validation du formulaire (point 3) est confirmé résolu. Les points restants à traiter sont : la persistance des signalements (point 2), les badges de profil non liés (point 4), et les boutons inactifs listés en section 2.

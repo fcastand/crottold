@@ -30,10 +30,47 @@ export const FlowHandlers = {
     document.getElementById('form-login').addEventListener('submit', (e) => {
       e.preventDefault();
       const usernameInput = document.getElementById('login-username').value.trim();
+      const passwordInput = document.getElementById('login-password').value;
       const roleInput = document.getElementById('login-role').value;
-      if (usernameInput) {
+
+      if (!usernameInput) return;
+
+      // Login hybride : compte connu → vérifie MDP ; inconnu → mode démo libre
+      const account = AppState.findAccount(usernameInput);
+      if (account) {
+        // Vérification du mot de passe (btoa)
+        if (btoa(passwordInput) !== account.password) {
+          const errEl = document.getElementById('login-password');
+          errEl.parentElement.parentElement.classList.add('input-error');
+          AppState.showToast('🔒', 'Mot de passe incorrect.');
+          return;
+        }
+        // Connexion avec le rôle du compte
+        this.performLoadingSequence(account.username, false, account.role);
+      } else {
+        // Mode démo libre — comportement actuel
         this.performLoadingSequence(usernameInput, false, roleInput);
       }
+    });
+
+    // A0b. NAVIGATION REGISTER / LOGIN
+    document.getElementById('btn-go-register').addEventListener('click', () => {
+      RouteSystem.switchView('view-register');
+    });
+
+    document.getElementById('btn-go-login').addEventListener('click', () => {
+      RouteSystem.switchView('view-login');
+    });
+
+    // A0c. BARRE DE ROBUSTESSE MDP (temps réel)
+    document.getElementById('input-reg-password').addEventListener('input', () => {
+      this.updatePasswordStrength();
+    });
+
+    // A0d. SUBMIT REGISTER FORM
+    document.getElementById('form-register').addEventListener('submit', (e) => {
+      e.preventDefault();
+      this.submitRegister();
     });
 
     document.getElementById('btn-logout').addEventListener('click', () => {
@@ -177,6 +214,119 @@ export const FlowHandlers = {
     AudioSystem.play('click');
     RouteSystem.switchView('view-map');
     AppState.showToast("🧭", "Bienvenue sur CROTTOQ ! Bobby vous surveille de près.");
+  },
+
+  // -----------------------------------------------------------------------
+  // REGISTER — Barre de robustesse MDP
+  // -----------------------------------------------------------------------
+  updatePasswordStrength() {
+    const pwd = document.getElementById('input-reg-password').value;
+    const fill = document.getElementById('reg-strength-fill');
+    const submitBtn = document.getElementById('btn-register-submit');
+
+    const rules = {
+      length:  pwd.length >= 8,
+      upper:   /[A-Z]/.test(pwd),
+      number:  /[0-9]/.test(pwd),
+      special: /[!@#$%^&*_\-]/.test(pwd)
+    };
+
+    // Mise à jour checklist
+    const setRule = (id, ok) => {
+      const li = document.getElementById(`rule-${id}`);
+      if (!li) return;
+      const icon = li.querySelector('i');
+      if (ok) {
+        li.classList.add('rule-ok');
+        icon.className = 'fa-solid fa-circle-check';
+      } else {
+        li.classList.remove('rule-ok');
+        icon.className = 'fa-solid fa-circle-xmark';
+      }
+    };
+    setRule('length',  rules.length);
+    setRule('upper',   rules.upper);
+    setRule('number',  rules.number);
+    setRule('special', rules.special);
+
+    // Score
+    const score = Object.values(rules).filter(Boolean).length;
+
+    // Barre de force
+    fill.className = 'password-strength-fill';
+    if (score > 0) fill.classList.add(`strength-${score}`);
+
+    // Activer le bouton submit si score >= 3
+    submitBtn.disabled = score < 3;
+  },
+
+  // -----------------------------------------------------------------------
+  // REGISTER — Soumission du formulaire
+  // -----------------------------------------------------------------------
+  submitRegister() {
+    const username  = document.getElementById('input-reg-username').value.trim();
+    const birthdate = document.getElementById('input-reg-birthdate').value;
+    const password  = document.getElementById('input-reg-password').value;
+    const confirm   = document.getElementById('input-reg-confirm').value;
+    const role      = document.getElementById('select-reg-role').value;
+
+    // Helpers d'erreur
+    const setError = (fieldId, errId, msg) => {
+      const field = document.getElementById(fieldId);
+      const err   = document.getElementById(errId);
+      if (msg) {
+        field.parentElement.classList.add('input-error');
+        err.textContent = msg;
+      } else {
+        field.parentElement.classList.remove('input-error');
+        err.textContent = '';
+      }
+    };
+
+    // Réinitialise toutes les erreurs
+    setError('input-reg-username',  'error-reg-username',  '');
+    setError('input-reg-birthdate', 'error-reg-birthdate', '');
+    setError('input-reg-password',  'error-reg-password',  '');
+    setError('input-reg-confirm',   'error-reg-confirm',   '');
+
+    let valid = true;
+
+    if (!username) {
+      setError('input-reg-username', 'error-reg-username', 'Le pseudo est obligatoire.');
+      valid = false;
+    }
+    if (!birthdate) {
+      setError('input-reg-birthdate', 'error-reg-birthdate', 'La date de naissance est obligatoire.');
+      valid = false;
+    }
+    if (password !== confirm) {
+      setError('input-reg-confirm', 'error-reg-confirm', 'Les mots de passe ne correspondent pas.');
+      valid = false;
+    }
+    if (!valid) return;
+
+    // Appel à AppState (vérifie doublon + majorité)
+    const result = AppState.registerAccount({ username, birthdate, password, role });
+
+    if (!result.success) {
+      if (result.error.includes('pseudo')) {
+        setError('input-reg-username', 'error-reg-username', result.error);
+      } else if (result.error.includes('majeur')) {
+        setError('input-reg-birthdate', 'error-reg-birthdate', result.error);
+      } else {
+        AppState.showToast('⚠️', result.error);
+      }
+      return;
+    }
+
+    // Succès !
+    AudioSystem.play('chime');
+    AppState.showToast('🎉', `Compte créé pour ${username} ! Connecte-toi maintenant.`);
+    RouteSystem.switchView('view-login');
+
+    // Pré-remplir le pseudo dans le formulaire de login
+    const loginUsernameEl = document.getElementById('login-username');
+    if (loginUsernameEl) loginUsernameEl.value = username;
   },
 
   performLoadingSequence(username, isGuest, role = 'user') {

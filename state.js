@@ -105,6 +105,7 @@ export const DEFAULT_TOILETS = [
 // 3. APPLICATION STATE
 export const AppState = {
   toilets: [],
+  accounts: [],
   user: {
     username: "Explorateur Anonyme",
     role: "user",
@@ -142,6 +143,61 @@ export const AppState = {
     if (savedUser) {
       this.user = JSON.parse(savedUser);
     }
+
+    this.loadAccounts();
+  },
+
+  loadAccounts() {
+    const saved = localStorage.getItem('crottoq_accounts');
+    this.accounts = saved ? JSON.parse(saved) : [];
+  },
+
+  saveAccounts() {
+    localStorage.setItem('crottoq_accounts', JSON.stringify(this.accounts));
+  },
+
+  /**
+   * Crée un nouveau compte.
+   * @returns {{ success: boolean, error?: string }}
+   */
+  registerAccount({ username, birthdate, password, role }) {
+    // Vérification doublon (case-insensitive)
+    const alreadyExists = this.accounts.some(
+      a => a.username.toLowerCase() === username.toLowerCase()
+    );
+    if (alreadyExists) {
+      return { success: false, error: 'Ce pseudo est déjà utilisé.' };
+    }
+
+    // Vérification majorité (18 ans révolus)
+    const birth = new Date(birthdate);
+    const today = new Date();
+    const age = today.getFullYear() - birth.getFullYear() -
+      (today < new Date(today.getFullYear(), birth.getMonth(), birth.getDate()) ? 1 : 0);
+    if (age < 18) {
+      return { success: false, error: 'Tu dois être majeur(e) pour rejoindre CROTTOQ.' };
+    }
+
+    // Stockage du mot de passe en base64 (simulation)
+    const account = {
+      username,
+      birthdate,
+      password: btoa(password),
+      role: role || 'user'
+    };
+    this.accounts.push(account);
+    this.saveAccounts();
+    return { success: true };
+  },
+
+  /**
+   * Recherche un compte par pseudo (case-insensitive).
+   * @returns {object|null}
+   */
+  findAccount(username) {
+    return this.accounts.find(
+      a => a.username.toLowerCase() === username.toLowerCase()
+    ) || null;
   },
 
   saveToilets() {
