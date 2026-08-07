@@ -10,8 +10,8 @@ Write-Host "Serveur CROTTOQ lancé sur http://127.0.0.1:$port/"
 $dbPath = Join-Path (Get-Location) "database.json"
 
 function Hash-Password {
-    param([string]$password)
-    $bytes = [System.Text.Encoding]::UTF8.GetBytes($password)
+    param([string]$password, [string]$salt)
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes($password + $salt)
     $sha256 = [System.Security.Cryptography.SHA256]::Create()
     $hash = $sha256.ComputeHash($bytes)
     return [BitConverter]::ToString($hash).Replace("-", "").ToLower()
@@ -61,13 +61,24 @@ try {
             if ($db -isnot [array]) { if ($db) { $db = @($db) } else { $db = @() } }
             
             $existing = $db | Where-Object { $_.username -eq $json.username }
-            if ($existing) {
+            
+            # Validation Regex (Alphanumérique, 3-20 chars)
+            if ($json.username -notmatch "^[a-zA-Z0-9_-]{3,20}$") {
+                $resObj = @{ success = $false; error = "Pseudo invalide (3-20 caractères alphanumériques)." }
+            }
+            # Validation Majorité
+            elseif ([datetime]::TryParse($json.birthdate, [ref]$null) -and ((Get-Date) - [datetime]$json.birthdate).TotalDays -lt 6574) {
+                $resObj = @{ success = $false; error = "Vous devez être majeur." }
+            }
+            elseif ($existing) {
                 $resObj = @{ success = $false; error = "Ce pseudo est déjà utilisé." }
             } else {
+                $salt = [Guid]::NewGuid().ToString()
                 $newUser = New-Object PSObject -Property @{
                     username = $json.username
                     birthdate = $json.birthdate
-                    password = Hash-Password $json.password
+                    salt = $salt
+                    password = Hash-Password -password $json.password -salt $salt
                     role = $json.role
                 }
                 
@@ -88,13 +99,15 @@ try {
             
             $user = $db | Where-Object { $_.username -eq $json.username }
             if ($user) {
-                $hashed = Hash-Password $json.password
+                $hashed = Hash-Password -password $json.password -salt $user.salt
                 if ($user.password -eq $hashed) {
                     $resObj = @{ success = $true; username = $user.username; role = $user.role }
                 } else {
+                    Start-Sleep -Milliseconds 500
                     $resObj = @{ success = $false; error = "Mot de passe incorrect." }
                 }
             } else {
+                Start-Sleep -Milliseconds 500
                 $resObj = @{ success = $false; error = "user_not_found" }
             }
             Send-JsonResponse $context $resObj
@@ -103,9 +116,10 @@ try {
 
         # Resolve clean relative path
         $cleanPath = $urlPath.Replace("/", "\").TrimStart("\")
-        $filePath = Join-Path (Get-Location) $cleanPath
+        $filePath = [System.IO.Path]::GetFullPath((Join-Path (Get-Location) $cleanPath))
+        $basePath = [System.IO.Path]::GetFullPath((Get-Location))
         
-        if (Test-Path $filePath -PathType Leaf) {
+        if ($filePath.StartsWith($basePath) -and (Test-Path $filePath -PathType Leaf)) {
             $bytes = [System.IO.File]::ReadAllBytes($filePath)
             
             # Detect MIME types
