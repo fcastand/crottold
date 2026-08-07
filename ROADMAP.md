@@ -48,7 +48,9 @@ Le basculement se fera automatiquement dans le code selon l'URL (localhost vs gi
   - Connecter le formulaire de Login / Création de compte à l'Auth du BaaS.
   - Gérer l'état de session global de l'utilisateur (AppState).
 - [ ] **Profil Utilisateur Avancé**
-  - Sauvegarder l'XP et les badges dans Firestore.
+  - Sauvegarder l'XP et les badges dans la base de données (définir les paliers de niveau et corriger le bug des dépassements de plafond type 600/500).
   - Afficher l'historique des ajouts/avis de l'utilisateur.
-- [ ] **Amélioration UI/UX**
+- [ ] **Amélioration UI/UX & Sécurité**
+  - Gérer le style du bouton "Paramètres" du profil (actuellement hors charte).
+  - Géolocaliser la personne pour éviter la triche (ex: empêcher de noter une toilette si l'utilisateur n'est pas à proximité immédiate ou dans le même pays).
   - ... (À définir au fil de l'eau)
