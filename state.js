@@ -117,7 +117,6 @@ export function escapeHTML(str) {
 // 3. APPLICATION STATE
 export const AppState = {
   toilets: [],
-  accounts: [],
   auth: {
     username: "Explorateur Anonyme",
     role: "user"
@@ -175,33 +174,14 @@ export const AppState = {
       const savedProfile = localStorage.getItem('crottoq_profile');
       if (savedProfile) this.profile = JSON.parse(savedProfile);
     }
-
-    this.loadAccounts();
-  },
-
-  loadAccounts() {
-    const saved = localStorage.getItem('crottoq_accounts');
-    this.accounts = saved ? JSON.parse(saved) : [];
-  },
-
-  saveAccounts() {
-    localStorage.setItem('crottoq_accounts', JSON.stringify(this.accounts));
   },
 
   /**
-   * Crée un nouveau compte.
-   * @returns {{ success: boolean, error?: string }}
+   * Crée un nouveau compte (via API locale).
+   * @returns {Promise<{ success: boolean, error?: string }>}
    */
-  registerAccount({ username, birthdate, password, role }) {
-    // Vérification doublon (case-insensitive)
-    const alreadyExists = this.accounts.some(
-      a => a.username.toLowerCase() === username.toLowerCase()
-    );
-    if (alreadyExists) {
-      return { success: false, error: 'Ce pseudo est déjà utilisé.' };
-    }
-
-    // Vérification majorité (18 ans révolus)
+  async registerAccount({ username, birthdate, password, role }) {
+    // Vérification majorité côté client (18 ans révolus)
     const birth = new Date(birthdate);
     const today = new Date();
     const age = today.getFullYear() - birth.getFullYear() -
@@ -210,26 +190,33 @@ export const AppState = {
       return { success: false, error: 'Tu dois être majeur(e) pour rejoindre CROTTOQ.' };
     }
 
-    // Stockage du mot de passe en base64 (simulation)
-    const account = {
-      username,
-      birthdate,
-      password: btoa(password),
-      role: role || 'user'
-    };
-    this.accounts.push(account);
-    this.saveAccounts();
-    return { success: true };
+    try {
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, birthdate, password, role })
+      });
+      return await res.json();
+    } catch (err) {
+      return { success: false, error: 'Erreur réseau avec le serveur local.' };
+    }
   },
 
   /**
-   * Recherche un compte par pseudo (case-insensitive).
-   * @returns {object|null}
+   * Vérifie le compte (via API locale).
+   * @returns {Promise<{ success: boolean, username?: string, role?: string, error?: string }>}
    */
-  findAccount(username) {
-    return this.accounts.find(
-      a => a.username.toLowerCase() === username.toLowerCase()
-    ) || null;
+  async loginAccount(username, password) {
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      return await res.json();
+    } catch (err) {
+      return { success: false, error: 'Erreur réseau avec le serveur local.' };
+    }
   },
 
   saveToilets() {

@@ -32,3 +32,5 @@ npm-debug.log*
 
 # Données locales (non commiter les données perso)
 # localStorage est dans le navigateur, rien à ignorer ici
+
+database.json

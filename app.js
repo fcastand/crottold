@@ -35,22 +35,20 @@ export const FlowHandlers = {
 
   _initAuthHandlers() {
     // Login hybride
-    document.getElementById('form-login').addEventListener('submit', (e) => {
+    document.getElementById('form-login').addEventListener('submit', async (e) => {
       e.preventDefault();
       const usernameInput = document.getElementById('login-username').value.trim();
       const passwordInput = document.getElementById('login-password').value;
-      const roleInput     = document.getElementById('login-role').value;
+
       if (!usernameInput) return;
-      const account = AppState.findAccount(usernameInput);
-      if (account) {
-        if (btoa(passwordInput) !== account.password) {
-          document.getElementById('login-password').parentElement.parentElement.classList.add('input-error');
-          AppState.showToast('🔒', 'Mot de passe incorrect.');
-          return;
-        }
-        this.performLoadingSequence(account.username, false, account.role);
+      
+      const result = await AppState.loginAccount(usernameInput, passwordInput);
+      
+      if (result.success) {
+        this.performLoadingSequence(result.username, false, result.role);
       } else {
-        this.performLoadingSequence(usernameInput, false, roleInput);
+        document.getElementById('login-password').parentElement.parentElement.classList.add('input-error');
+        AppState.showToast('🔒', result.error === "user_not_found" ? "Ce compte n'existe pas." : result.error);
       }
     });
     // Navigation register ↔ login
@@ -68,8 +66,7 @@ export const FlowHandlers = {
       this.applyUserRole('user');
       const usernameEl = document.getElementById('login-username');
       if (usernameEl) usernameEl.value = '';
-      const roleEl = document.getElementById('login-role');
-      if (roleEl) roleEl.value = 'user';
+
       AudioSystem.play('warning');
       RouteSystem.switchView('view-login');
       AppState.showToast('🔒', 'Vous vous êtes déconnecté.');
@@ -211,7 +208,7 @@ export const FlowHandlers = {
   // -----------------------------------------------------------------------
   // REGISTER — Soumission du formulaire
   // -----------------------------------------------------------------------
-  submitRegister() {
+  async submitRegister() {
     const username  = document.getElementById('input-reg-username').value.trim();
     const birthdate = document.getElementById('input-reg-birthdate').value;
     const password  = document.getElementById('input-reg-password').value;
@@ -252,8 +249,8 @@ export const FlowHandlers = {
     }
     if (!valid) return;
 
-    // Appel à AppState (vérifie doublon + majorité)
-    const result = AppState.registerAccount({ username, birthdate, password, role: 'user' });
+    // Appel à AppState (vérifie doublon + API)
+    const result = await AppState.registerAccount({ username, birthdate, password, role: 'user' });
 
     if (!result.success) {
       if (result.error.includes('pseudo')) {
