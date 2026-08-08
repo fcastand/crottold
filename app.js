@@ -79,6 +79,26 @@ export const FlowHandlers = {
     });
     document.getElementById('nav-btn-profile').addEventListener('click', (e) => {
       RouteSystem.switchView('view-profile', e.currentTarget); DrawerSystem.closeAll();
+      
+      const overlay = document.getElementById('crotti-intro-overlay');
+      if (overlay) {
+        overlay.classList.remove('hidden', 'crotti-fade-out');
+        
+        // Jouer le fichier MP3 de Zidane
+        const audio = new Audio('zidane.mp3');
+        if (AudioSystem.enabled) audio.play().catch(e => console.warn(e));
+        
+        // Cacher l'overlay après 3.5 secondes
+        setTimeout(() => {
+          overlay.classList.add('crotti-fade-out');
+          setTimeout(() => {
+            overlay.classList.add('hidden');
+          }, 500);
+        }, 3500);
+      } else {
+        const audio = new Audio('zidane.mp3');
+        if (AudioSystem.enabled) audio.play().catch(e => console.warn(e));
+      }
     });
     document.getElementById('nav-btn-moderation').addEventListener('click', (e) => {
       RouteSystem.switchView('view-moderation', e.currentTarget);

@@ -25,6 +25,17 @@ export const AudioSystem = {
     }
   },
 
+  speak(text) {
+    if (!this.enabled) return;
+    if ('speechSynthesis' in window) {
+      const msg = new SpeechSynthesisUtterance(text);
+      msg.lang = 'fr-FR';
+      msg.pitch = 1.2;
+      msg.rate = 1.1;
+      window.speechSynthesis.speak(msg);
+    }
+  },
+
   play(type) {
     if (!this.enabled) return;
     this.init();

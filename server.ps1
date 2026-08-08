@@ -62,12 +62,15 @@ try {
             
             $existing = $db | Where-Object { $_.username -eq $json.username }
             
+            $isMinor = $false
+            try { $isMinor = ((Get-Date) - [datetime]$json.birthdate).TotalDays -lt 6574 } catch { $isMinor = $true }
+
             # Validation Regex (Alphanumérique, 3-20 chars)
             if ($json.username -notmatch "^[a-zA-Z0-9_-]{3,20}$") {
                 $resObj = @{ success = $false; error = "Pseudo invalide (3-20 caractères alphanumériques)." }
             }
             # Validation Majorité
-            elseif ([datetime]::TryParse($json.birthdate, [ref]$null) -and ((Get-Date) - [datetime]$json.birthdate).TotalDays -lt 6574) {
+            elseif ($isMinor) {
                 $resObj = @{ success = $false; error = "Vous devez être majeur." }
             }
             elseif ($existing) {
