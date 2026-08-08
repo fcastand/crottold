@@ -1,4 +1,4 @@
-import { AudioSystem } from './audio.js';
+﻿import { AudioSystem } from './audio.js';
 import { AppState, escapeHTML } from './state.js';
 import { DOM } from './dom.js';
 import { MapSystem } from './map.js';
@@ -19,7 +19,7 @@ export const FlowHandlers = {
   },
 
   // -----------------------------------------------------------------------
-  // INIT — Sous-méthodes privées
+  // INIT â€” Sous-mÃ©thodes privÃ©es
   // -----------------------------------------------------------------------
   _initSplash() {
     setTimeout(() => {
@@ -48,16 +48,16 @@ export const FlowHandlers = {
         this.performLoadingSequence(result.username, false, result.role);
       } else {
         document.getElementById('login-password').parentElement.parentElement.classList.add('input-error');
-        AppState.showToast('🔒', result.error === "user_not_found" ? "Ce compte n'existe pas." : result.error);
+        AppState.showToast('ðŸ”’', result.error === "user_not_found" ? "Ce compte n'existe pas." : result.error);
       }
     });
-    // Navigation register ↔ login
+    // Navigation register â†” login
     document.getElementById('btn-go-register').addEventListener('click', () => RouteSystem.switchView('view-register'));
     document.getElementById('btn-go-login').addEventListener('click', () => RouteSystem.switchView('view-login'));
     // Inscription
     document.getElementById('input-reg-password').addEventListener('input', () => this.updatePasswordStrength());
     document.getElementById('form-register').addEventListener('submit', (e) => { e.preventDefault(); this.submitRegister(); });
-    // Déconnexion
+    // DÃ©connexion
     document.getElementById('btn-logout').addEventListener('click', () => {
       AppState.auth.username = 'Explorateur Anonyme';
       AppState.auth.role = 'user';
@@ -69,7 +69,7 @@ export const FlowHandlers = {
 
       AudioSystem.play('warning');
       RouteSystem.switchView('view-login');
-      AppState.showToast('🔒', 'Vous vous êtes déconnecté.');
+      AppState.showToast('ðŸ”’', 'Vous vous Ãªtes dÃ©connectÃ©.');
     });
   },
 
@@ -88,7 +88,7 @@ export const FlowHandlers = {
         const audio = new Audio('zidane.mp3');
         if (AudioSystem.enabled) audio.play().catch(e => console.warn(e));
         
-        // Cacher l'overlay après 3.5 secondes
+        // Cacher l'overlay aprÃ¨s 3.5 secondes
         setTimeout(() => {
           overlay.classList.add('crotti-fade-out');
           setTimeout(() => {
@@ -109,7 +109,7 @@ export const FlowHandlers = {
     if (deleteDirectBtn) {
       deleteDirectBtn.addEventListener('click', () => {
         if (AppState.selectedToilet) {
-          if (confirm(`Voulez-vous vraiment supprimer définitivement "${AppState.selectedToilet.name}" ?`)) {
+          if (confirm(`Voulez-vous vraiment supprimer dÃ©finitivement "${AppState.selectedToilet.name}" ?`)) {
             this.deleteToilet(AppState.selectedToilet.id);
             DrawerSystem.close('drawer-toilet-details');
           }
@@ -159,7 +159,7 @@ export const FlowHandlers = {
   _initInactiveButtonsHandlers() {
     const showComingSoonToast = () => {
       AudioSystem.play('click');
-      AppState.showToast('🚧', 'Fonctionnalité en cours de développement !');
+      AppState.showToast('ðŸš§', 'FonctionnalitÃ© en cours de dÃ©veloppement !');
     };
 
     if (DOM.btnShareToilet) {
@@ -169,7 +169,7 @@ export const FlowHandlers = {
       DOM.btnProfileSettings.addEventListener('click', showComingSoonToast);
     }
     if (DOM.leaderboardSection) {
-      // Pour le leaderboard, on capte le clic sur la section entière
+      // Pour le leaderboard, on capte le clic sur la section entiÃ¨re
       DOM.leaderboardSection.addEventListener('click', showComingSoonToast);
       DOM.leaderboardSection.style.cursor = 'pointer';
     }
@@ -178,11 +178,11 @@ export const FlowHandlers = {
   startExploring() {
     AudioSystem.play('click');
     RouteSystem.switchView('view-map');
-    AppState.showToast("🧭", "Bienvenue sur CROTTOQ ! Bobby vous surveille de près.");
+    AppState.showToast("ðŸ§­", "Bienvenue sur CROTTOLD ! Bobby vous surveille de prÃ¨s.");
   },
 
   // -----------------------------------------------------------------------
-  // REGISTER — Barre de robustesse MDP
+  // REGISTER â€” Barre de robustesse MDP
   // -----------------------------------------------------------------------
   updatePasswordStrength() {
     const pwd = document.getElementById('input-reg-password').value;
@@ -196,7 +196,7 @@ export const FlowHandlers = {
       special: /[!@#$%^&*_\-]/.test(pwd)
     };
 
-    // Mise à jour checklist
+    // Mise Ã  jour checklist
     const setRule = (id, ok) => {
       const li = document.getElementById(`rule-${id}`);
       if (!li) return;
@@ -226,7 +226,7 @@ export const FlowHandlers = {
   },
 
   // -----------------------------------------------------------------------
-  // REGISTER — Soumission du formulaire
+  // REGISTER â€” Soumission du formulaire
   // -----------------------------------------------------------------------
   async submitRegister() {
     const username  = document.getElementById('input-reg-username').value.trim();
@@ -247,7 +247,7 @@ export const FlowHandlers = {
       }
     };
 
-    // Réinitialise toutes les erreurs
+    // RÃ©initialise toutes les erreurs
     setError('input-reg-username',  'error-reg-username',  '');
     setError('input-reg-birthdate', 'error-reg-birthdate', '');
     setError('input-reg-password',  'error-reg-password',  '');
@@ -269,7 +269,7 @@ export const FlowHandlers = {
     }
     if (!valid) return;
 
-    // Appel à AppState (vérifie doublon + API)
+    // Appel Ã  AppState (vÃ©rifie doublon + API)
     const result = await AppState.registerAccount({ username, birthdate, password, role: 'user' });
 
     if (!result.success) {
@@ -278,17 +278,17 @@ export const FlowHandlers = {
       } else if (result.error.includes('majeur')) {
         setError('input-reg-birthdate', 'error-reg-birthdate', result.error);
       } else {
-        AppState.showToast('⚠️', result.error);
+        AppState.showToast('âš ï¸', result.error);
       }
       return;
     }
 
-    // Succès !
+    // SuccÃ¨s !
     AudioSystem.play('chime');
-    AppState.showToast('🎉', `Compte créé pour ${username} ! Connecte-toi maintenant.`);
+    AppState.showToast('ðŸŽ‰', `Compte crÃ©Ã© pour ${username} ! Connecte-toi maintenant.`);
     RouteSystem.switchView('view-login');
 
-    // Pré-remplir le pseudo dans le formulaire de login
+    // PrÃ©-remplir le pseudo dans le formulaire de login
     const loginUsernameEl = document.getElementById('login-username');
     if (loginUsernameEl) loginUsernameEl.value = username;
   },
@@ -305,10 +305,10 @@ export const FlowHandlers = {
 
     // Funny messages list
     const messages = [
-      "Vérification du stock de papier... 🧻",
-      "Nettoyage de la lunette... 🧼",
-      "Bobby prépare votre trône... 👑",
-      "Chargement de la carte des WC... 🗺️"
+      "VÃ©rification du stock de papier... ðŸ§»",
+      "Nettoyage de la lunette... ðŸ§¼",
+      "Bobby prÃ©pare votre trÃ´ne... ðŸ‘‘",
+      "Chargement de la carte des WC... ðŸ—ºï¸"
     ];
 
     let currentMsgIndex = 0;
@@ -344,21 +344,21 @@ export const FlowHandlers = {
         if (isGuest) {
           AudioSystem.play('click');
           RouteSystem.switchView('view-map');
-          AppState.showToast("👤", "Mode invité activé. Bon voyage !");
+          AppState.showToast("ðŸ‘¤", "Mode invitÃ© activÃ©. Bon voyage !");
         } else {
           AudioSystem.play('chime');
           RouteSystem.switchView('view-map');
           if (role === 'moderator') {
-            AppState.showToast("🛡️", `Modérateur connecté ! Bonjour @${username}.`);
+            AppState.showToast("ðŸ›¡ï¸", `ModÃ©rateur connectÃ© ! Bonjour @${username}.`);
           } else {
-            AppState.showToast("🔓", `Connexion réussie ! Bonjour @${username}.`);
+            AppState.showToast("ðŸ”“", `Connexion rÃ©ussie ! Bonjour @${username}.`);
           }
         }
       }
     }, 96); // 25 steps * 96ms = 2400ms
   },
 
-  // Méthode partagée — applique l'UI modérateur sans duplication
+  // MÃ©thode partagÃ©e â€” applique l'UI modÃ©rateur sans duplication
   _setModeratorUI(active) {
     const modBadgeBtn  = DOM.moderatorToggleBtn;
     const modNavBtn    = DOM.navBtnModeration;
@@ -366,7 +366,7 @@ export const FlowHandlers = {
     AppState.isModeratorMode = active;
     if (active) {
       if (modBadgeBtn)  { modBadgeBtn.style.display = 'flex'; modBadgeBtn.classList.add('active'); }
-      if (modBadgeText) modBadgeText.textContent = 'Modérateur';
+      if (modBadgeText) modBadgeText.textContent = 'ModÃ©rateur';
       if (modNavBtn)    modNavBtn.classList.add('show-moderator');
     } else {
       if (modBadgeBtn)  { modBadgeBtn.style.display = 'none'; modBadgeBtn.classList.remove('active'); }
@@ -386,7 +386,7 @@ export const FlowHandlers = {
     this._setModeratorUI(newActive);
     if (newActive) {
       AudioSystem.play('chime');
-      AppState.showToast('🛡️', 'Console de modération activée ! Bienvenue au conseil des sages.');
+      AppState.showToast('ðŸ›¡ï¸', 'Console de modÃ©ration activÃ©e ! Bienvenue au conseil des sages.');
       RouteSystem.switchView('view-moderation');
       this.renderModerationPanel();
     } else {
@@ -423,7 +423,7 @@ export const FlowHandlers = {
     const cleanliness = parseInt(document.getElementById('range-add-cleanliness').value);
     const comfort = parseInt(document.getElementById('range-add-comfort').value);
     const accessibility = parseInt(document.getElementById('range-add-access').value);
-    const comment = document.getElementById('input-comment').value || "Aucun commentaire supplémentaire.";
+    const comment = document.getElementById('input-comment').value || "Aucun commentaire supplÃ©mentaire.";
     
     const lat = parseFloat(form.dataset.tempLat);
     const lng = parseFloat(form.dataset.tempLng);
@@ -472,7 +472,7 @@ export const FlowHandlers = {
     // Play toilet flush sound effect
     AudioSystem.play('flush');
 
-    // 🎉 Show victory animation
+    // ðŸŽ‰ Show victory animation
     this.showToiletSuccessAnimation();
   },
 
@@ -505,7 +505,7 @@ export const FlowHandlers = {
     const accessibility = parseInt(document.getElementById('range-rev-access').value);
     const comment       = document.getElementById('input-review-comment').value.trim();
 
-    // Guard — commentaire vide refusé
+    // Guard â€” commentaire vide refusÃ©
     if (!comment) {
       AppState.showToast('\u26a0\ufe0f', 'Merci d\'ajouter un commentaire avant de publier.');
       return;
@@ -557,7 +557,7 @@ export const FlowHandlers = {
 
     // Add XP
     AppState.profile.ratedCount++;
-    AppState.addXP(20, "Avis utile ! 🌟");
+    AppState.addXP(20, "Avis utile ! ðŸŒŸ");
     AppState.saveProfile();
     
     // Play flush or success sound
@@ -574,11 +574,11 @@ export const FlowHandlers = {
     if (AppState.selectedToilet.reports >= 3) {
       AppState.selectedToilet.hidden = true; // Rendre le signalement persistant
       AppState.saveToilets();
-      AppState.showToast("🛑", "Ce trône a reçu trop de signalements et a été masqué pour vérification.");
+      AppState.showToast("ðŸ›‘", "Ce trÃ´ne a reÃ§u trop de signalements et a Ã©tÃ© masquÃ© pour vÃ©rification.");
       DrawerSystem.close('drawer-toilet-details');
       MapSystem.renderMarkers();
     } else {
-      AppState.showToast("🚨", `Signalement enregistré ! (${AppState.selectedToilet.reports}/3 signalements)`);
+      AppState.showToast("ðŸš¨", `Signalement enregistrÃ© ! (${AppState.selectedToilet.reports}/3 signalements)`);
       DrawerSystem.openToiletDetails(AppState.selectedToilet); // Refresh view
     }
   },
@@ -607,16 +607,16 @@ export const FlowHandlers = {
 
       const distanceLabel = AppState.userPosition
         ? (minDistance < 1
-            ? `à ${Math.round(minDistance * 1000)}m de vous`
-            : `à ${minDistance.toFixed(1)}km de vous`)
+            ? `Ã  ${Math.round(minDistance * 1000)}m de vous`
+            : `Ã  ${minDistance.toFixed(1)}km de vous`)
         : 'le plus proche sur la carte';
 
       setTimeout(() => {
         DrawerSystem.openToiletDetails(closest);
-        AppState.showToast("🏃💨", `Bobby a trouvé \"${closest.name}\" — ${distanceLabel} !`);
+        AppState.showToast("ðŸƒðŸ’¨", `Bobby a trouvÃ© \"${closest.name}\" â€” ${distanceLabel} !`);
       }, 500);
     } else {
-      AppState.showToast("😰", "Aucune toilette disponible à proximité !");
+      AppState.showToast("ðŸ˜°", "Aucune toilette disponible Ã  proximitÃ© !");
     }
   },
 
@@ -645,7 +645,7 @@ export const FlowHandlers = {
         <p class="mod-report-reason">Dernier avis : "${escapeHTML(toilet.comment)}"</p>
         <div class="mod-actions-row">
           <button class="mod-btn-keep" data-id="${toilet.id}">Rejeter l'alerte</button>
-          <button class="btn-warn-user" onclick="alert('Avertissement envoyé à cet utilisateur !')">Avertir</button>
+          <button class="btn-warn-user" onclick="alert('Avertissement envoyÃ© Ã  cet utilisateur !')">Avertir</button>
           <button class="mod-btn-delete" data-id="${toilet.id}">Supprimer le WC</button>
         </div>
       `;
@@ -671,7 +671,7 @@ export const FlowHandlers = {
       toilet.reports = 0;
       AppState.saveToilets();
       AudioSystem.play('click');
-      AppState.showToast("🛡️", `Alertes rejetées pour "${toilet.name}".`);
+      AppState.showToast("ðŸ›¡ï¸", `Alertes rejetÃ©es pour "${toilet.name}".`);
       this.renderModerationPanel();
       MapSystem.renderMarkers();
     }
@@ -684,7 +684,7 @@ export const FlowHandlers = {
       AppState.toilets.splice(toiletIdx, 1);
       AppState.saveToilets();
       AudioSystem.play('flush'); // Toilet flush sound on delete
-      AppState.showToast("🧹", `"${name}" a été définitivement supprimé.`);
+      AppState.showToast("ðŸ§¹", `"${name}" a Ã©tÃ© dÃ©finitivement supprimÃ©.`);
       this.renderModerationPanel();
       MapSystem.renderMarkers();
     }

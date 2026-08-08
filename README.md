@@ -1,28 +1,28 @@
-# 🧻 CROTTOQ — L'explorateur mondial des toilettes
+﻿# ðŸ§» CROTTOLD â€” L'explorateur mondial des toilettes
 
-[![Live Demo](https://img.shields.io/badge/🚽%20Live%20Demo-GitHub%20Pages-0DCDC0?style=for-the-badge)](https://fcastand.github.io/crottoq/)
+[![Live Demo](https://img.shields.io/badge/ðŸš½%20Live%20Demo-GitHub%20Pages-0DCDC0?style=for-the-badge)](https://fcastand.github.io/crottold/)
 
-> La première application communautaire qui cartographie les toilettes publiques et privées accessibles. Trouvez, notez et ajoutez des WC rapidement dans une ambiance cartoon et ludique !
+> La premiÃ¨re application communautaire qui cartographie les toilettes publiques et privÃ©es accessibles. Trouvez, notez et ajoutez des WC rapidement dans une ambiance cartoon et ludique !
 
-![CROTTOQ App](mascot_bobby.png)
+![CROTTOLD App](mascot_bobby.png)
 
-## ✨ Fonctionnalités
+## âœ¨ FonctionnalitÃ©s
 
-- 🗺️ **Carte interactive** — Visualisez toutes les toilettes autour de vous (propulsé par Leaflet & OpenStreetMap)
-- 🔍 **Détails complets** — Propreté, confort, accessibilité PMR, papier, prix, accès
-- ⭐ **Système d'avis** — Notez et commentez chaque toilette
-- 🚨 **Bouton SOS** — Trouvez instantanément la toilette la plus proche
-- 🛡️ **Modération intégrée** — Signalez les mauvaises toilettes, les modérateurs peuvent supprimer
-- 👤 **Profil & XP** — Gagnez de l'expérience en ajoutant et notant des toilettes
-- 🎵 **Effets sonores** — Une ambiance sonore immersive et humoristique
-- 📱 **Design mobile-first** — Interface responsive avec simulateur smartphone sur desktop
+- ðŸ—ºï¸ **Carte interactive** â€” Visualisez toutes les toilettes autour de vous (propulsÃ© par Leaflet & OpenStreetMap)
+- ðŸ” **DÃ©tails complets** â€” PropretÃ©, confort, accessibilitÃ© PMR, papier, prix, accÃ¨s
+- â­ **SystÃ¨me d'avis** â€” Notez et commentez chaque toilette
+- ðŸš¨ **Bouton SOS** â€” Trouvez instantanÃ©ment la toilette la plus proche
+- ðŸ›¡ï¸ **ModÃ©ration intÃ©grÃ©e** â€” Signalez les mauvaises toilettes, les modÃ©rateurs peuvent supprimer
+- ðŸ‘¤ **Profil & XP** â€” Gagnez de l'expÃ©rience en ajoutant et notant des toilettes
+- ðŸŽµ **Effets sonores** â€” Une ambiance sonore immersive et humoristique
+- ðŸ“± **Design mobile-first** â€” Interface responsive avec simulateur smartphone sur desktop
 
-## 🚀 Lancer l'application
+## ðŸš€ Lancer l'application
 
-### Prérequis
-Aucune dépendance externe requise ! L'app tourne avec un simple serveur PowerShell.
+### PrÃ©requis
+Aucune dÃ©pendance externe requise ! L'app tourne avec un simple serveur PowerShell.
 
-### Démarrage
+### DÃ©marrage
 
 ```powershell
 # Lancer le serveur local
@@ -31,61 +31,61 @@ powershell -ExecutionPolicy Bypass -File server.ps1
 
 Puis ouvrir dans le navigateur : **http://127.0.0.1:8085/**
 
-### Comptes de démonstration
+### Comptes de dÃ©monstration
 
-| Rôle | Nom d'utilisateur | Rôle à sélectionner |
+| RÃ´le | Nom d'utilisateur | RÃ´le Ã  sÃ©lectionner |
 |------|-------------------|---------------------|
 | Utilisateur normal | N'importe quel nom | `Visiteur` |
-| Modérateur | N'importe quel nom | `Modérateur` |
+| ModÃ©rateur | N'importe quel nom | `ModÃ©rateur` |
 
-## 🗂️ Structure du projet
+## ðŸ—‚ï¸ Structure du projet
 
 ```
-crottoq/
-├── index.html          # Interface principale (toutes les vues)
-├── styles.css          # Design system complet
-├── app.js              # Handlers & logique applicative
-├── state.js            # État global & données (localStorage)
-├── map.js              # Système de carte Leaflet
-├── drawer.js           # Panneaux & fiches détail
-├── router.js           # Routeur de vues
-├── audio.js            # Système audio
-├── mascot_bobby.png    # Mascotte officielle Bobby 🐾
-└── server.ps1          # Serveur HTTP PowerShell (sans Node.js)
+crottold/
+â”œâ”€â”€ index.html          # Interface principale (toutes les vues)
+â”œâ”€â”€ styles.css          # Design system complet
+â”œâ”€â”€ app.js              # Handlers & logique applicative
+â”œâ”€â”€ state.js            # Ã‰tat global & donnÃ©es (localStorage)
+â”œâ”€â”€ map.js              # SystÃ¨me de carte Leaflet
+â”œâ”€â”€ drawer.js           # Panneaux & fiches dÃ©tail
+â”œâ”€â”€ router.js           # Routeur de vues
+â”œâ”€â”€ audio.js            # SystÃ¨me audio
+â”œâ”€â”€ mascot_bobby.png    # Mascotte officielle Bobby ðŸ¾
+â””â”€â”€ server.ps1          # Serveur HTTP PowerShell (sans Node.js)
 ```
 
-## 🛠️ Stack technique
+## ðŸ› ï¸ Stack technique
 
 | Technologie | Usage |
 |-------------|-------|
 | **HTML5 / CSS3 / JS ES6** | Core de l'application |
 | **Leaflet.js** | Carte interactive |
 | **OpenStreetMap / CartoDB** | Tuiles cartographiques |
-| **Font Awesome 6** | Icônes |
+| **Font Awesome 6** | IcÃ´nes |
 | **Google Fonts (Outfit)** | Typographie |
-| **LocalStorage** | Persistance des données en local |
-| **PowerShell HttpListener** | Serveur de développement |
+| **LocalStorage** | Persistance des donnÃ©es en local |
+| **PowerShell HttpListener** | Serveur de dÃ©veloppement |
 
-## 🎮 Fonctionnement de l'app
+## ðŸŽ® Fonctionnement de l'app
 
-1. **Splash screen** → s'efface automatiquement après 2.8s
-2. **Login** → entrez un pseudo et choisissez votre rôle
-3. **Carte** → explorez les toilettes, cliquez sur les marqueurs
-4. **Profil** → suivez votre XP, vos badges et statistiques
-5. **Modération** (rôle modérateur uniquement) → gérez les signalements
+1. **Splash screen** â†’ s'efface automatiquement aprÃ¨s 2.8s
+2. **Login** â†’ entrez un pseudo et choisissez votre rÃ´le
+3. **Carte** â†’ explorez les toilettes, cliquez sur les marqueurs
+4. **Profil** â†’ suivez votre XP, vos badges et statistiques
+5. **ModÃ©ration** (rÃ´le modÃ©rateur uniquement) â†’ gÃ©rez les signalements
 
-## 📋 Données de démo
+## ðŸ“‹ DonnÃ©es de dÃ©mo
 
-L'application inclut 5 toilettes de démonstration centrées sur Paris (Louvre / Châtelet) avec différents niveaux de propreté et de signalement pour tester toutes les fonctionnalités.
+L'application inclut 5 toilettes de dÃ©monstration centrÃ©es sur Paris (Louvre / ChÃ¢telet) avec diffÃ©rents niveaux de propretÃ© et de signalement pour tester toutes les fonctionnalitÃ©s.
 
-## 🔮 Évolutions prévues
+## ðŸ”® Ã‰volutions prÃ©vues
 
-- [ ] Backend MySQL pour données persistantes multi-utilisateurs
-- [ ] Géolocalisation GPS réelle
-- [ ] Filtres de recherche avancés (prix, PMR, distance)
+- [ ] Backend MySQL pour donnÃ©es persistantes multi-utilisateurs
+- [ ] GÃ©olocalisation GPS rÃ©elle
+- [ ] Filtres de recherche avancÃ©s (prix, PMR, distance)
 - [ ] Classement mondial des explorateurs
 - [ ] PWA / App mobile native
 
-## 📄 Licence
+## ðŸ“„ Licence
 
-MIT License — Fait avec 💩 passion par Bobby & l'équipe CROTTOQ © 2026
+MIT License â€” Fait avec ðŸ’© passion par Bobby & l'Ã©quipe CROTTOLD Â© 2026

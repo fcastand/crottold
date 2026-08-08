@@ -1,11 +1,11 @@
-# CROTTOQ Local Lightweight HTTP Server (PowerShell .NET HttpListener)
+﻿# CROTTOLD Local Lightweight HTTP Server (PowerShell .NET HttpListener)
 # Runs without Node.js or Python dependencies.
 
 $port = 8085
 $listener = New-Object System.Net.HttpListener
 $listener.Prefixes.Add("http://127.0.0.1:$port/")
 $listener.Start()
-Write-Host "Serveur CROTTOQ lancé sur http://127.0.0.1:$port/"
+Write-Host "Serveur CROTTOLD lancÃ© sur http://127.0.0.1:$port/"
 
 $dbPath = Join-Path (Get-Location) "database.json"
 
@@ -65,16 +65,16 @@ try {
             $isMinor = $false
             try { $isMinor = ((Get-Date) - [datetime]$json.birthdate).TotalDays -lt 6574 } catch { $isMinor = $true }
 
-            # Validation Regex (Alphanumérique, 3-20 chars)
+            # Validation Regex (AlphanumÃ©rique, 3-20 chars)
             if ($json.username -notmatch "^[a-zA-Z0-9_-]{3,20}$") {
-                $resObj = @{ success = $false; error = "Pseudo invalide (3-20 caractères alphanumériques)." }
+                $resObj = @{ success = $false; error = "Pseudo invalide (3-20 caractÃ¨res alphanumÃ©riques)." }
             }
-            # Validation Majorité
+            # Validation MajoritÃ©
             elseif ($isMinor) {
-                $resObj = @{ success = $false; error = "Vous devez être majeur." }
+                $resObj = @{ success = $false; error = "Vous devez Ãªtre majeur." }
             }
             elseif ($existing) {
-                $resObj = @{ success = $false; error = "Ce pseudo est déjà utilisé." }
+                $resObj = @{ success = $false; error = "Ce pseudo est dÃ©jÃ  utilisÃ©." }
             } else {
                 $salt = [Guid]::NewGuid().ToString()
                 $newUser = New-Object PSObject -Property @{
@@ -139,7 +139,7 @@ try {
             $response.OutputStream.Write($bytes, 0, $bytes.Length)
         } else {
             $response.StatusCode = 404
-            $errBytes = [System.Text.Encoding]::UTF8.GetBytes("404 - Fichier non trouvé")
+            $errBytes = [System.Text.Encoding]::UTF8.GetBytes("404 - Fichier non trouvÃ©")
             $response.OutputStream.Write($errBytes, 0, $errBytes.Length)
         }
         $response.OutputStream.Close()
@@ -148,5 +148,5 @@ try {
     Write-Host "Erreur serveur: $_"
 } finally {
     $listener.Stop()
-    Write-Host "Serveur arrêté."
+    Write-Host "Serveur arrÃªtÃ©."
 }

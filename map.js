@@ -1,11 +1,11 @@
-import { AppState } from './state.js';
+﻿import { AppState } from './state.js';
 import { AudioSystem } from './audio.js';
 import { DrawerSystem } from './drawer.js';
 
 // 4. MAP & MARKER SYSTEM (Leaflet JS Implementation)
 export const MapSystem = {
   init() {
-    // Coordinates centered on Paris (Louvre / Châtelet zone)
+    // Coordinates centered on Paris (Louvre / ChÃ¢telet zone)
     AppState.map = L.map('leaflet-map-container', {
       zoomControl: false, // Custom position or styled in CSS
       attributionControl: false // Cleaner for mockup
@@ -44,7 +44,7 @@ export const MapSystem = {
   placeTempMarker(lat, lng) {
     this.removeTempMarker();
     const tempIcon = L.divIcon({
-      html: `<div class="temp-toilet-marker"><span>🚽</span><div class="temp-marker-pulse"></div></div>`,
+      html: `<div class="temp-toilet-marker"><span>ðŸš½</span><div class="temp-marker-pulse"></div></div>`,
       className: '',
       iconSize: [36, 36],
       iconAnchor: [18, 36]
@@ -60,10 +60,10 @@ export const MapSystem = {
     }
   },
 
-  // Real GPS geolocation — centers map and places a "you are here" marker
+  // Real GPS geolocation â€” centers map and places a "you are here" marker
   initGeolocation() {
     if (!navigator.geolocation) {
-      AppState.showToast('📍', 'Géolocalisation non supportée par ce navigateur.');
+      AppState.showToast('ðŸ“', 'GÃ©olocalisation non supportÃ©e par ce navigateur.');
       return;
     }
 
@@ -85,7 +85,7 @@ export const MapSystem = {
           html: `
             <div class="user-bobby-marker">
               <div class="user-bobby-pulse"></div>
-              <span class="user-bobby-emoji">💩</span>
+              <span class="user-bobby-emoji">ðŸ’©</span>
             </div>
           `,
           className: '',
@@ -96,22 +96,22 @@ export const MapSystem = {
         AppState.userMarker = L.marker([latitude, longitude], { icon: userIcon, zIndexOffset: 1000 })
           .addTo(AppState.map);
 
-        AppState.showToast('📍', `Position trouvée ! (précision ~${Math.round(accuracy)}m)`);
+        AppState.showToast('ðŸ“', `Position trouvÃ©e ! (prÃ©cision ~${Math.round(accuracy)}m)`);
       },
       (error) => {
         // Fallback: keep Paris center, show gentle message
         const messages = {
-          1: 'Accès à la position refusé. Carte centrée sur Paris.',
-          2: 'Position indisponible. Carte centrée sur Paris.',
-          3: 'Délai de géolocalisation dépassé. Carte centrée sur Paris.',
+          1: 'AccÃ¨s Ã  la position refusÃ©. Carte centrÃ©e sur Paris.',
+          2: 'Position indisponible. Carte centrÃ©e sur Paris.',
+          3: 'DÃ©lai de gÃ©olocalisation dÃ©passÃ©. Carte centrÃ©e sur Paris.',
         };
-        AppState.showToast('📍', messages[error.code] || 'Géolocalisation indisponible.');
+        AppState.showToast('ðŸ“', messages[error.code] || 'GÃ©olocalisation indisponible.');
       },
       { timeout: 8000, maximumAge: 60000, enableHighAccuracy: true }
     );
   },
 
-  // Haversine formula — real-world distance in km between two lat/lng points
+  // Haversine formula â€” real-world distance in km between two lat/lng points
   haversineDistance(lat1, lng1, lat2, lng2) {
     const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -155,7 +155,7 @@ export const MapSystem = {
           <!-- Water in bowl -->
           <ellipse cx="22" cy="37" rx="7" ry="6.5" fill="${waterColor}" opacity="0.9"/>
 
-          <!-- LID GROUP — rotates open on hover via CSS -->
+          <!-- LID GROUP â€” rotates open on hover via CSS -->
           <g class="toilet-lid-group">
             <!-- Lid body (round, same as bowl) -->
             <ellipse cx="22" cy="36" rx="14" ry="13" fill="${lidColor}" stroke="${strokeColor}" stroke-width="1.5"/>
@@ -170,7 +170,7 @@ export const MapSystem = {
 
     return L.divIcon({
       html: svgHTML,
-      className: 'crottoq-custom-marker',
+      className: 'crottold-custom-marker',
       iconSize: [44, 54],
       iconAnchor: [22, 54]
     });

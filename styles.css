@@ -1,9 +1,9 @@
-/* ==========================================================================
-   CROTTOQ Stylesheet — Modern Cartoon Premium Design System
+﻿/* ==========================================================================
+   CROTTOLD Stylesheet â€” Modern Cartoon Premium Design System
    ==========================================================================
 
-   TABLE DES MATIÈRES
-   ──────────────────
+   TABLE DES MATIÃˆRES
+   â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     1. Variables CSS (design tokens)          ~L5
     2. Reset & Base                           ~L50
     3. Landing Page (page statique)           ~L100
@@ -13,7 +13,7 @@
     7. Carte Leaflet & Marqueurs              ~L750
     8. Drawer / Bottom Sheets                 ~L900
     9. Vue Profil (stats, badges, XP)         ~L1200
-   10. Vue Modération                         ~L1550
+   10. Vue ModÃ©ration                         ~L1550
    11. Composants globaux (toast, boutons, sliders) ~L1700
    12. Animations & Keyframes                 ~L2100
    13. Utilitaires & Corrections              ~L2600
@@ -21,7 +21,7 @@
 
 :root {
   /* Color Palette */
-  --primary-color: #0DCDC0;       /* Turquoise CROTTOQ */
+  --primary-color: #0DCDC0;       /* Turquoise CROTTOLD */
   --primary-light: #E7FAF9;       /* Light turquoise bg */
   --primary-dark: #0A9E94;        /* Darker turquoise for active state */
   --accent-color: #6B4F3E;        /* Chocolate Brown */
@@ -848,7 +848,7 @@ body {
 }
 
 .select-arrow-wrapper::after {
-  content: 'â–¼';
+  content: 'Ã¢â€“Â¼';
   font-size: 0.7rem;
   color: var(--grey-text);
   right: 14px;
@@ -867,7 +867,7 @@ body {
   padding: 0.75rem 1.5rem;
 }
 
-.btn-guest-crottoq {
+.btn-guest-crottold {
   width: 100%;
   background: var(--accent-light);
   border: 1px solid rgba(107, 79, 62, 0.2);
@@ -885,7 +885,7 @@ body {
   gap: 0.5rem;
 }
 
-.btn-guest-crottoq:hover {
+.btn-guest-crottold:hover {
   background: var(--accent-color);
   color: var(--white);
 }
@@ -1004,7 +1004,7 @@ body {
   animation: fill-loader 2s forwards cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.btn-primary-crottoq {
+.btn-primary-crottold {
   background-color: var(--primary-color);
   color: var(--white);
   border: none;
@@ -1021,13 +1021,13 @@ body {
   animation: slide-up-button 0.5s 1.5s forwards ease;
 }
 
-.btn-primary-crottoq:hover {
+.btn-primary-crottold:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(13, 205, 192, 0.5);
   background-color: var(--primary-dark);
 }
 
-.btn-primary-crottoq:active {
+.btn-primary-crottold:active {
   transform: translateY(0);
 }
 
@@ -1109,9 +1109,9 @@ body {
 }
 
 /* ==========================================================================
-   Custom CROTTOQ Map Markers (SVG Styled Drop/WC)
+   Custom CROTTOLD Map Markers (SVG Styled Drop/WC)
    ========================================================================== */
-.crottoq-custom-marker {
+.crottold-custom-marker {
   background: none;
   border: none;
 }
@@ -1127,7 +1127,7 @@ body {
   transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.crottoq-custom-marker:hover .marker-pin-svg-wrapper {
+.crottold-custom-marker:hover .marker-pin-svg-wrapper {
   transform: scale(1.15) translateY(-3px);
 }
 
@@ -2269,7 +2269,7 @@ body {
   box-shadow: var(--shadow-sm);
 }
 
-.crottoq-range-slider {
+.crottold-range-slider {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
@@ -2281,7 +2281,7 @@ body {
   transition: background 0.3s;
 }
 
-.crottoq-range-slider::-webkit-slider-thumb {
+.crottold-range-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 22px;
@@ -2294,12 +2294,12 @@ body {
   transition: transform 0.15s ease, background-color 0.15s ease;
 }
 
-.crottoq-range-slider::-webkit-slider-thumb:hover {
+.crottold-range-slider::-webkit-slider-thumb:hover {
   transform: scale(1.15);
   background-color: var(--primary-dark);
 }
 
-.crottoq-range-slider::-moz-range-thumb {
+.crottold-range-slider::-moz-range-thumb {
   width: 22px;
   height: 22px;
   border-radius: 50%;
@@ -2310,7 +2310,7 @@ body {
   transition: transform 0.15s ease, background-color 0.15s ease;
 }
 
-.crottoq-range-slider::-moz-range-thumb:hover {
+.crottold-range-slider::-moz-range-thumb:hover {
   transform: scale(1.15);
   background-color: var(--primary-dark);
 }
@@ -2429,7 +2429,7 @@ body {
 }
 
 /* ============================================================
-   TOILET BOWL MAP MARKER — Custom SVG with animated lid
+   TOILET BOWL MAP MARKER â€” Custom SVG with animated lid
    ============================================================ */
 
 .toilet-bowl-marker {
@@ -2438,18 +2438,18 @@ body {
   transition: filter 0.2s ease;
 }
 
-.crottoq-custom-marker:hover .toilet-bowl-marker {
+.crottold-custom-marker:hover .toilet-bowl-marker {
   filter: drop-shadow(0 6px 10px rgba(13, 205, 192, 0.4));
 }
 
-/* Lid animation — rotates open around the top hinge on hover */
+/* Lid animation â€” rotates open around the top hinge on hover */
 .toilet-lid-group {
   transform-box: fill-box;
   transform-origin: center top;
   transition: transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1);
 }
 
-.crottoq-custom-marker:hover .toilet-lid-group {
+.crottold-custom-marker:hover .toilet-lid-group {
   transform: perspective(180px) rotateX(-145deg);
 }
 
@@ -2658,7 +2658,7 @@ body {
   min-height: 100%;
 }
 
-/* Bouton lien inline (pour "Pas encore de compte ?" et "Déjà un compte ?") */
+/* Bouton lien inline (pour "Pas encore de compte ?" et "DÃ©jÃ  un compte ?") */
 .btn-link-inline {
   background: none;
   border: none;
@@ -2697,7 +2697,7 @@ body {
 .password-strength-fill.strength-3 { width: 75%; background-color: var(--warning); }
 .password-strength-fill.strength-4 { width: 100%; background-color: var(--success); }
 
-/* Checklist des règles MDP */
+/* Checklist des rÃ¨gles MDP */
 .password-rules-list {
   list-style: none;
   margin-top: 8px;
@@ -2729,7 +2729,7 @@ body {
   color: var(--success);
 }
 
-/* États d'erreur sur les inputs */
+/* Ã‰tats d'erreur sur les inputs */
 .input-error input,
 .input-error select {
   border-color: var(--danger) !important;
@@ -2752,7 +2752,7 @@ body {
 }
 
 /* ==========================================================================
-   MODERATION — État vide (aucun signalement)
+   MODERATION â€” Ã‰tat vide (aucun signalement)
    ========================================================================== */
 .mod-empty-state {
   background: var(--white);

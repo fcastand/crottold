@@ -1,14 +1,14 @@
-# Spec : Création de compte simulée (sans BDD)
+﻿# Spec : CrÃ©ation de compte simulÃ©e (sans BDD)
 
-> Rédigé le 2026-07-15 — à implémenter sur la branche `develop`
+> RÃ©digÃ© le 2026-07-15 â€” Ã  implÃ©menter sur la branche `develop`
 
 ## Contexte
 
-Le lien "Pas encore de compte ? S'inscrire" affiche actuellement une simple `alert()`. L'objectif est de créer un vrai formulaire d'inscription simulé, cohérent avec le système de login existant (localStorage + `AppState.user`).
+Le lien "Pas encore de compte ? S'inscrire" affiche actuellement une simple `alert()`. L'objectif est de crÃ©er un vrai formulaire d'inscription simulÃ©, cohÃ©rent avec le systÃ¨me de login existant (localStorage + `AppState.user`).
 
 ## Approche
 
-Pas de vraie BDD = on simule en **localStorage**. Les comptes créés sont stockés sous la clé `crottoq_accounts` (tableau JSON). Lors d'un login, on vérifie si le pseudo correspond à un compte. **Le mode de connexion libre (démo) est conservé** tant qu'il n'y a pas de BDD.
+Pas de vraie BDD = on simule en **localStorage**. Les comptes crÃ©Ã©s sont stockÃ©s sous la clÃ© `crottold_accounts` (tableau JSON). Lors d'un login, on vÃ©rifie si le pseudo correspond Ã  un compte. **Le mode de connexion libre (dÃ©mo) est conservÃ©** tant qu'il n'y a pas de BDD.
 
 ---
 
@@ -18,45 +18,45 @@ Nouvelle vue `#view-register` (app-view) avec :
 
 - Logo + mascotte Bobby
 - Formulaire `#form-register` :
-  - **Pseudo** `input-reg-username` — obligatoire, check doublon en localStorage
-  - **Date de naissance** `input-reg-birthdate` — obligatoire, vérification majorité (18 ans révolus)
-  - **Mot de passe** `input-reg-password` — avec indicateur de robustesse en temps réel
+  - **Pseudo** `input-reg-username` â€” obligatoire, check doublon en localStorage
+  - **Date de naissance** `input-reg-birthdate` â€” obligatoire, vÃ©rification majoritÃ© (18 ans rÃ©volus)
+  - **Mot de passe** `input-reg-password` â€” avec indicateur de robustesse en temps rÃ©el
   - **Confirmation mot de passe** `input-reg-confirm`
-- Bouton submit "Créer mon compte 🎉"
-- Lien "Déjà un compte ? Se connecter" (`btn-go-login`)
+- Bouton submit "CrÃ©er mon compte ðŸŽ‰"
+- Lien "DÃ©jÃ  un compte ? Se connecter" (`btn-go-login`)
 
-> **Important** : Tout compte créé est un **Utilisateur** par défaut. Il n'y a pas de sélecteur de rôle à l'inscription. Seul un **modérateur** pourra promouvoir un utilisateur via le panel de modération (à implémenter plus tard).
+> **Important** : Tout compte crÃ©Ã© est un **Utilisateur** par dÃ©faut. Il n'y a pas de sÃ©lecteur de rÃ´le Ã  l'inscription. Seul un **modÃ©rateur** pourra promouvoir un utilisateur via le panel de modÃ©ration (Ã  implÃ©menter plus tard).
 
 ---
 
-## Règles mot de passe
+## RÃ¨gles mot de passe
 
-Indicateur visuel en temps réel (barre de force) + validation au submit :
+Indicateur visuel en temps rÃ©el (barre de force) + validation au submit :
 
-| Règle | Condition |
+| RÃ¨gle | Condition |
 |---|---|
-| Longueur minimale | ≥ 8 caractères |
+| Longueur minimale | â‰¥ 8 caractÃ¨res |
 | Majuscule | Au moins 1 lettre majuscule |
 | Chiffre | Au moins 1 chiffre |
-| Caractère spécial | Au moins 1 parmi `!@#$%^&*_-` |
+| CaractÃ¨re spÃ©cial | Au moins 1 parmi `!@#$%^&*_-` |
 
-Feedback visuel : barre colorée (rouge → orange → vert) + liste de règles avec ✅/❌ dynamiques.
-Bouton submit **désactivé** tant que le score < 3/4.
-
----
-
-## Vérification majorité
-
-- L'utilisateur doit avoir **18 ans révolus** à la date d'inscription
-- Si mineur → message d'erreur inline : *"Tu dois être majeur(e) pour rejoindre CROTTOQ."*
-- La date de naissance est stockée dans le compte (`birthdate`)
+Feedback visuel : barre colorÃ©e (rouge â†’ orange â†’ vert) + liste de rÃ¨gles avec âœ…/âŒ dynamiques.
+Bouton submit **dÃ©sactivÃ©** tant que le score < 3/4.
 
 ---
 
-## Sécurité du mot de passe
+## VÃ©rification majoritÃ©
 
-- Stockage via `btoa()` (encodage base64) en attendant — pas de clair, pas de vrai chiffrement
-- À remplacer par `bcrypt` côté serveur lors de l'intégration BDD
+- L'utilisateur doit avoir **18 ans rÃ©volus** Ã  la date d'inscription
+- Si mineur â†’ message d'erreur inline : *"Tu dois Ãªtre majeur(e) pour rejoindre CROTTOLD."*
+- La date de naissance est stockÃ©e dans le compte (`birthdate`)
+
+---
+
+## SÃ©curitÃ© du mot de passe
+
+- Stockage via `btoa()` (encodage base64) en attendant â€” pas de clair, pas de vrai chiffrement
+- Ã€ remplacer par `bcrypt` cÃ´tÃ© serveur lors de l'intÃ©gration BDD
 
 ---
 
@@ -64,49 +64,49 @@ Bouton submit **désactivé** tant que le score < 3/4.
 
 ### `state.js`
 - Ajouter `accounts: []` dans `AppState`
-- Ajouter `loadAccounts()` / `saveAccounts()` (clé `crottoq_accounts`)
+- Ajouter `loadAccounts()` / `saveAccounts()` (clÃ© `crottold_accounts`)
 - Ajouter `registerAccount({ username, birthdate, password, role })` :
-  - Vérifie doublon pseudo (case-insensitive)
+  - VÃ©rifie doublon pseudo (case-insensitive)
   - Retourne `{ success, error }`
-- Ajouter `findAccount(username)` → retourne le compte ou null
+- Ajouter `findAccount(username)` â†’ retourne le compte ou null
 - Modifier `init()` pour charger les comptes
 
 ### `app.js`
-- Handler `#btn-go-register` → `RouteSystem.switchView('view-register')`
-- Handler `#btn-go-login` (vue register) → `RouteSystem.switchView('view-login')`
-- Handler `#form-register` submit → validation + `AppState.registerAccount()` + redirect
-- Handler `#input-reg-password` `input` event → barre de force + checklist temps réel
-- **Modifier handler `#form-login`** : si pseudo connu + mot de passe correct → connexion avec rôle du compte ; sinon → mode démo libre
+- Handler `#btn-go-register` â†’ `RouteSystem.switchView('view-register')`
+- Handler `#btn-go-login` (vue register) â†’ `RouteSystem.switchView('view-login')`
+- Handler `#form-register` submit â†’ validation + `AppState.registerAccount()` + redirect
+- Handler `#input-reg-password` `input` event â†’ barre de force + checklist temps rÃ©el
+- **Modifier handler `#form-login`** : si pseudo connu + mot de passe correct â†’ connexion avec rÃ´le du compte ; sinon â†’ mode dÃ©mo libre
 
 ### `styles.css`
 - `.password-strength-bar` + `.password-strength-fill` (barre de robustesse)
-- `.password-rules-list` (checklist ✅/❌)
-- `.input-error` (état rouge sur un champ invalide)
+- `.password-rules-list` (checklist âœ…/âŒ)
+- `.input-error` (Ã©tat rouge sur un champ invalide)
 - `.form-error-msg` (message d'erreur inline)
 
 ---
 
-## Comportement simulé
+## Comportement simulÃ©
 
-| Scénario | Résultat |
+| ScÃ©nario | RÃ©sultat |
 |---|---|
-| Inscription valide | Compte stocké en localStorage, toast succès, redirect login |
-| Pseudo déjà pris | Erreur inline : *"Ce pseudo est déjà utilisé."* |
-| Mineur détecté | Erreur inline : *"Tu dois être majeur(e) pour rejoindre CROTTOQ."* |
-| Passwords différents | Erreur inline : *"Les mots de passe ne correspondent pas."* |
-| Password trop faible | Bouton submit désactivé jusqu'à score ≥ 3/4 |
-| Login pseudo connu | Vérifie le mot de passe, applique le rôle du compte |
-| Login pseudo inconnu | Mode démo — connexion libre avec sélecteur de rôle (comportement actuel) |
+| Inscription valide | Compte stockÃ© en localStorage, toast succÃ¨s, redirect login |
+| Pseudo dÃ©jÃ  pris | Erreur inline : *"Ce pseudo est dÃ©jÃ  utilisÃ©."* |
+| Mineur dÃ©tectÃ© | Erreur inline : *"Tu dois Ãªtre majeur(e) pour rejoindre CROTTOLD."* |
+| Passwords diffÃ©rents | Erreur inline : *"Les mots de passe ne correspondent pas."* |
+| Password trop faible | Bouton submit dÃ©sactivÃ© jusqu'Ã  score â‰¥ 3/4 |
+| Login pseudo connu | VÃ©rifie le mot de passe, applique le rÃ´le du compte |
+| Login pseudo inconnu | Mode dÃ©mo â€” connexion libre avec sÃ©lecteur de rÃ´le (comportement actuel) |
 
 ---
 
-## Checklist d'implémentation
+## Checklist d'implÃ©mentation
 
 - [ ] Vue `#view-register` dans `index.html`
 - [ ] Lien `#btn-go-register` sur la vue login
 - [ ] `registerAccount()` et `findAccount()` dans `state.js`
 - [ ] Handlers formulaire inscription dans `app.js`
 - [ ] Barre de robustesse + checklist mot de passe (JS + CSS)
-- [ ] Vérification majorité (JS)
-- [ ] Login hybride (compte connu vs mode démo)
-- [ ] Mise à jour `qa_report.md` pour marquer le point résolu
+- [ ] VÃ©rification majoritÃ© (JS)
+- [ ] Login hybride (compte connu vs mode dÃ©mo)
+- [ ] Mise Ã  jour `qa_report.md` pour marquer le point rÃ©solu

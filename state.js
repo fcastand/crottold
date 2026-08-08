@@ -1,4 +1,4 @@
-import { AudioSystem } from './audio.js';
+﻿import { AudioSystem } from './audio.js';
 import { DOM } from './dom.js';
 
 // Module-level timer so it's never lost regardless of `this` context
@@ -7,7 +7,7 @@ let _toastTimer = null;
 export const DEFAULT_TOILETS = [
   {
     id: "toilet_1",
-    name: "Les Trônes du Louvre",
+    name: "Les TrÃ´nes du Louvre",
     lat: 48.8606,
     lng: 2.3376,
     price: "gratuit",
@@ -18,11 +18,11 @@ export const DEFAULT_TOILETS = [
     cleanliness: 90,
     comfort: 80,
     accessibility: 100,
-    comment: "Accès propre via la galerie marchande du Louvre. Très chic !",
+    comment: "AccÃ¨s propre via la galerie marchande du Louvre. TrÃ¨s chic !",
     reports: 0,
     reviews: [
-      { author: "Chasseur_de_WC", grade: "Trône royal 👑", cleanliness: 100, comfort: 80, accessibility: 100, text: "Papier triple épaisseur. Un vrai régal !" },
-      { author: "Marie_Coincoin", grade: "Pause parfaite ✨", cleanliness: 80, comfort: 80, accessibility: 100, text: "Propre, savon disponible, pas d'attente." }
+      { author: "Chasseur_de_WC", grade: "TrÃ´ne royal ðŸ‘‘", cleanliness: 100, comfort: 80, accessibility: 100, text: "Papier triple Ã©paisseur. Un vrai rÃ©gal !" },
+      { author: "Marie_Coincoin", grade: "Pause parfaite âœ¨", cleanliness: 80, comfort: 80, accessibility: 100, text: "Propre, savon disponible, pas d'attente." }
     ]
   },
   {
@@ -38,10 +38,10 @@ export const DEFAULT_TOILETS = [
     cleanliness: 60,
     comfort: 60,
     accessibility: 80,
-    comment: "Toilettes publiques municipales gratuites. Propreté moyenne.",
+    comment: "Toilettes publiques municipales gratuites. PropretÃ© moyenne.",
     reports: 0,
     reviews: [
-      { author: "Marc_Le_Rapide", grade: "Correct 🆗", cleanliness: 60, comfort: 60, accessibility: 80, text: "Fait le job mais pas de papier. Prévoyez vos mouchoirs." }
+      { author: "Marc_Le_Rapide", grade: "Correct ðŸ†—", cleanliness: 60, comfort: 60, accessibility: 80, text: "Fait le job mais pas de papier. PrÃ©voyez vos mouchoirs." }
     ]
   },
   {
@@ -57,15 +57,15 @@ export const DEFAULT_TOILETS = [
     cleanliness: 40,
     comfort: 40,
     accessibility: 40,
-    comment: "Accessible mais l'odeur laisse à désirer. Utile la nuit.",
+    comment: "Accessible mais l'odeur laisse Ã  dÃ©sirer. Utile la nuit.",
     reports: 2, // Mocked reports to showcase moderation immediately
     reviews: [
-      { author: "Bobby_Fan", grade: "Survie nécessaire ⚠️", cleanliness: 40, comfort: 40, accessibility: 40, text: "Une odeur tenace, mais c'est le seul ouvert à cette heure." }
+      { author: "Bobby_Fan", grade: "Survie nÃ©cessaire âš ï¸", cleanliness: 40, comfort: 40, accessibility: 40, text: "Une odeur tenace, mais c'est le seul ouvert Ã  cette heure." }
     ]
   },
   {
     id: "toilet_4",
-    name: "Les Chiottes Mystères de Châtelet",
+    name: "Les Chiottes MystÃ¨res de ChÃ¢telet",
     lat: 48.8595,
     lng: 2.3475,
     price: "gratuit",
@@ -76,15 +76,15 @@ export const DEFAULT_TOILETS = [
     cleanliness: 20,
     comfort: 20,
     accessibility: 40,
-    comment: "L'eau n'évacue plus et le distributeur de papier est détruit !",
+    comment: "L'eau n'Ã©vacue plus et le distributeur de papier est dÃ©truit !",
     reports: 3,
     reviews: [
-      { author: "Chasseur_Fâché", grade: "Zone à éviter 🤢", cleanliness: 20, comfort: 20, accessibility: 40, text: "Inondé, fuyez !" }
+      { author: "Chasseur_FÃ¢chÃ©", grade: "Zone Ã  Ã©viter ðŸ¤¢", cleanliness: 20, comfort: 20, accessibility: 40, text: "InondÃ©, fuyez !" }
     ]
   },
   {
     id: "toilet_5",
-    name: "WC Tuileries Mutilés",
+    name: "WC Tuileries MutilÃ©s",
     lat: 48.8635,
     lng: 2.3275,
     price: "payant",
@@ -95,15 +95,15 @@ export const DEFAULT_TOILETS = [
     cleanliness: 40,
     comfort: 40,
     accessibility: 80,
-    comment: "Toilettes payantes mais fermées pour travaux sans indications.",
+    comment: "Toilettes payantes mais fermÃ©es pour travaux sans indications.",
     reports: 1,
     reviews: [
-      { author: "Marie_Coincoin", grade: "Survie nécessaire ⚠️", cleanliness: 40, comfort: 40, accessibility: 80, text: "Fermé par une grille métallique aujourd'hui." }
+      { author: "Marie_Coincoin", grade: "Survie nÃ©cessaire âš ï¸", cleanliness: 40, comfort: 40, accessibility: 80, text: "FermÃ© par une grille mÃ©tallique aujourd'hui." }
     ]
   }
 ];
 
-// Utilitaire XSS — échappe les caractères HTML dangereux avant insertion dans innerHTML
+// Utilitaire XSS â€” Ã©chappe les caractÃ¨res HTML dangereux avant insertion dans innerHTML
 export function escapeHTML(str) {
   if (str === null || str === undefined) return '';
   return String(str)
@@ -138,7 +138,7 @@ export const AppState = {
 
   init() {
     // Load from localStorage or initialize defaults
-    const savedToilets = localStorage.getItem('crottoq_toilets');
+    const savedToilets = localStorage.getItem('crottold_toilets');
     if (savedToilets) {
       this.toilets = JSON.parse(savedToilets);
       // Force refresh if the test toilets are missing or if legacy 1-5 rating format is found
@@ -153,8 +153,8 @@ export const AppState = {
       this.saveToilets();
     }
 
-    // Migration from old 'crottoq_user' to separated 'crottoq_auth' and 'crottoq_profile'
-    const savedLegacyUser = localStorage.getItem('crottoq_user');
+    // Migration from old 'crottold_user' to separated 'crottold_auth' and 'crottold_profile'
+    const savedLegacyUser = localStorage.getItem('crottold_user');
     if (savedLegacyUser) {
       const parsedLegacy = JSON.parse(savedLegacyUser);
       this.auth = { username: parsedLegacy.username || "Explorateur Anonyme", role: parsedLegacy.role || "user" };
@@ -166,28 +166,28 @@ export const AppState = {
       };
       this.saveAuth();
       this.saveProfile();
-      localStorage.removeItem('crottoq_user');
+      localStorage.removeItem('crottold_user');
     } else {
-      const savedAuth = localStorage.getItem('crottoq_auth');
+      const savedAuth = localStorage.getItem('crottold_auth');
       if (savedAuth) this.auth = JSON.parse(savedAuth);
       
-      const savedProfile = localStorage.getItem('crottoq_profile');
+      const savedProfile = localStorage.getItem('crottold_profile');
       if (savedProfile) this.profile = JSON.parse(savedProfile);
     }
   },
 
   /**
-   * Crée un nouveau compte (via API locale).
+   * CrÃ©e un nouveau compte (via API locale).
    * @returns {Promise<{ success: boolean, error?: string }>}
    */
   async registerAccount({ username, birthdate, password, role }) {
-    // Vérification majorité côté client (18 ans révolus)
+    // VÃ©rification majoritÃ© cÃ´tÃ© client (18 ans rÃ©volus)
     const birth = new Date(birthdate);
     const today = new Date();
     const age = today.getFullYear() - birth.getFullYear() -
       (today < new Date(today.getFullYear(), birth.getMonth(), birth.getDate()) ? 1 : 0);
     if (age < 18) {
-      return { success: false, error: 'Tu dois être majeur(e) pour rejoindre CROTTOQ.' };
+      return { success: false, error: 'Tu dois Ãªtre majeur(e) pour rejoindre CROTTOLD.' };
     }
 
     try {
@@ -198,12 +198,12 @@ export const AppState = {
       });
       return await res.json();
     } catch (err) {
-      return { success: false, error: 'Erreur réseau avec le serveur local.' };
+      return { success: false, error: 'Erreur rÃ©seau avec le serveur local.' };
     }
   },
 
   /**
-   * Vérifie le compte (via API locale).
+   * VÃ©rifie le compte (via API locale).
    * @returns {Promise<{ success: boolean, username?: string, role?: string, error?: string }>}
    */
   async loginAccount(username, password) {
@@ -215,20 +215,20 @@ export const AppState = {
       });
       return await res.json();
     } catch (err) {
-      return { success: false, error: 'Erreur réseau avec le serveur local.' };
+      return { success: false, error: 'Erreur rÃ©seau avec le serveur local.' };
     }
   },
 
   saveToilets() {
-    localStorage.setItem('crottoq_toilets', JSON.stringify(this.toilets));
+    localStorage.setItem('crottold_toilets', JSON.stringify(this.toilets));
   },
 
   saveAuth() {
-    localStorage.setItem('crottoq_auth', JSON.stringify(this.auth));
+    localStorage.setItem('crottold_auth', JSON.stringify(this.auth));
   },
 
   saveProfile() {
-    localStorage.setItem('crottoq_profile', JSON.stringify(this.profile));
+    localStorage.setItem('crottold_profile', JSON.stringify(this.profile));
     this.updateProfileUI();
   },
 
@@ -236,7 +236,7 @@ export const AppState = {
     this.toilets.push(toilet);
     this.saveToilets();
     this.profile.addedCount++;
-    this.addXP(50, "Nouveau trône enregistré ! 🧻");
+    this.addXP(50, "Nouveau trÃ´ne enregistrÃ© ! ðŸ§»");
     this.saveProfile();
   },
 
@@ -256,10 +256,10 @@ export const AppState = {
     if (leveledUp) {
       setTimeout(() => {
         AudioSystem.play('chime');
-        this.showToast("👑", `NIVEAU SUPÉRIEUR ! Vous êtes Niveau ${this.profile.level} ! Bobby s'incline devant votre expertise.`);
+        this.showToast("ðŸ‘‘", `NIVEAU SUPÃ‰RIEUR ! Vous Ãªtes Niveau ${this.profile.level} ! Bobby s'incline devant votre expertise.`);
       }, 1000);
     } else {
-      this.showToast("✨", `+${amount} XP: ${reason}`);
+      this.showToast("âœ¨", `+${amount} XP: ${reason}`);
     }
   },
 
@@ -280,7 +280,7 @@ export const AppState = {
       _toastTimer = null;
     }, 5000);
 
-    // Wire the close button (×) every time the toast shows
+    // Wire the close button (Ã—) every time the toast shows
     const closeBtn = DOM.btnCloseToast;
     if (closeBtn) {
       // Replace to avoid stacking duplicate listeners
@@ -294,11 +294,11 @@ export const AppState = {
   },
 
   getGradeLabel(level) {
-    if (level >= 20) return 'Légende des Trônes';
-    if (level >= 15) return 'Maître des W.C.';
+    if (level >= 20) return 'LÃ©gende des TrÃ´nes';
+    if (level >= 15) return 'MaÃ®tre des W.C.';
     if (level >= 10) return 'Grand Explorateur';
     if (level >= 7)  return 'Aventurier Sanitaire';
-    if (level >= 5)  return 'Chasseur de Trônes';
+    if (level >= 5)  return 'Chasseur de TrÃ´nes';
     if (level >= 3)  return 'Apprenti Explorateur';
     return 'Novice';
   },
@@ -333,7 +333,7 @@ export const AppState = {
     setBadge(DOM.badgeFirstAdd,     this.profile.addedCount >= 1);
     setBadge(DOM.badgeThreeRatings, this.profile.ratedCount >= 3);
     
-    // Badge "Chasseur de Trésors" : l'utilisateur a créé une toilette gratuite et très propre (cleanliness >= 80%)
+    // Badge "Chasseur de TrÃ©sors" : l'utilisateur a crÃ©Ã© une toilette gratuite et trÃ¨s propre (cleanliness >= 80%)
     const hasRareToilet = this.toilets.some(t => 
       t.author === username && 
       t.price === 'gratuit' && 

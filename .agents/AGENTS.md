@@ -1,4 +1,4 @@
-# CROTTOQ — Agent Rules
+﻿# CROTTOLD â€” Agent Rules
 
 ## Language
 - Always respond in **French**, regardless of the language used by the user.

@@ -1,4 +1,4 @@
-// CROTTOQ Audio Module — Programmatic Web Audio Synthesizer
+﻿// CROTTOLD Audio Module â€” Programmatic Web Audio Synthesizer
 export const AudioSystem = {
   ctx: null,
   enabled: true,
